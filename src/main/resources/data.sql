@@ -1,4 +1,3 @@
--- noinspection SqlNoDataSourceInspectionForFile
 
 INSERT INTO CORES (nome_cor) VALUES ('VERMELHO');
 INSERT INTO CORES (nome_cor) VALUES ('VERDE');
