@@ -41,7 +41,7 @@ class VeiculoServiceImplTest {
     private ModeloServiceImpl modeloServiceImpl;
 
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         MockitoAnnotations.openMocks(this);
     }
 
@@ -88,7 +88,7 @@ class VeiculoServiceImplTest {
         Veiculo veiculo = new Veiculo(modelo, cor, "BRA1A123", VeiculoTipo.CARRO);
 
         Mockito.when(marcaServiceImpl.findByNomeOrCreate(veiculoForm.getMarca())).thenReturn(marca);
-        Mockito.when(modeloServiceImpl.findByNomeAndMarcaOrCreate(veiculoForm.getModelo(), marca)).thenReturn(modelo);
+        Mockito.when(modeloServiceImpl.findByNomeModeloOrCreate(veiculoForm.getModelo(), marca)).thenReturn(modelo);
         Mockito.when(corServiceImpl.findByNomeOrCreate(veiculoForm.getCor())).thenReturn(cor);
         Mockito.when(veiculoRepository.save(veiculo)).thenReturn(veiculo);
 

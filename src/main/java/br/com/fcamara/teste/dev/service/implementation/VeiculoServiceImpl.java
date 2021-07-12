@@ -50,7 +50,7 @@ public class VeiculoServiceImpl implements VeiculoService {
 
         Marca marca = marcaServiceImpl.findByNomeOrCreate(veiculoForm.getMarca());
 
-        Modelo modelo = modeloServiceImpl.findByNomeAndMarcaOrCreate(veiculoForm.getModelo(), marca);
+        Modelo modelo = modeloServiceImpl.findByNomeModeloOrCreate(veiculoForm.getModelo(), marca);
 
         Cor cor = this.corServiceImpl.findByNomeOrCreate(veiculoForm.getCor());
 

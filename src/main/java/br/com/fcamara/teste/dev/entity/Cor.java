@@ -3,7 +3,6 @@ package br.com.fcamara.teste.dev.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @NoArgsConstructor
 @Setter

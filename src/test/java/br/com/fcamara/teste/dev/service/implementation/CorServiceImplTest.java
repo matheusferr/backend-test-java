@@ -22,7 +22,7 @@ class CorServiceImplTest {
     private CorServiceImpl corServiceImpl;
 
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         MockitoAnnotations.openMocks(this);
     }
 

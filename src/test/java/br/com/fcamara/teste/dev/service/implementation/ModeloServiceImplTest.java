@@ -23,7 +23,7 @@ class ModeloServiceImplTest {
     private ModeloServiceImpl modeloServiceImpl;
 
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         MockitoAnnotations.openMocks(this);
     }
 
@@ -34,7 +34,7 @@ class ModeloServiceImplTest {
 
         Mockito.when(modeloRepository.findByNomeModelo("PALIO")).thenReturn(Optional.of(testModelo));
 
-        Modelo modelo = modeloServiceImpl.findByNomeAndMarcaOrCreate("PALIO", testMarca);
+        Modelo modelo = modeloServiceImpl.findByNomeModeloOrCreate("PALIO", testMarca);
 
         assertEquals(modelo, testModelo);
     }

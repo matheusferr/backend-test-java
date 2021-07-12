@@ -4,5 +4,5 @@ import br.com.fcamara.teste.dev.entity.Marca;
 import br.com.fcamara.teste.dev.entity.Modelo;
 
 public interface ModeloService {
-    Modelo findByNomeAndMarcaOrCreate(String nomeModelo, Marca marca);
+    Modelo findByNomeModeloOrCreate(String nomeModelo, Marca marca);
 }
