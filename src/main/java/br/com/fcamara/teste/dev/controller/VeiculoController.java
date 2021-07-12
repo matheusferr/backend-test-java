@@ -1,8 +1,8 @@
 package br.com.fcamara.teste.dev.controller;
 
 import br.com.fcamara.teste.dev.dto.VeiculoDto;
-import br.com.fcamara.teste.dev.form.VeiculoForm;
-import br.com.fcamara.teste.dev.form.VeiculoUpdateForm;
+import br.com.fcamara.teste.dev.form.veiculo.VeiculoForm;
+import br.com.fcamara.teste.dev.form.veiculo.VeiculoUpdateForm;
 import br.com.fcamara.teste.dev.service.implementation.VeiculoServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,5 +1,8 @@
 package br.com.fcamara.teste.dev.entity;
 
+import br.com.fcamara.teste.dev.entity.converter.CNPJCoverter;
+import br.com.fcamara.teste.dev.entity.valueObject.CNPJ;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -11,18 +14,18 @@ public class Estabelecimento {
 
     private String nome;
 
-    private String cnpj;
+    @Convert(converter = CNPJCoverter.class)
+    private CNPJ cnpj;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne
     private Endereco endereco;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne
     private Telefone telefone;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Veiculo> veiculos;
 
-    private Integer vagasCarro;
-
-    private Integer vagasMoto;
+    @OneToOne
+    private Vagas vagas;
 }

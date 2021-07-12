@@ -1,4 +1,4 @@
-package br.com.fcamara.teste.dev.form;
+package br.com.fcamara.teste.dev.form.veiculo;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,8 +1,8 @@
 package br.com.fcamara.teste.dev.service.definition;
 
 import br.com.fcamara.teste.dev.dto.VeiculoDto;
-import br.com.fcamara.teste.dev.form.VeiculoForm;
-import br.com.fcamara.teste.dev.form.VeiculoUpdateForm;
+import br.com.fcamara.teste.dev.form.veiculo.VeiculoForm;
+import br.com.fcamara.teste.dev.form.veiculo.VeiculoUpdateForm;
 
 import java.util.List;
 
