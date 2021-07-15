@@ -7,7 +7,7 @@ import javax.persistence.AttributeConverter;
 public class CNPJCoverter implements AttributeConverter<CNPJ, String> {
     @Override
     public String convertToDatabaseColumn(CNPJ cnpj) {
-        return cnpj.getCnpj();
+        return cnpj.getCnpjValue();
     }
 
     @Override

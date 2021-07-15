@@ -28,9 +28,6 @@ class VeiculoServiceImplTest {
     @Mock
     private VeiculoRepository veiculoRepository;
 
-    @InjectMocks
-    private VeiculoServiceImpl veiculoServiceImpl;
-
     @Mock
     private MarcaServiceImpl marcaServiceImpl;
 
@@ -39,6 +36,9 @@ class VeiculoServiceImplTest {
 
     @Mock
     private ModeloServiceImpl modeloServiceImpl;
+
+    @InjectMocks
+    private VeiculoServiceImpl veiculoServiceImpl;
 
     @BeforeEach
     void beforeEach() {
@@ -88,7 +88,8 @@ class VeiculoServiceImplTest {
         Veiculo veiculo = new Veiculo(modelo, cor, "BRA1A123", VeiculoTipo.CARRO);
 
         Mockito.when(marcaServiceImpl.findByNomeOrCreate(veiculoForm.getMarca())).thenReturn(marca);
-        Mockito.when(modeloServiceImpl.findByNomeModeloOrCreate(veiculoForm.getModelo(), marca)).thenReturn(modelo);
+        Mockito.when(modeloServiceImpl.findByNomeModelo(veiculoForm.getModelo())).thenReturn(Optional.empty());
+        Mockito.when(modeloServiceImpl.create(veiculoForm.getModelo(), marca)).thenReturn(modelo);
         Mockito.when(corServiceImpl.findByNomeOrCreate(veiculoForm.getCor())).thenReturn(cor);
         Mockito.when(veiculoRepository.save(veiculo)).thenReturn(veiculo);
 
@@ -110,8 +111,6 @@ class VeiculoServiceImplTest {
         Cor cor = new Cor("Verde");
 
         veiculoUpdateForm.setCor(cor.getNomeCor());
-
-        System.out.println(veiculoRepository.findAll());
 
         Mockito.when(veiculoRepository.save(veiculo)).thenReturn(veiculo);
 

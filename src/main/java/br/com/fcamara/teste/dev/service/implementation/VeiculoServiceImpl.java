@@ -33,41 +33,52 @@ public class VeiculoServiceImpl implements VeiculoService {
     @Override
     public List<VeiculoDto> index() {
         return VeiculoDto.convertList(this.veiculoRepository.findAll());
-
     }
 
     @Override
     public VeiculoDto findById(Integer id) {
         Optional<Veiculo> veiculo = this.veiculoRepository.findById(id);
 
-        if(veiculo.isEmpty()) throw new NullPointerException();
+        if (veiculo.isEmpty()) throw new NullPointerException();
 
         return new VeiculoDto(veiculo.get());
     }
 
     @Override
-    public VeiculoDto create(VeiculoForm veiculoForm){
-
-        Marca marca = marcaServiceImpl.findByNomeOrCreate(veiculoForm.getMarca());
-
-        Modelo modelo = modeloServiceImpl.findByNomeModeloOrCreate(veiculoForm.getModelo(), marca);
+    public VeiculoDto create(VeiculoForm veiculoForm) {
+        VeiculoTipo tipo = VeiculoTipo.valueOf(veiculoForm.getTipo());
 
         Cor cor = this.corServiceImpl.findByNomeOrCreate(veiculoForm.getCor());
 
-        VeiculoTipo tipo = VeiculoTipo.valueOf(veiculoForm.getTipo());
+        Optional<Modelo> modeloOptional = this.modeloServiceImpl.findByNomeModelo(veiculoForm.getModelo());
+
+        if (modeloOptional.isPresent()) {
+
+            Veiculo veiculo = veiculoForm.toVeiculo(modeloOptional.get(), cor,
+                    VeiculoTipo.valueOf(veiculoForm.getTipo()));
+
+            veiculoRepository.save(veiculo);
+
+            return new VeiculoDto(veiculo);
+        }
+
+        Marca marca = this.marcaServiceImpl.findByNomeOrCreate(veiculoForm.getMarca());
+
+        Modelo modelo = this.modeloServiceImpl.create(veiculoForm.getModelo(), marca);
 
         Veiculo veiculo = veiculoForm.toVeiculo(modelo, cor, tipo);
 
         veiculoRepository.save(veiculo);
 
         return new VeiculoDto(veiculo);
+
     }
 
     @Override
     public VeiculoDto update(Integer id, VeiculoUpdateForm veiculoUpdateForm) {
         Optional<Veiculo> veiculo = this.veiculoRepository.findById(id);
 
-        if(veiculo.isEmpty()) throw new EntityNotFoundException();
+        if (veiculo.isEmpty()) throw new EntityNotFoundException();
 
         Cor cor = corServiceImpl.findByNomeOrCreate(veiculoUpdateForm.getCor());
 
@@ -78,14 +89,13 @@ public class VeiculoServiceImpl implements VeiculoService {
         veiculoRepository.save(atualizado);
 
         return new VeiculoDto(atualizado);
-
     }
 
     @Override
     public void destroy(Integer id) {
         Optional<Veiculo> veiculo = this.veiculoRepository.findById(id);
 
-        if(veiculo.isEmpty()) throw new EntityNotFoundException();
+        if (veiculo.isEmpty()) throw new EntityNotFoundException();
 
         else this.veiculoRepository.delete(veiculo.get());
     }

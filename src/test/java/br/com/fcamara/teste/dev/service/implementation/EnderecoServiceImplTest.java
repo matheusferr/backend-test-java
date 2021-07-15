@@ -10,13 +10,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.stubbing.OngoingStubbing;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class EnderecoServiceImplTest {
+    private Estado testEstado = new Estado("SÃO PAULO");
+    private Cidade testCidade = new Cidade("SANTOS", testEstado);
 
     @Mock
     private EnderecoRepository enderecoRepository;
@@ -30,16 +31,39 @@ class EnderecoServiceImplTest {
     }
 
     @Test
-    void shouldCreateAnAddress() {
-        Estado testEstado = new Estado("SÃO PAULO");
-        Cidade testCidade = new Cidade("SANTOS", testEstado);
-
+    void shouldGetAnAddress() {
         Endereco testEndereco = new Endereco("AVENIDA CONSELHEIRO NÉBIAS", 1, testCidade);
 
         Mockito.when(enderecoRepository.findByLogradouroAndNumero("AVENIDA CONSELHEIRO NÉBIAS", 1))
                 .thenReturn(Optional.of(testEndereco));
 
-        Endereco endereco = this.enderecoServiceImpl.findByLogradouroAndNumero("AVENIDA CONSELHEIRO NÉBIAS", 1);
+        Optional<Endereco> enderecoOptional = this.enderecoServiceImpl
+                .findByLogradouroAndNumero("AVENIDA CONSELHEIRO NÉBIAS", 1);
+
+        Endereco endereco = enderecoOptional.get();
+
+        assertEquals(endereco, testEndereco);
+        assertEquals(endereco.getCidade(), testCidade);
+        assertEquals(endereco.getCidade().getEstado(), testEstado);
+    }
+
+    @Test
+    void shouldCreateAnAddress() {
+        Endereco endereco = null;
+
+        Endereco testEndereco = new Endereco("AVENIDA CONSELHEIRO NÉBIAS", 1, testCidade);
+
+        Mockito.when(enderecoRepository.findByLogradouroAndNumero("AVENIDA CONSELHEIRO NÉBIAS", 1))
+                .thenReturn(Optional.empty());
+
+        Mockito.when(enderecoRepository.save(new Endereco("AVENIDA CONSELHEIRO NÉBIAS", 1, testCidade)))
+                .thenReturn(testEndereco);
+
+        Optional<Endereco> enderecoOptional = this.enderecoServiceImpl
+                .findByLogradouroAndNumero("AVENIDA CONSELHEIRO NÉBIAS", 1);
+
+        if(enderecoOptional.isEmpty())
+            endereco = this.enderecoServiceImpl.create("AVENIDA CONSELHEIRO NÉBIAS", 1, testCidade);
 
         assertEquals(endereco, testEndereco);
         assertEquals(endereco.getCidade(), testCidade);

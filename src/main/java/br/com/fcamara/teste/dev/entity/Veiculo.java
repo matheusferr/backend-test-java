@@ -2,10 +2,8 @@ package br.com.fcamara.teste.dev.entity;
 
 import br.com.fcamara.teste.dev.entity.enums.VeiculoTipo;
 import lombok.*;
-import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @NoArgsConstructor
 @Getter

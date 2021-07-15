@@ -1,6 +1,5 @@
 package br.com.fcamara.teste.dev.entity.valueObject;
 
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
@@ -8,7 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 
 @NoArgsConstructor
-@Getter
 public class CNPJ {
     private String cnpj;
 
@@ -35,23 +33,31 @@ public class CNPJ {
         return mod < 2 ? 0 : 11 - mod;
     }
 
-    private boolean validate(String cnpj) {
-        if (cnpj.length() != 14 || !cnpj.matches("\\d{14}$")) return false;
+    private void validate(String cnpj) {
+        if (!cnpj.matches("\\d{14}$")) throw new IllegalArgumentException("CNPJ invalido");
 
         int[] digits = this.convertStringToIntArray(cnpj,0, cnpj.length()-2);
 
         int[] verifierDigits = this.convertStringToIntArray(cnpj,cnpj.length()-2, null);
 
-        if(calculate(digits) != verifierDigits[0]) return false;
+        if(calculate(digits) != verifierDigits[0]) throw new IllegalArgumentException("CNPJ invalido");
 
         digits = this.convertStringToIntArray(cnpj,0, cnpj.length()-1);
 
-        return calculate(digits) == verifierDigits[1];
+        if(calculate(digits) != verifierDigits[1]) throw new IllegalArgumentException("CNPJ invalido");
     }
 
     public void setCnpj(String cnpj) {
-        if (!this.validate(cnpj)) throw new IllegalArgumentException("CNPJ invalido");
+        this.validate(cnpj);
+        this.cnpj = cnpj;
+    }
 
+    public String getCnpjValue() {
+        return cnpj;
+    }
+
+    public CNPJ(String cnpj) {
+        this.validate(cnpj);
         this.cnpj = cnpj;
     }
 }

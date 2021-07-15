@@ -5,6 +5,8 @@ import br.com.fcamara.teste.dev.entity.Estado;
 import br.com.fcamara.teste.dev.repository.CidadeRepository;
 import br.com.fcamara.teste.dev.service.definition.CidadeService;
 
+import java.util.Optional;
+
 public class CidadeServiceImpl implements CidadeService {
     private CidadeRepository cidadeRepository;
 
@@ -13,7 +15,12 @@ public class CidadeServiceImpl implements CidadeService {
     }
 
     @Override
-    public Cidade findByNomeCidadeOrCreate(String nomeCidade, Estado estado) {
+    public Optional<Cidade> findByNomeCidade(String nomeCidade) {
+        return null;
+    }
+
+    @Override
+    public Cidade create(String nomeCidade, Estado estado) {
         return null;
     }
 }

@@ -15,6 +15,9 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CidadeServiceImplTest {
+    private Estado testEstado =  new Estado("SÃO PAULO");
+
+    private Cidade testCidade = new Cidade("SANTOS", testEstado);
 
     @Mock
     private CidadeRepository cidadeRepository;
@@ -28,14 +31,21 @@ class CidadeServiceImplTest {
     }
 
     @Test
-    void shouldCreateACity() {
-        Estado testEstado = new Estado("SÃO PAULO");
-
-        Cidade testCidade = new Cidade("SANTOS", testEstado);
-
+    void shouldGetACity(){
         Mockito.when(this.cidadeRepository.findByNomeCidade("SANTOS")).thenReturn(Optional.of(testCidade));
 
-        Cidade cidade = this.cidadeServiceImpl.findByNomeCidadeOrCreate("SANTOS", testEstado);
+        Optional<Cidade> cidade = this.cidadeServiceImpl.findByNomeCidade("SANTOS");
+
+        assertEquals(cidade.get(), testCidade);
+    }
+
+    @Test
+    void shouldCreateACity() {
+        Mockito.when(this.cidadeRepository.findByNomeCidade("SANTOS")).thenReturn(Optional.empty());
+
+        Mockito.when(this.cidadeRepository.save(testCidade)).thenReturn(testCidade);
+
+        Cidade cidade = this.cidadeServiceImpl.create("SANTOS", testEstado);
 
         assertEquals(cidade, testCidade);
         assertEquals(testEstado, testCidade.getEstado());

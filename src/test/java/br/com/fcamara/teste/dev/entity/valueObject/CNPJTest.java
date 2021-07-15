@@ -13,24 +13,27 @@ class CNPJTest {
 
         cnpj.setCnpj(cnpjString);
 
-        assertEquals(cnpjString, cnpj.getCnpj());
+        assertEquals(cnpjString, cnpj.getCnpjValue());
     }
 
     @Test
     void shouldThrowWithAnInvalidCNPJValue(){
-        CNPJ cnpj = new CNPJ();
-
         String cnpjString = "18781203000127";
 
-        assertThrows(IllegalArgumentException.class, () -> cnpj.setCnpj(cnpjString));
+        assertThrows(IllegalArgumentException.class, () -> new CNPJ(cnpjString));
     }
 
     @Test
     void shouldThrowWithSameDigitCNPJValue(){
-        CNPJ cnpj = new CNPJ();
-
         String cnpjString = "11111111111111";
 
-        assertThrows(IllegalArgumentException.class, () -> cnpj.setCnpj(cnpjString));
+        assertThrows(IllegalArgumentException.class, () -> new CNPJ(cnpjString));
+    }
+
+    @Test
+    void shouldThrowWithNonNumericCNPJValue(){
+        String cnpjString = "aaaaaaaaaaaaaa";
+
+        assertThrows(IllegalArgumentException.class, () -> new CNPJ(cnpjString));
     }
 }
