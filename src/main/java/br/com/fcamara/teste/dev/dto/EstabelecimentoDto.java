@@ -7,18 +7,17 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@NoArgsConstructor
 @Getter
 public class EstabelecimentoDto {
-    private Integer id;
+    private final Integer id;
 
-    private String nome;
+    private final String nome;
 
-    private String cnpj;
+    private final String cnpj;
 
-    private EnderecoDto endereco;
+    private final EnderecoDto endereco;
 
-    private List<TelefoneDto> telefones;
+    private final List<TelefoneDto> telefones;
 
     public static List<EstabelecimentoDto> convertList(List<Estabelecimento> estabelecimentos) {
         return estabelecimentos.stream().map(EstabelecimentoDto::new).collect(Collectors.toList());

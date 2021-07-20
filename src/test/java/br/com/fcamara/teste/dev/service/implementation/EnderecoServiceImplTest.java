@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class EnderecoServiceImplTest {
     private Estado testEstado = new Estado("SÃO PAULO");
     private Cidade testCidade = new Cidade("SANTOS", testEstado);
+    private Endereco testEndereco = new Endereco("AVENIDA CONSELHEIRO NÉBIAS", "1", testCidade);
 
     @Mock
     private EnderecoRepository enderecoRepository;
@@ -32,13 +33,11 @@ class EnderecoServiceImplTest {
 
     @Test
     void shouldGetAnAddress() {
-        Endereco testEndereco = new Endereco("AVENIDA CONSELHEIRO NÉBIAS", 1, testCidade);
-
-        Mockito.when(enderecoRepository.findByLogradouroAndNumero("AVENIDA CONSELHEIRO NÉBIAS", 1))
+        Mockito.when(enderecoRepository.findByLogradouroAndNumero("AVENIDA CONSELHEIRO NÉBIAS", "1"))
                 .thenReturn(Optional.of(testEndereco));
 
         Optional<Endereco> enderecoOptional = this.enderecoServiceImpl
-                .findByLogradouroAndNumero("AVENIDA CONSELHEIRO NÉBIAS", 1);
+                .findByLogradouroAndNumero("AVENIDA CONSELHEIRO NÉBIAS", "1");
 
         Endereco endereco = enderecoOptional.get();
 
@@ -49,12 +48,10 @@ class EnderecoServiceImplTest {
 
     @Test
     void shouldCreateAnAddress() {
-        Endereco testEndereco = new Endereco("AVENIDA CONSELHEIRO NÉBIAS", 1, testCidade);
-
         Mockito.when(enderecoRepository.save(testEndereco))
                 .thenReturn(testEndereco);
 
-        Endereco endereco = this.enderecoServiceImpl.create("AVENIDA CONSELHEIRO NÉBIAS", 1, testCidade);
+        Endereco endereco = this.enderecoServiceImpl.create("AVENIDA CONSELHEIRO NÉBIAS", "1", testCidade);
 
         assertEquals(endereco, testEndereco);
         assertEquals(endereco.getCidade(), testCidade);

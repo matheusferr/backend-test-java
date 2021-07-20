@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
@@ -18,14 +19,14 @@ public class EstabelecimentoForm {
     @NotNull @NotEmpty
     private String nome;
 
-    @NotNull @NotEmpty
+    @NotNull @NotEmpty @Pattern(regexp = "^\\d{14}$")
     private String cnpj;
 
     @NotNull @NotEmpty
     private String logradouro;
 
-    @NotNull
-    private Integer numero;
+    @NotNull @NotEmpty @Pattern(regexp = "^s/n|\\d$", flags = Pattern.Flag.CASE_INSENSITIVE)
+    private String numero;
 
     @NotNull @NotEmpty
     private String cidade;
@@ -33,7 +34,7 @@ public class EstabelecimentoForm {
     @NotNull @NotEmpty
     private String estado;
 
-    @NotNull @NotEmpty
+    @NotNull @NotEmpty @Pattern(regexp = "^\\d{11}|\\d{10}$")
     private String telefone;
 
     public Estabelecimento toEstabelecimento(Endereco endereco, CNPJ cnpj, Telefone telefone){

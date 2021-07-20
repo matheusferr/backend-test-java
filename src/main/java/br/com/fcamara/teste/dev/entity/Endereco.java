@@ -13,15 +13,36 @@ import java.util.Objects;
 @Entity
 @Table(name = "Enderecos")
 public class Endereco {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String logradouro;
 
-    private Integer numero;
+    private String numero;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Cidade cidade;
+
+    private void validate(String numero){
+        Integer num = Integer.parseInt(numero);
+
+        if (num < 0) throw new IllegalArgumentException();
+    }
+
+    public void setNumero(String numero){
+        this.validate(numero);
+
+        this.numero = numero;
+    }
+
+    public Endereco(String logradouro, String numero, Cidade cidade) {
+        this.validate(numero);
+
+        this.logradouro = logradouro;
+        this.numero = numero;
+        this.cidade = cidade;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -29,7 +50,8 @@ public class Endereco {
         if (o == null || getClass() != o.getClass()) return false;
         Endereco endereco = (Endereco) o;
 
-        return Objects.equals(id, endereco.id) && Objects.equals(logradouro, endereco.logradouro) && Objects.equals(numero, endereco.numero) && Objects.equals(cidade, endereco.cidade);
+        return Objects.equals(logradouro, endereco.logradouro) && Objects.equals(numero, endereco.numero)
+                && Objects.equals(cidade, endereco.cidade);
     }
 
     @Override
@@ -42,13 +64,7 @@ public class Endereco {
     }
 
     @PrePersist
-    private void prePersist(){
+    private void prePersist() {
         this.logradouro = this.logradouro.toUpperCase();
-    }
-
-    public Endereco(String logradouro, Integer numero, Cidade cidade) {
-        this.logradouro = logradouro;
-        this.numero = numero;
-        this.cidade = cidade;
     }
 }

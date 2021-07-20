@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 @Getter
 public class TelefoneDto {
-    private String telefone;
+    private final String telefone;
 
     public TelefoneDto(Telefone telefone) {
         this.telefone = telefone.getTelefoneValue();

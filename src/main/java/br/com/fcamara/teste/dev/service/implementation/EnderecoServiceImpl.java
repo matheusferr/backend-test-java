@@ -17,12 +17,12 @@ public class EnderecoServiceImpl implements EnderecoService {
     }
 
     @Override
-    public Optional<Endereco> findByLogradouroAndNumero(String logradouro, Integer numero) {
+    public Optional<Endereco> findByLogradouroAndNumero(String logradouro, String numero) {
         return this.enderecoRepository.findByLogradouroAndNumero(logradouro, numero);
     }
 
     @Override
-    public Endereco create(String logradouro, Integer numero, Cidade cidade) {
+    public Endereco create(String logradouro, String numero, Cidade cidade) {
         return this.enderecoRepository.save(new Endereco(logradouro, numero, cidade));
     }
 }

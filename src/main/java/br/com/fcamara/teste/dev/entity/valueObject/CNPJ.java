@@ -35,7 +35,7 @@ public class CNPJ {
     }
 
     private void validate(String cnpj) {
-        if (!cnpj.matches("\\d{14}$")) throw new IllegalArgumentException("CNPJ invalido");
+        if (!cnpj.matches("^\\d{14}$")) throw new IllegalArgumentException("CNPJ invalido");
 
         int[] digits = this.convertStringToIntArray(cnpj,0, cnpj.length()-2);
 

@@ -43,7 +43,7 @@ class EstabelecimentoServiceImplTest {
 
         Estado testEstado = new Estado("SÃO PAULO");
         Cidade testCidade = new Cidade("SANTOS", testEstado);
-        Endereco testEndereco = new Endereco("AVENIDA CONSELHEIRO NÉBIAS", 1, testCidade);
+        Endereco testEndereco = new Endereco("AVENIDA CONSELHEIRO NÉBIAS", "1", testCidade);
 
         CNPJ cnpj = new CNPJ("45857255000103");
 
@@ -53,7 +53,7 @@ class EstabelecimentoServiceImplTest {
 
         this.testEstabelecimentos.add(testEstabelecimento);
 
-        testEndereco.setNumero(2);
+        testEndereco.setNumero("2");
 
         telefone.setTelefone("12345678901");
 
@@ -86,7 +86,7 @@ class EstabelecimentoServiceImplTest {
     @Test
     void shouldCreateAnEstablishment() {
         EstabelecimentoForm estabelecimentoForm = new EstabelecimentoForm("TEST03", "24400188000123",
-                "AVENIDA CONSELHEIRO NÉBIAS", 2, "SANTOS", "SÃO PAULO", "12345678901");
+                "AVENIDA CONSELHEIRO NÉBIAS", "2", "SANTOS", "SÃO PAULO", "12345678901");
         CNPJ cnpj = new CNPJ(estabelecimentoForm.getCnpj());
         Telefone telefone = new Telefone(estabelecimentoForm.getTelefone());
         Estado estado = new Estado(estabelecimentoForm.getEstado());

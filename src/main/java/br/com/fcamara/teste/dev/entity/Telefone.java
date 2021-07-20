@@ -14,7 +14,7 @@ public class Telefone {
     private String telefone;
 
     private void validate(String telefone){
-        if (!telefone.matches("^\\d{10}|\\d{11}$"))
+        if (!telefone.matches("\\d{11}|\\d{10}$"))
             throw new IllegalArgumentException("Telefone invalido");
     }
 
