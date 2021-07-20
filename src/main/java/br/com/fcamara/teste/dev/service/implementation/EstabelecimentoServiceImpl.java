@@ -3,6 +3,7 @@ package br.com.fcamara.teste.dev.service.implementation;
 import br.com.fcamara.teste.dev.entity.*;
 import br.com.fcamara.teste.dev.entity.valueObject.CNPJ;
 import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoForm;
+import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoTelefoneForm;
 import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoUpdateForm;
 import br.com.fcamara.teste.dev.repository.EstabelecimentoRepository;
 import br.com.fcamara.teste.dev.service.definition.EstabelecimentoService;
@@ -14,19 +15,27 @@ import java.util.Optional;
 
 @Service
 public class EstabelecimentoServiceImpl implements EstabelecimentoService {
-    private EnderecoServiceImpl enderecoServiceImpl;
-    private CidadeServiceImpl cidadeServiceImpl;
-    private EstadoServiceImpl estadoServiceImpl;
-    private EstabelecimentoRepository estabelecimentoRepository;
+    private final EnderecoServiceImpl enderecoServiceImpl;
+    private final CidadeServiceImpl cidadeServiceImpl;
+    private final EstadoServiceImpl estadoServiceImpl;
+    private final EstabelecimentoRepository estabelecimentoRepository;
 
     public EstabelecimentoServiceImpl(EnderecoServiceImpl enderecoServiceImpl, CidadeServiceImpl cidadeServiceImpl,
-                                      EstadoServiceImpl estadoServiceImpl, EstabelecimentoRepository estabelecimentoRepository) {
+                            EstadoServiceImpl estadoServiceImpl, EstabelecimentoRepository estabelecimentoRepository) {
         this.enderecoServiceImpl = enderecoServiceImpl;
         this.cidadeServiceImpl = cidadeServiceImpl;
         this.estadoServiceImpl = estadoServiceImpl;
         this.estabelecimentoRepository = estabelecimentoRepository;
     }
 
+    private Estabelecimento getEstabelecimento(Integer id) {
+        Optional<Estabelecimento> estabelecimento = this.estabelecimentoRepository.findById(id);
+
+        if (estabelecimento.isEmpty()) throw new EntityNotFoundException();
+
+        return estabelecimento.get();
+    }
+    
     @Override
     public List<Estabelecimento> index() {
         return this.estabelecimentoRepository.findAll();
@@ -34,12 +43,9 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 
     @Override
     public Estabelecimento findById(Integer id) {
-        Optional<Estabelecimento> estabelecimento = this.estabelecimentoRepository.findById(id);
-
-        if (estabelecimento.isEmpty()) throw new EntityNotFoundException();
-
-        return estabelecimento.get();
+        return this.getEstabelecimento(id);
     }
+
 
     @Override
     public Estabelecimento create(EstabelecimentoForm estabelecimentoForm) {
@@ -80,11 +86,7 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 
     @Override
     public Estabelecimento update(Integer id, EstabelecimentoUpdateForm estabelecimentoUpdateForm) {
-        Optional<Estabelecimento> estabelecimentoOptional = this.estabelecimentoRepository.findById(id);
-
-        if (estabelecimentoOptional.isEmpty()) throw new EntityNotFoundException();
-
-        Estabelecimento estabelecimento = estabelecimentoOptional.get();
+        Estabelecimento estabelecimento = this.getEstabelecimento(id);
 
         estabelecimento.setNomeEstabelecimento(estabelecimentoUpdateForm.getNome());
 
@@ -93,11 +95,18 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
     }
 
     @Override
+    public Estabelecimento addPhone(Integer id, EstabelecimentoTelefoneForm estabelecimentoTelefoneForm) {
+        return null;
+    }
+
+    @Override
+    public void removePhone(Integer id, EstabelecimentoTelefoneForm estabelecimentoTelefoneForm) {
+    }
+
+    @Override
     public void destroy(Integer id) {
-        Optional<Estabelecimento> estabelecimento = this.estabelecimentoRepository.findById(id);
+        Estabelecimento estabelecimento = this.getEstabelecimento(id);
 
-        if (estabelecimento.isEmpty()) throw new EntityNotFoundException();
-
-        this.estabelecimentoRepository.delete(estabelecimento.get());
+        this.estabelecimentoRepository.delete(estabelecimento);
     }
 }

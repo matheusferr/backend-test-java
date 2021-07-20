@@ -25,9 +25,12 @@ public class Endereco {
     private Cidade cidade;
 
     private void validate(String numero){
-        Integer num = Integer.parseInt(numero);
+        if(!numero.equalsIgnoreCase("S/N"))
+        {
+            Integer num = Integer.parseInt(numero);
 
-        if (num < 0) throw new IllegalArgumentException();
+            if (num < 0) throw new IllegalArgumentException();
+        }
     }
 
     public void setNumero(String numero){

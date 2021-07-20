@@ -3,6 +3,7 @@ package br.com.fcamara.teste.dev.service.implementation;
 import br.com.fcamara.teste.dev.entity.*;
 import br.com.fcamara.teste.dev.entity.valueObject.CNPJ;
 import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoForm;
+import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoTelefoneForm;
 import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoUpdateForm;
 import br.com.fcamara.teste.dev.repository.EstabelecimentoRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +36,7 @@ class EstabelecimentoServiceImplTest {
     @InjectMocks
     private EstabelecimentoServiceImpl estabelecimentoServiceImpl;
 
-    private List<Estabelecimento> testEstabelecimentos = new ArrayList<>();
+    private final List<Estabelecimento> testEstabelecimentos = new ArrayList<>();
 
     @BeforeEach
     void beforeEach() {
@@ -144,5 +145,24 @@ class EstabelecimentoServiceImplTest {
                 this.testEstabelecimentos.get(1).getNomeEstabelecimento()
         );
         assertEquals(estabelecimentoAtualizado.getCnpj(), this.testEstabelecimentos.get(1).getCnpj());
+    }
+
+    @Test
+    void shouldAddAPhone(){
+        Estabelecimento testEstabelecimento = this.testEstabelecimentos.get(0);
+
+        EstabelecimentoTelefoneForm estabelecimentoForm = new EstabelecimentoTelefoneForm();
+
+        estabelecimentoForm.setTelefone("12345678901");
+
+        Mockito.when(estabelecimentoRepository.findById(1)).thenReturn(Optional.of(testEstabelecimento));
+
+        testEstabelecimento.getTelefones().add(estabelecimentoForm.toTelefone());
+
+        Mockito.when(estabelecimentoRepository.save(testEstabelecimento)).thenReturn(testEstabelecimento);
+
+        Estabelecimento estabelecimento = this.estabelecimentoServiceImpl.addPhone(1, estabelecimentoForm);
+
+        assertEquals(estabelecimento.getTelefones().size(), testEstabelecimento.getTelefones().size());
     }
 }
