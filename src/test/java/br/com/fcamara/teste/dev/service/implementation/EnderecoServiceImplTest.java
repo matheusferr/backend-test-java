@@ -49,21 +49,12 @@ class EnderecoServiceImplTest {
 
     @Test
     void shouldCreateAnAddress() {
-        Endereco endereco = null;
-
         Endereco testEndereco = new Endereco("AVENIDA CONSELHEIRO NÉBIAS", 1, testCidade);
 
-        Mockito.when(enderecoRepository.findByLogradouroAndNumero("AVENIDA CONSELHEIRO NÉBIAS", 1))
-                .thenReturn(Optional.empty());
-
-        Mockito.when(enderecoRepository.save(new Endereco("AVENIDA CONSELHEIRO NÉBIAS", 1, testCidade)))
+        Mockito.when(enderecoRepository.save(testEndereco))
                 .thenReturn(testEndereco);
 
-        Optional<Endereco> enderecoOptional = this.enderecoServiceImpl
-                .findByLogradouroAndNumero("AVENIDA CONSELHEIRO NÉBIAS", 1);
-
-        if(enderecoOptional.isEmpty())
-            endereco = this.enderecoServiceImpl.create("AVENIDA CONSELHEIRO NÉBIAS", 1, testCidade);
+        Endereco endereco = this.enderecoServiceImpl.create("AVENIDA CONSELHEIRO NÉBIAS", 1, testCidade);
 
         assertEquals(endereco, testEndereco);
         assertEquals(endereco.getCidade(), testCidade);

@@ -41,6 +41,11 @@ public class Cidade {
         return result;
     }
 
+    @PrePersist
+    private void prePersist(){
+        this.nomeCidade = this.nomeCidade.toUpperCase();
+    }
+
     public Cidade(String nomeCidade, Estado estado) {
         this.nomeCidade = nomeCidade;
         this.estado = estado;

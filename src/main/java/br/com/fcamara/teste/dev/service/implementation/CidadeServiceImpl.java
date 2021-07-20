@@ -4,9 +4,11 @@ import br.com.fcamara.teste.dev.entity.Cidade;
 import br.com.fcamara.teste.dev.entity.Estado;
 import br.com.fcamara.teste.dev.repository.CidadeRepository;
 import br.com.fcamara.teste.dev.service.definition.CidadeService;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class CidadeServiceImpl implements CidadeService {
     private CidadeRepository cidadeRepository;
 
@@ -16,11 +18,11 @@ public class CidadeServiceImpl implements CidadeService {
 
     @Override
     public Optional<Cidade> findByNomeCidade(String nomeCidade) {
-        return null;
+        return this.cidadeRepository.findByNomeCidade(nomeCidade);
     }
 
     @Override
     public Cidade create(String nomeCidade, Estado estado) {
-        return null;
+        return this.cidadeRepository.save(new Cidade(nomeCidade, estado));
     }
 }

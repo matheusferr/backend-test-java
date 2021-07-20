@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @NoArgsConstructor
 public class CNPJ {
@@ -59,5 +60,18 @@ public class CNPJ {
     public CNPJ(String cnpj) {
         this.validate(cnpj);
         this.cnpj = cnpj;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CNPJ that = (CNPJ) o;
+        return Objects.equals(cnpj, that.cnpj);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cnpj);
     }
 }

@@ -97,6 +97,6 @@ public class VeiculoServiceImpl implements VeiculoService {
 
         if (veiculo.isEmpty()) throw new EntityNotFoundException();
 
-        else this.veiculoRepository.delete(veiculo.get());
+        this.veiculoRepository.delete(veiculo.get());
     }
 }

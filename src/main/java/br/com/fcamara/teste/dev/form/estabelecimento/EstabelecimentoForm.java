@@ -24,7 +24,7 @@ public class EstabelecimentoForm {
     @NotNull @NotEmpty
     private String logradouro;
 
-    @NotNull @NotEmpty
+    @NotNull
     private Integer numero;
 
     @NotNull @NotEmpty

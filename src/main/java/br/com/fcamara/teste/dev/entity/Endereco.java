@@ -41,6 +41,11 @@ public class Endereco {
         return result;
     }
 
+    @PrePersist
+    private void prePersist(){
+        this.logradouro = this.logradouro.toUpperCase();
+    }
+
     public Endereco(String logradouro, Integer numero, Cidade cidade) {
         this.logradouro = logradouro;
         this.numero = numero;

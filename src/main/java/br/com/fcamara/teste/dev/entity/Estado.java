@@ -36,6 +36,11 @@ public class Estado {
         return result;
     }
 
+    @PrePersist
+    private void prePersist(){
+        this.nomeEstado = this.nomeEstado.toUpperCase();
+    }
+
     public Estado(String nomeEstado) {
         this.nomeEstado = nomeEstado;
     }

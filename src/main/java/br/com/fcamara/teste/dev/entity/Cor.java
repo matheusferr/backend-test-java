@@ -17,7 +17,7 @@ public class Cor {
     private String nomeCor;
 
     @PrePersist
-    private void prePersist(){
+    private void prePersist() {
         this.nomeCor = this.nomeCor.toUpperCase();
     }
 

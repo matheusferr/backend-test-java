@@ -2,11 +2,14 @@ package br.com.fcamara.teste.dev.entity;
 
 import br.com.fcamara.teste.dev.entity.converter.CNPJCoverter;
 import br.com.fcamara.teste.dev.entity.valueObject.CNPJ;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,25 +19,36 @@ import java.util.Objects;
 @Entity
 @Table(name = "Estabelecimentos")
 public class Estabelecimento {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String nome;
+    private String nomeEstabelecimento;
 
     @Convert(converter = CNPJCoverter.class)
+    @Column(unique = true)
     private CNPJ cnpj;
 
     @ManyToOne
     private Endereco endereco;
 
-    @ManyToOne
-    private Telefone telefone;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Telefone> telefones = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Veiculo> veiculos;
+    @JsonIgnore
+    private List<Veiculo> veiculos = new ArrayList<>();
 
     @OneToOne
     private Vagas vagas;
+
+    public Estabelecimento(String nomeEstabelecimento, CNPJ cnpj, Endereco endereco, Telefone telefone) {
+        this.nomeEstabelecimento = nomeEstabelecimento;
+        this.cnpj = cnpj;
+        this.endereco = endereco;
+        this.telefones = new ArrayList<>(Arrays.asList(telefone));
+        this.veiculos = new ArrayList<>();
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -42,8 +56,8 @@ public class Estabelecimento {
         if (o == null || getClass() != o.getClass()) return false;
         Estabelecimento that = (Estabelecimento) o;
 
-        return Objects.equals(id, that.id) && Objects.equals(nome, that.nome) && Objects.equals(cnpj, that.cnpj)
-                && Objects.equals(endereco, that.endereco) && Objects.equals(telefone, that.telefone);
+        return Objects.equals(nomeEstabelecimento, that.nomeEstabelecimento) && Objects.equals(cnpj, that.cnpj)
+                && Objects.equals(endereco, that.endereco);
     }
 
     @Override
@@ -55,10 +69,13 @@ public class Estabelecimento {
         return result;
     }
 
-    public Estabelecimento(String nome, CNPJ cnpj, Endereco endereco, Telefone telefone) {
-        this.nome = nome;
-        this.cnpj = cnpj;
-        this.endereco = endereco;
-        this.telefone = telefone;
+    @PrePersist
+    private void prePersist() {
+        this.nomeEstabelecimento = this.nomeEstabelecimento.toUpperCase();
+    }
+
+    @PreUpdate
+    private void preUpdate() {
+        this.nomeEstabelecimento = this.nomeEstabelecimento.toUpperCase();
     }
 }

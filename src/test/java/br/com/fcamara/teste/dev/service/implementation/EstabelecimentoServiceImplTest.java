@@ -1,6 +1,5 @@
 package br.com.fcamara.teste.dev.service.implementation;
 
-import br.com.fcamara.teste.dev.dto.EstabelecimentoDto;
 import br.com.fcamara.teste.dev.entity.*;
 import br.com.fcamara.teste.dev.entity.valueObject.CNPJ;
 import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoForm;
@@ -67,55 +66,83 @@ class EstabelecimentoServiceImplTest {
 
     @Test
     void shoudReturnAListOfEstablishments() {
-        Mockito.when(estabelecimentoRepository.findAll()).thenReturn(this.testEstabelecimentos);
+        Mockito.when(this.estabelecimentoRepository.findAll()).thenReturn(this.testEstabelecimentos);
 
-        List<EstabelecimentoDto> estabelecimentos = estabelecimentoServiceImpl.index();
+        List<Estabelecimento> estabelecimentos = this.estabelecimentoServiceImpl.index();
 
         assertEquals(estabelecimentos.size(), 2);
-        assertEquals(estabelecimentos, EstabelecimentoDto.convertList(this.testEstabelecimentos));
+        assertEquals(estabelecimentos, this.testEstabelecimentos);
     }
 
     @Test
     void shoudReturnAnEstablishmentByItsID() {
-        Mockito.when(estabelecimentoRepository.findById(1)).thenReturn(Optional.of(this.testEstabelecimentos.get(0)));
+        Mockito.when(this.estabelecimentoRepository.findById(1)).thenReturn(Optional.of(this.testEstabelecimentos.get(0)));
 
-        EstabelecimentoDto estabelecimento = this.estabelecimentoServiceImpl.findById(1);
+        Estabelecimento estabelecimento = this.estabelecimentoServiceImpl.findById(1);
 
-        assertEquals(estabelecimento, new EstabelecimentoDto(this.testEstabelecimentos.get(0)));
+        assertEquals(estabelecimento, this.testEstabelecimentos.get(0));
     }
 
     @Test
     void shouldCreateAnEstablishment() {
-        EstabelecimentoForm estabelecimentoForm = new EstabelecimentoForm("TEST02", "24400188000123",
+        EstabelecimentoForm estabelecimentoForm = new EstabelecimentoForm("TEST03", "24400188000123",
                 "AVENIDA CONSELHEIRO NÉBIAS", 2, "SANTOS", "SÃO PAULO", "12345678901");
-
+        CNPJ cnpj = new CNPJ(estabelecimentoForm.getCnpj());
+        Telefone telefone = new Telefone(estabelecimentoForm.getTelefone());
         Estado estado = new Estado(estabelecimentoForm.getEstado());
         Cidade cidade = new Cidade(estabelecimentoForm.getCidade(), estado);
         Endereco endereco = new Endereco(estabelecimentoForm.getLogradouro(), estabelecimentoForm.getNumero(), cidade);
 
+        Estabelecimento testEstabelecimento = estabelecimentoForm.toEstabelecimento(endereco, cnpj, telefone);
+
         Mockito.when(this.enderecoServiceImpl.findByLogradouroAndNumero(
-                estabelecimentoForm.getLogradouro(), estabelecimentoForm.getNumero())).thenReturn(Optional.of(endereco));
-        Mockito.when(this.estabelecimentoServiceImpl.create(estabelecimentoForm))
-                .thenReturn(new EstabelecimentoDto(this.testEstabelecimentos.get(1)));
+                estabelecimentoForm.getLogradouro(), estabelecimentoForm.getNumero())).thenReturn(Optional.empty());
 
-        EstabelecimentoDto estabelecimento = this.estabelecimentoServiceImpl.create(estabelecimentoForm);
+        Mockito.when(this.cidadeServiceImpl.findByNomeCidade(estabelecimentoForm.getCidade()))
+                .thenReturn(Optional.empty());
 
-        assertEquals(estabelecimento, this.testEstabelecimentos.get(1));
+        Mockito.when(this.estadoServiceImpl.findByNomeOrCreate(estabelecimentoForm.getEstado()))
+                .thenReturn(estado);
+
+        Mockito.when(this.cidadeServiceImpl.create(estabelecimentoForm.getCidade(), estado)).thenReturn(cidade);
+
+        Mockito.when(this.enderecoServiceImpl.create(estabelecimentoForm.getLogradouro(),
+                estabelecimentoForm.getNumero(), cidade)).thenReturn(endereco);
+
+        Mockito.when(this.estabelecimentoRepository.save(estabelecimentoForm.toEstabelecimento(endereco, cnpj, telefone)))
+                .thenReturn(testEstabelecimento);
+
+        Estabelecimento estabelecimento = this.estabelecimentoServiceImpl.create(estabelecimentoForm);
+
+        assertEquals(estabelecimento, testEstabelecimento);
     }
 
     @Test
     void shouldUpdateAnEstablishment() {
+        Estabelecimento baseEstabelecimento = this.testEstabelecimentos.get(1);
+
+        Estabelecimento testEstabelecimento = new Estabelecimento(baseEstabelecimento.getNomeEstabelecimento(),
+                baseEstabelecimento.getCnpj(), baseEstabelecimento.getEndereco(),
+                baseEstabelecimento.getTelefones().get(0));
+
         EstabelecimentoUpdateForm estabelecimentoUpdateForm = new EstabelecimentoUpdateForm();
 
         estabelecimentoUpdateForm.setNome("TEST03");
 
-        Mockito.when(this.estabelecimentoServiceImpl.findById(2))
-                .thenReturn(new EstabelecimentoDto(this.testEstabelecimentos.get(1)));
+        Mockito.when(this.estabelecimentoRepository.findById(2))
+                .thenReturn(Optional.of(testEstabelecimento));
 
-        EstabelecimentoDto estabelecimentoAtualizado = this.estabelecimentoServiceImpl
+        testEstabelecimento.setNomeEstabelecimento(estabelecimentoUpdateForm.getNome());
+
+        Mockito.when(this.estabelecimentoRepository.save(testEstabelecimento)).thenReturn(testEstabelecimento);
+
+        Estabelecimento estabelecimentoAtualizado = this.estabelecimentoServiceImpl
                 .update(2, estabelecimentoUpdateForm);
 
-        assertNotEquals(estabelecimentoAtualizado.getNome(), this.testEstabelecimentos.get(1).getNome());
-        assertEquals(estabelecimentoAtualizado.getCnpj(), this.testEstabelecimentos.get(1).getCnpj().getCnpjValue());
+        assertNotEquals(
+                estabelecimentoAtualizado.getNomeEstabelecimento(),
+                this.testEstabelecimentos.get(1).getNomeEstabelecimento()
+        );
+        assertEquals(estabelecimentoAtualizado.getCnpj(), this.testEstabelecimentos.get(1).getCnpj());
     }
 }

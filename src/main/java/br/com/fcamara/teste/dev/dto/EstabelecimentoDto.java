@@ -10,22 +10,25 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Getter
 public class EstabelecimentoDto {
+    private Integer id;
+
     private String nome;
 
     private String cnpj;
 
     private EnderecoDto endereco;
 
-    private String telefone;
+    private List<TelefoneDto> telefones;
 
     public static List<EstabelecimentoDto> convertList(List<Estabelecimento> estabelecimentos) {
         return estabelecimentos.stream().map(EstabelecimentoDto::new).collect(Collectors.toList());
     }
 
     public EstabelecimentoDto(Estabelecimento estabelecimento) {
-        this.nome = estabelecimento.getNome();
+        this.id = estabelecimento.getId();
+        this.nome = estabelecimento.getNomeEstabelecimento();
         this.cnpj = estabelecimento.getCnpj().getCnpjValue();
+        this.telefones = TelefoneDto.convertList(estabelecimento.getTelefones());
         this.endereco = new EnderecoDto(estabelecimento.getEndereco());
-        this.telefone = estabelecimento.getTelefone().getTelefoneValue();
     }
 }
