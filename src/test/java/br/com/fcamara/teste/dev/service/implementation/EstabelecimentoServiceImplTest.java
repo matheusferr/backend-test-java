@@ -33,6 +33,9 @@ class EstabelecimentoServiceImplTest {
     @Mock
     private EstadoServiceImpl estadoServiceImpl;
 
+    @Mock
+    private TelefoneServiceImpl telefoneServiceImpl;
+
     @InjectMocks
     private EstabelecimentoServiceImpl estabelecimentoServiceImpl;
 

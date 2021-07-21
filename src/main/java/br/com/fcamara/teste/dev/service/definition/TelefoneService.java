@@ -4,7 +4,6 @@ import br.com.fcamara.teste.dev.entity.Telefone;
 
 
 public interface TelefoneService {
-    Telefone findByNumero(String numeroTelefone);
-    Telefone create(String numeroTelefone);
+    Telefone findByNumeroOrCreate(String numeroTelefone);
     void delete (String numeroTelefone);
 }

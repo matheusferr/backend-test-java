@@ -26,23 +26,14 @@ class TelefoneServiceImplTest {
     }
 
     @Test
-    void shouldGetAPhoneByItsNumber() {
-        Telefone testTelefone = new Telefone("1234567890");
-
-        Mockito.when(this.telefoneRepository.findByNumeroTelefone("1234567890")).thenReturn(Optional.of(testTelefone));
-
-        Telefone telefone = this.telefoneServiceImpl.findByNumero("1234567890");
-
-        assertEquals(telefone, testTelefone);
-    }
-
-    @Test
     void shouldCreateAPhone() {
         Telefone testTelefone = new Telefone("1234567890");
 
+        Mockito.when(this.telefoneRepository.findByNumeroTelefone("1234567890")).thenReturn(Optional.empty());
+
         Mockito.when(this.telefoneRepository.save(testTelefone)).thenReturn(testTelefone);
 
-        Telefone telefone = this.telefoneServiceImpl.create("1234567890");
+        Telefone telefone = this.telefoneServiceImpl.findByNumeroOrCreate("1234567890");
 
         assertEquals(telefone, testTelefone);
     }

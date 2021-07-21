@@ -18,13 +18,15 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
     private final EnderecoServiceImpl enderecoServiceImpl;
     private final CidadeServiceImpl cidadeServiceImpl;
     private final EstadoServiceImpl estadoServiceImpl;
+    private final TelefoneServiceImpl telefoneServiceImpl;
     private final EstabelecimentoRepository estabelecimentoRepository;
 
     public EstabelecimentoServiceImpl(EnderecoServiceImpl enderecoServiceImpl, CidadeServiceImpl cidadeServiceImpl,
-                            EstadoServiceImpl estadoServiceImpl, EstabelecimentoRepository estabelecimentoRepository) {
+                                      EstadoServiceImpl estadoServiceImpl, TelefoneServiceImpl telefoneServiceImpl, EstabelecimentoRepository estabelecimentoRepository) {
         this.enderecoServiceImpl = enderecoServiceImpl;
         this.cidadeServiceImpl = cidadeServiceImpl;
         this.estadoServiceImpl = estadoServiceImpl;
+        this.telefoneServiceImpl = telefoneServiceImpl;
         this.estabelecimentoRepository = estabelecimentoRepository;
     }
 
@@ -35,7 +37,7 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 
         return estabelecimento.get();
     }
-    
+
     @Override
     public List<Estabelecimento> index() {
         return this.estabelecimentoRepository.findAll();
@@ -76,9 +78,7 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 
                 estabelecimento = estabelecimentoForm.toEstabelecimento(endereco, cnpj, telefone);
             }
-        }
-
-        else estabelecimento = estabelecimentoForm.toEstabelecimento(enderecoOptional.get(), cnpj, telefone);
+        } else estabelecimento = estabelecimentoForm.toEstabelecimento(enderecoOptional.get(), cnpj, telefone);
         this.estabelecimentoRepository.save(estabelecimento);
 
         return estabelecimento;
