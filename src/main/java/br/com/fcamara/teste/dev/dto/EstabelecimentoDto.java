@@ -2,7 +2,6 @@ package br.com.fcamara.teste.dev.dto;
 
 import br.com.fcamara.teste.dev.entity.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.stream.Collectors;

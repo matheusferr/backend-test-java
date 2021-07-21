@@ -35,4 +35,15 @@ class TelefoneServiceImplTest {
 
         assertEquals(telefone, testTelefone);
     }
+
+    @Test
+    void shouldCreateAPhone() {
+        Telefone testTelefone = new Telefone("1234567890");
+
+        Mockito.when(this.telefoneRepository.save(testTelefone)).thenReturn(testTelefone);
+
+        Telefone telefone = this.telefoneServiceImpl.create("1234567890");
+
+        assertEquals(telefone, testTelefone);
+    }
 }

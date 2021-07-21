@@ -12,11 +12,16 @@ public class TelefoneServiceImpl implements TelefoneService {
     }
 
     @Override
-    public Telefone findByNumero(String numero) {
+    public Telefone findByNumero(String numeroTelefone) {
         return null;
     }
 
     @Override
-    public void delete(String numero) {
+    public Telefone create(String numeroTelefone) {
+        return null;
+    }
+
+    @Override
+    public void delete(String numeroTelefone) {
     }
 }
