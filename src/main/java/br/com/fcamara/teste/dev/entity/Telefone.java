@@ -12,7 +12,7 @@ public class Telefone {
     private Integer id;
 
     @Column(unique = true)
-    private String telefone;
+    private String numeroTelefone;
 
     private void validate(String telefone){
         if (!telefone.matches("^\\d{11}|\\d{10}$"))
@@ -20,17 +20,17 @@ public class Telefone {
     }
 
     public String getTelefoneValue() {
-        return this.telefone;
+        return this.numeroTelefone;
     }
 
     public void setTelefone(String telefone) {
         this.validate(telefone);
-        this.telefone = telefone;
+        this.numeroTelefone = telefone;
     }
 
     public Telefone(String telefone) {
         this.validate(telefone);
-        this.telefone = telefone;
+        this.numeroTelefone = telefone;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class Telefone {
         if (o == null || getClass() != o.getClass()) return false;
         Telefone that = (Telefone) o;
 
-        return telefone.equals(that.telefone);
+        return numeroTelefone.equals(that.numeroTelefone);
     }
 
     @Override
