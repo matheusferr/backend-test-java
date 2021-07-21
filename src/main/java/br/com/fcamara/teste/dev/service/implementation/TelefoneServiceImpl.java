@@ -17,6 +17,15 @@ public class TelefoneServiceImpl implements TelefoneService {
     }
 
     @Override
+    public Telefone findByNumero(String numeroTelefone) {
+        Optional<Telefone> telefone = this.telefoneRepository.findByNumeroTelefone(numeroTelefone);
+
+        if(telefone.isEmpty()) throw new EntityNotFoundException();
+
+        return telefone.get();
+    }
+
+    @Override
     public Telefone findByNumeroOrCreate(String numeroTelefone) {
         Optional<Telefone> telefone = this.telefoneRepository.findByNumeroTelefone(numeroTelefone);
 

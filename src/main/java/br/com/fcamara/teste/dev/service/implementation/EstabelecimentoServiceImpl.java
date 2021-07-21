@@ -55,7 +55,7 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 
         CNPJ cnpj = new CNPJ(estabelecimentoForm.getCnpj());
 
-        Telefone telefone = new Telefone(estabelecimentoForm.getTelefone());
+        Telefone telefone = this.telefoneServiceImpl.findByNumeroOrCreate(estabelecimentoForm.getTelefone());
 
         Optional<Endereco> enderecoOptional = this.enderecoServiceImpl.findByLogradouroAndNumero(
                 estabelecimentoForm.getLogradouro(), estabelecimentoForm.getNumero());
@@ -96,11 +96,26 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 
     @Override
     public Estabelecimento addPhone(Integer id, EstabelecimentoTelefoneForm estabelecimentoTelefoneForm) {
-        return null;
+        Estabelecimento estabelecimento = this.getEstabelecimento(id);
+
+        Telefone telefone = this.telefoneServiceImpl.findByNumeroOrCreate(estabelecimentoTelefoneForm.getTelefone());
+
+        if(estabelecimento.getTelefones().contains(telefone)) throw new UnsupportedOperationException();
+
+        return this.estabelecimentoRepository.save(estabelecimento);
     }
 
     @Override
     public void removePhone(Integer id, EstabelecimentoTelefoneForm estabelecimentoTelefoneForm) {
+        Estabelecimento estabelecimento = this.getEstabelecimento(id);
+
+        Telefone telefone = this.telefoneServiceImpl.findByNumero(estabelecimentoTelefoneForm.getTelefone());
+
+        if(!estabelecimento.getTelefones().contains(telefone)) throw new UnsupportedOperationException();
+
+        estabelecimento.getTelefones().remove(telefone);
+
+        this.estabelecimentoRepository.save(estabelecimento);
     }
 
     @Override

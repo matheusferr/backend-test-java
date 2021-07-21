@@ -16,7 +16,7 @@ public class EstabelecimentoDto {
 
     private final EnderecoDto endereco;
 
-    private final List<TelefoneDto> telefones;
+    private final List<String> telefones;
 
     public static List<EstabelecimentoDto> convertList(List<Estabelecimento> estabelecimentos) {
         return estabelecimentos.stream().map(EstabelecimentoDto::new).collect(Collectors.toList());
@@ -26,7 +26,7 @@ public class EstabelecimentoDto {
         this.id = estabelecimento.getId();
         this.nome = estabelecimento.getNomeEstabelecimento();
         this.cnpj = estabelecimento.getCnpj().getCnpjValue();
-        this.telefones = TelefoneDto.convertList(estabelecimento.getTelefones());
+        this.telefones = TelefoneDto.convertListToString(estabelecimento.getTelefones());
         this.endereco = new EnderecoDto(estabelecimento.getEndereco());
     }
 }

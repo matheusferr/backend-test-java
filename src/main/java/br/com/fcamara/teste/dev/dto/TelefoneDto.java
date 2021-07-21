@@ -14,7 +14,9 @@ public class TelefoneDto {
         this.telefone = telefone.getTelefoneValue();
     }
 
-    public static List<TelefoneDto> convertList(List<Telefone> telefones){
-        return telefones.stream().map(TelefoneDto::new).collect(Collectors.toList());
+    public static List<String> convertListToString(List<Telefone> telefones){
+        return telefones.stream().map(
+                (telefone) -> new TelefoneDto(telefone).getTelefone()
+        ).collect(Collectors.toList());
     }
 }
