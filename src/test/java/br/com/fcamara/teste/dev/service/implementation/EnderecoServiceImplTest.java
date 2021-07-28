@@ -16,15 +16,23 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 class EnderecoServiceImplTest {
-    private Estado testEstado = new Estado("SÃO PAULO");
-    private Cidade testCidade = new Cidade("SANTOS", testEstado);
-    private Endereco testEndereco = new Endereco("AVENIDA CONSELHEIRO NÉBIAS", "1", testCidade);
 
     @Mock
     private EnderecoRepository enderecoRepository;
 
+    @Mock
+    private CidadeServiceImpl cidadeServiceImpl;
+
+    @Mock
+    private EstadoServiceImpl estadoServiceImpl;
+
     @InjectMocks
     private EnderecoServiceImpl enderecoServiceImpl;
+
+
+    private final Estado testEstado = new Estado("SÃO PAULO");
+    private final Cidade testCidade = new Cidade("SANTOS", testEstado);
+    private final Endereco testEndereco = new Endereco("AVENIDA CONSELHEIRO NÉBIAS", "1", testCidade);
 
     @BeforeEach
     void beforeEach() {
@@ -36,10 +44,10 @@ class EnderecoServiceImplTest {
         Mockito.when(enderecoRepository.findByLogradouroAndNumero("AVENIDA CONSELHEIRO NÉBIAS", "1"))
                 .thenReturn(Optional.of(testEndereco));
 
-        Optional<Endereco> enderecoOptional = this.enderecoServiceImpl
-                .findByLogradouroAndNumero("AVENIDA CONSELHEIRO NÉBIAS", "1");
-
-        Endereco endereco = enderecoOptional.get();
+        Endereco endereco = this.enderecoServiceImpl
+                .findOrCreate(
+                        "AVENIDA CONSELHEIRO NÉBIAS", "1", "SANTOS", "SÃO PAULO"
+                );
 
         assertEquals(endereco, testEndereco);
         assertEquals(endereco.getCidade(), testCidade);
@@ -48,10 +56,20 @@ class EnderecoServiceImplTest {
 
     @Test
     void shouldCreateAnAddress() {
-        Mockito.when(enderecoRepository.save(testEndereco))
-                .thenReturn(testEndereco);
+        Mockito.when(enderecoRepository.findByLogradouroAndNumero("AVENIDA CONSELHEIRO NÉBIAS", "1"))
+                .thenReturn(Optional.empty());
 
-        Endereco endereco = this.enderecoServiceImpl.create("AVENIDA CONSELHEIRO NÉBIAS", "1", testCidade);
+        Mockito.when(cidadeServiceImpl.findByNomeCidade("SANTOS")).thenReturn(Optional.empty());
+
+        Mockito.when(estadoServiceImpl.findByNomeOrCreate("SÃO PAULO")).thenReturn(testEstado);
+
+        Mockito.when(cidadeServiceImpl.create("SANTOS", testEstado)).thenReturn(testCidade);
+
+        Mockito.when(enderecoRepository.save(testEndereco)).thenReturn(testEndereco);
+
+        Endereco endereco = this.enderecoServiceImpl.findOrCreate(
+                "AVENIDA CONSELHEIRO NÉBIAS", "1", "SANTOS", "SÃO PAULO"
+        );
 
         assertEquals(endereco, testEndereco);
         assertEquals(endereco.getCidade(), testCidade);

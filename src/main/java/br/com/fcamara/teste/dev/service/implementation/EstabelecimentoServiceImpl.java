@@ -16,16 +16,12 @@ import java.util.Optional;
 @Service
 public class EstabelecimentoServiceImpl implements EstabelecimentoService {
     private final EnderecoServiceImpl enderecoServiceImpl;
-    private final CidadeServiceImpl cidadeServiceImpl;
-    private final EstadoServiceImpl estadoServiceImpl;
     private final TelefoneServiceImpl telefoneServiceImpl;
     private final EstabelecimentoRepository estabelecimentoRepository;
 
-    public EstabelecimentoServiceImpl(EnderecoServiceImpl enderecoServiceImpl, CidadeServiceImpl cidadeServiceImpl,
-                                      EstadoServiceImpl estadoServiceImpl, TelefoneServiceImpl telefoneServiceImpl, EstabelecimentoRepository estabelecimentoRepository) {
+    public EstabelecimentoServiceImpl(EnderecoServiceImpl enderecoServiceImpl, TelefoneServiceImpl telefoneServiceImpl,
+                                      EstabelecimentoRepository estabelecimentoRepository) {
         this.enderecoServiceImpl = enderecoServiceImpl;
-        this.cidadeServiceImpl = cidadeServiceImpl;
-        this.estadoServiceImpl = estadoServiceImpl;
         this.telefoneServiceImpl = telefoneServiceImpl;
         this.estabelecimentoRepository = estabelecimentoRepository;
     }
@@ -51,37 +47,18 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 
     @Override
     public Estabelecimento create(EstabelecimentoForm estabelecimentoForm) {
-        Estabelecimento estabelecimento;
-
         CNPJ cnpj = new CNPJ(estabelecimentoForm.getCnpj());
 
         Telefone telefone = this.telefoneServiceImpl.findByNumeroOrCreate(estabelecimentoForm.getTelefone());
 
-        Optional<Endereco> enderecoOptional = this.enderecoServiceImpl.findByLogradouroAndNumero(
-                estabelecimentoForm.getLogradouro(), estabelecimentoForm.getNumero());
+        Endereco endereco = this.enderecoServiceImpl.findOrCreate(
+                estabelecimentoForm.getLogradouro(), estabelecimentoForm.getNumero(), estabelecimentoForm.getCidade(),
+                estabelecimentoForm.getEstado()
+        );
 
-        if (enderecoOptional.isEmpty()) {
-            Optional<Cidade> cidadeOptional = this.cidadeServiceImpl.findByNomeCidade(estabelecimentoForm.getCidade());
+        Estabelecimento estabelecimento = estabelecimentoForm.toEstabelecimento(endereco, cnpj, telefone);
 
-            if (cidadeOptional.isPresent()) {
-                Endereco endereco = this.enderecoServiceImpl.create(estabelecimentoForm.getLogradouro(),
-                        estabelecimentoForm.getNumero(), cidadeOptional.get());
-
-                estabelecimento = estabelecimentoForm.toEstabelecimento(endereco, cnpj, telefone);
-            } else {
-                Estado estado = this.estadoServiceImpl.findByNomeOrCreate(estabelecimentoForm.getEstado());
-
-                Cidade cidade = this.cidadeServiceImpl.create(estabelecimentoForm.getCidade(), estado);
-
-                Endereco endereco = this.enderecoServiceImpl.create(estabelecimentoForm.getLogradouro(),
-                        estabelecimentoForm.getNumero(), cidade);
-
-                estabelecimento = estabelecimentoForm.toEstabelecimento(endereco, cnpj, telefone);
-            }
-        } else estabelecimento = estabelecimentoForm.toEstabelecimento(enderecoOptional.get(), cnpj, telefone);
-        this.estabelecimentoRepository.save(estabelecimento);
-
-        return estabelecimento;
+        return this.estabelecimentoRepository.save(estabelecimento);
     }
 
     @Override

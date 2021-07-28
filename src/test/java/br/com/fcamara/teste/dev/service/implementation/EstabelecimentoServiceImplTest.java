@@ -99,19 +99,10 @@ class EstabelecimentoServiceImplTest {
 
         Estabelecimento testEstabelecimento = estabelecimentoForm.toEstabelecimento(endereco, cnpj, telefone);
 
-        Mockito.when(this.enderecoServiceImpl.findByLogradouroAndNumero(
-                estabelecimentoForm.getLogradouro(), estabelecimentoForm.getNumero())).thenReturn(Optional.empty());
-
-        Mockito.when(this.cidadeServiceImpl.findByNomeCidade(estabelecimentoForm.getCidade()))
-                .thenReturn(Optional.empty());
-
-        Mockito.when(this.estadoServiceImpl.findByNomeOrCreate(estabelecimentoForm.getEstado()))
-                .thenReturn(estado);
-
-        Mockito.when(this.cidadeServiceImpl.create(estabelecimentoForm.getCidade(), estado)).thenReturn(cidade);
-
-        Mockito.when(this.enderecoServiceImpl.create(estabelecimentoForm.getLogradouro(),
-                estabelecimentoForm.getNumero(), cidade)).thenReturn(endereco);
+        Mockito.when(this.enderecoServiceImpl.findOrCreate(
+                estabelecimentoForm.getLogradouro(), estabelecimentoForm.getNumero(), estabelecimentoForm.getCidade(),
+                estabelecimentoForm.getEstado()
+        )).thenReturn(endereco);
 
         Mockito.when(this.estabelecimentoRepository.save(estabelecimentoForm.toEstabelecimento(endereco, cnpj, telefone)))
                 .thenReturn(testEstabelecimento);
