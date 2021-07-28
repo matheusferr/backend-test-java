@@ -1,4 +1,4 @@
-package br.com.fcamara.teste.dev.form;
+package br.com.fcamara.teste.dev.form.veiculo;
 
 import br.com.fcamara.teste.dev.entity.Cor;
 import br.com.fcamara.teste.dev.entity.Modelo;

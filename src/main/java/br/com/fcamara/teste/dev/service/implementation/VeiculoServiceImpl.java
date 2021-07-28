@@ -1,8 +1,8 @@
 package br.com.fcamara.teste.dev.service.implementation;
 
 import br.com.fcamara.teste.dev.dto.VeiculoDto;
-import br.com.fcamara.teste.dev.form.VeiculoForm;
-import br.com.fcamara.teste.dev.form.VeiculoUpdateForm;
+import br.com.fcamara.teste.dev.form.veiculo.VeiculoForm;
+import br.com.fcamara.teste.dev.form.veiculo.VeiculoUpdateForm;
 import br.com.fcamara.teste.dev.entity.Cor;
 import br.com.fcamara.teste.dev.entity.Marca;
 import br.com.fcamara.teste.dev.entity.Modelo;
@@ -33,41 +33,52 @@ public class VeiculoServiceImpl implements VeiculoService {
     @Override
     public List<VeiculoDto> index() {
         return VeiculoDto.convertList(this.veiculoRepository.findAll());
-
     }
 
     @Override
     public VeiculoDto findById(Integer id) {
         Optional<Veiculo> veiculo = this.veiculoRepository.findById(id);
 
-        if(veiculo.isEmpty()) throw new NullPointerException();
+        if (veiculo.isEmpty()) throw new NullPointerException();
 
         return new VeiculoDto(veiculo.get());
     }
 
     @Override
-    public VeiculoDto create(VeiculoForm veiculoForm){
-
-        Marca marca = marcaServiceImpl.findByNomeOrCreate(veiculoForm.getMarca());
-
-        Modelo modelo = modeloServiceImpl.findByNomeAndMarcaOrCreate(veiculoForm.getModelo(), marca);
+    public VeiculoDto create(VeiculoForm veiculoForm) {
+        VeiculoTipo tipo = VeiculoTipo.valueOf(veiculoForm.getTipo());
 
         Cor cor = this.corServiceImpl.findByNomeOrCreate(veiculoForm.getCor());
 
-        VeiculoTipo tipo = VeiculoTipo.valueOf(veiculoForm.getTipo());
+        Optional<Modelo> modeloOptional = this.modeloServiceImpl.findByNomeModelo(veiculoForm.getModelo());
+
+        if (modeloOptional.isPresent()) {
+
+            Veiculo veiculo = veiculoForm.toVeiculo(modeloOptional.get(), cor,
+                    VeiculoTipo.valueOf(veiculoForm.getTipo()));
+
+            veiculoRepository.save(veiculo);
+
+            return new VeiculoDto(veiculo);
+        }
+
+        Marca marca = this.marcaServiceImpl.findByNomeOrCreate(veiculoForm.getMarca());
+
+        Modelo modelo = this.modeloServiceImpl.create(veiculoForm.getModelo(), marca);
 
         Veiculo veiculo = veiculoForm.toVeiculo(modelo, cor, tipo);
 
         veiculoRepository.save(veiculo);
 
         return new VeiculoDto(veiculo);
+
     }
 
     @Override
     public VeiculoDto update(Integer id, VeiculoUpdateForm veiculoUpdateForm) {
         Optional<Veiculo> veiculo = this.veiculoRepository.findById(id);
 
-        if(veiculo.isEmpty()) throw new EntityNotFoundException();
+        if (veiculo.isEmpty()) throw new EntityNotFoundException();
 
         Cor cor = corServiceImpl.findByNomeOrCreate(veiculoUpdateForm.getCor());
 
@@ -78,15 +89,14 @@ public class VeiculoServiceImpl implements VeiculoService {
         veiculoRepository.save(atualizado);
 
         return new VeiculoDto(atualizado);
-
     }
 
     @Override
     public void destroy(Integer id) {
         Optional<Veiculo> veiculo = this.veiculoRepository.findById(id);
 
-        if(veiculo.isEmpty()) throw new EntityNotFoundException();
+        if (veiculo.isEmpty()) throw new EntityNotFoundException();
 
-        else this.veiculoRepository.delete(veiculo.get());
+        this.veiculoRepository.delete(veiculo.get());
     }
 }

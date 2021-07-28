@@ -33,7 +33,7 @@ public class VeiculoDto {
 
         VeiculoDto that = (VeiculoDto) o;
 
-        return this.id == that.getId() && this.marca.equals(that.getMarca()) && this.modelo.equals(that.getModelo())
+        return this.marca.equals(that.getMarca()) && this.modelo.equals(that.getModelo())
                 && this.cor.equals(that.getCor()) && this.placa.equals(that.getPlaca())
                 && this.tipo.equals(that.getTipo());
     }

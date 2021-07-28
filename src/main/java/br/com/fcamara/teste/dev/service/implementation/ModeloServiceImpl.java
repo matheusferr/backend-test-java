@@ -17,11 +17,12 @@ public class ModeloServiceImpl implements ModeloService {
     }
 
     @Override
-    public Modelo findByNomeAndMarcaOrCreate(String nomeModelo, Marca marca) {
-        Optional<Modelo> modelo = this.modeloRepository.findByNomeModelo(nomeModelo);
+    public Optional<Modelo> findByNomeModelo(String nomeModelo) {
+        return this.modeloRepository.findByNomeModelo(nomeModelo);
+    }
 
-        if(modelo.isEmpty()) return this.modeloRepository.save(new Modelo(nomeModelo, marca));
-
-        return modelo.get();
+    @Override
+    public Modelo create(String nomeModelo, Marca marca) {
+        return this.modeloRepository.save(new Modelo(nomeModelo, marca));
     }
 }

@@ -2,10 +2,8 @@ package br.com.fcamara.teste.dev.entity;
 
 import br.com.fcamara.teste.dev.entity.enums.VeiculoTipo;
 import lombok.*;
-import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @NoArgsConstructor
 @Getter
@@ -13,7 +11,8 @@ import java.util.Objects;
 @Entity
 @Table(name = "Veiculos")
 public class Veiculo {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
@@ -27,6 +26,13 @@ public class Veiculo {
 
     @Enumerated(EnumType.STRING)
     private VeiculoTipo tipo;
+
+    public Veiculo(Modelo modelo, Cor cor, String placa, VeiculoTipo tipo) {
+        this.modelo = modelo;
+        this.cor = cor;
+        this.placa = placa;
+        this.tipo = tipo;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -45,10 +51,8 @@ public class Veiculo {
         return result;
     }
 
-    public Veiculo(Modelo modelo, Cor cor, String placa, VeiculoTipo tipo){
-        this.modelo = modelo;
-        this.cor = cor;
-        this.placa = placa;
-        this.tipo = tipo;
+    @PrePersist
+    private void prePersist() {
+        this.placa = this.placa.toUpperCase();
     }
 }

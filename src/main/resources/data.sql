@@ -21,11 +21,11 @@ INSERT INTO CIDADES (nome_cidade, estado_id) VALUES ('BELO HORIZONTE', 2);
 INSERT INTO ENDERECOS (logradouro, numero, cidade_id) VALUES ('AVENIDA ANA COSTA', 1, 1);
 INSERT INTO ENDERECOS (logradouro, numero, cidade_id) VALUES ('AVENIDA AFONSO PENA', 1, 2);
 
-INSERT INTO TELEFONES (telefone) VALUES ('11111111');
-INSERT INTO TELEFONES (telefone) VALUES ('22222222');
+-- INSERT INTO TELEFONES (telefone) VALUES ('11111111');
+-- INSERT INTO TELEFONES (telefone) VALUES ('22222222');
 
-INSERT INTO ESTABELECIMENTOS (nome, cnpj, endereco_id, telefone_id, vagas_carro, vagas_moto)
-    VALUES ('LOREM', '11111111111111', 1, 1, 30, 20);
-
-INSERT INTO ESTABELECIMENTOS (nome, cnpj, endereco_id, telefone_id, vagas_carro, vagas_moto)
-    VALUES ('IPSUM', '22222222222222', 2, 2, 20, 10);
+-- INSERT INTO ESTABELECIMENTOS (nome, cnpj, endereco_id, telefone_id, vagas_carro, vagas_moto)
+--     VALUES ('LOREM', '11111111111111', 1, 1, 30, 20);
+--
+-- INSERT INTO ESTABELECIMENTOS (nome, cnpj, endereco_id, telefone_id, vagas_carro, vagas_moto)
+--     VALUES ('IPSUM', '22222222222222', 2, 2, 20, 10);

@@ -15,6 +15,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ModeloServiceImplTest {
+    private Marca testMarca = new Marca("FIAT");
+    private Modelo testModelo = new Modelo("PALIO", testMarca);
 
     @Mock
     private ModeloRepository modeloRepository;
@@ -23,18 +25,24 @@ class ModeloServiceImplTest {
     private ModeloServiceImpl modeloServiceImpl;
 
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void shouldCreateAModel() {
-        Marca testMarca = new Marca("FIAT");
-        Modelo testModelo = new Modelo("PALIO", testMarca);
-
+    void shouldGetAModel() {
         Mockito.when(modeloRepository.findByNomeModelo("PALIO")).thenReturn(Optional.of(testModelo));
 
-        Modelo modelo = modeloServiceImpl.findByNomeAndMarcaOrCreate("PALIO", testMarca);
+        Optional<Modelo> modeloOptional = modeloServiceImpl.findByNomeModelo("PALIO");
+
+        assertEquals(modeloOptional.get(), testModelo);
+    }
+
+    @Test
+    void shouldCreateAModel() {
+        Mockito.when(modeloRepository.save(new Modelo("PALIO", testMarca))).thenReturn(testModelo);
+
+        Modelo modelo = modeloServiceImpl.create("PALIO", testMarca);
 
         assertEquals(modelo, testModelo);
     }

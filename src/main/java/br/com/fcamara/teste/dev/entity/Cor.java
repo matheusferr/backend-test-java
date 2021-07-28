@@ -3,7 +3,6 @@ package br.com.fcamara.teste.dev.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @NoArgsConstructor
 @Setter
@@ -18,7 +17,7 @@ public class Cor {
     private String nomeCor;
 
     @PrePersist
-    private void prePersist(){
+    private void prePersist() {
         this.nomeCor = this.nomeCor.toUpperCase();
     }
 

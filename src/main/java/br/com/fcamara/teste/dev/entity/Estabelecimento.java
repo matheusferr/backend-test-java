@@ -1,28 +1,81 @@
 package br.com.fcamara.teste.dev.entity;
 
-import javax.persistence.*;
-import java.util.List;
+import br.com.fcamara.teste.dev.entity.converter.CNPJCoverter;
+import br.com.fcamara.teste.dev.entity.valueObject.CNPJ;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "Estabelecimentos")
 public class Estabelecimento {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String nome;
+    private String nomeEstabelecimento;
 
-    private String cnpj;
+    @Convert(converter = CNPJCoverter.class)
+    @Column(unique = true)
+    private CNPJ cnpj;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne
     private Endereco endereco;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Telefone telefone;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Telefone> telefones = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Veiculo> veiculos;
+    @JsonIgnore
+    private List<Veiculo> veiculos = new ArrayList<>();
 
-    private Integer vagasCarro;
+    @OneToOne
+    private Vagas vagas;
 
-    private Integer vagasMoto;
+    public Estabelecimento(String nomeEstabelecimento, CNPJ cnpj, Endereco endereco, Telefone telefone) {
+        this.nomeEstabelecimento = nomeEstabelecimento;
+        this.cnpj = cnpj;
+        this.endereco = endereco;
+        this.telefones = new ArrayList<>(Arrays.asList(telefone));
+        this.veiculos = new ArrayList<>();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Estabelecimento that = (Estabelecimento) o;
+
+        return Objects.equals(nomeEstabelecimento, that.nomeEstabelecimento) && Objects.equals(cnpj, that.cnpj)
+                && Objects.equals(endereco, that.endereco);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+
+        return result;
+    }
+
+    @PrePersist
+    private void prePersist() {
+        this.nomeEstabelecimento = this.nomeEstabelecimento.toUpperCase();
+    }
+
+    @PreUpdate
+    private void preUpdate() {
+        this.nomeEstabelecimento = this.nomeEstabelecimento.toUpperCase();
+    }
 }

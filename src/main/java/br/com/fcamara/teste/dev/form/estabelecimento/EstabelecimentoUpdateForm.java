@@ -1,4 +1,4 @@
-package br.com.fcamara.teste.dev.form;
+package br.com.fcamara.teste.dev.form.estabelecimento;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,8 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-public class VeiculoUpdateForm {
-    @NotNull @NotEmpty
-    private String cor;
+public class EstabelecimentoUpdateForm {
+    @NotNull
+    @NotEmpty
+    private String nome;
 }
