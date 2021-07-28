@@ -1,11 +1,13 @@
 package br.com.fcamara.teste.dev.service.implementation;
 
+import br.com.fcamara.teste.dev.entity.Estabelecimento;
 import br.com.fcamara.teste.dev.entity.Telefone;
 import br.com.fcamara.teste.dev.repository.TelefoneRepository;
 import br.com.fcamara.teste.dev.service.definition.TelefoneService;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Optional;
 
 @Service

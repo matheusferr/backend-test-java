@@ -72,12 +72,21 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
     }
 
     @Override
+    public List<Telefone> getPhones(Integer id) {
+        Estabelecimento estabelecimento = this.getEstabelecimento(id);
+
+        return estabelecimento.getTelefones();
+    }
+
+    @Override
     public Estabelecimento addPhone(Integer id, EstabelecimentoTelefoneForm estabelecimentoTelefoneForm) {
         Estabelecimento estabelecimento = this.getEstabelecimento(id);
 
         Telefone telefone = this.telefoneServiceImpl.findByNumeroOrCreate(estabelecimentoTelefoneForm.getTelefone());
 
         if(estabelecimento.getTelefones().contains(telefone)) throw new UnsupportedOperationException();
+
+        estabelecimento.getTelefones().add(telefone);
 
         return this.estabelecimentoRepository.save(estabelecimento);
     }
