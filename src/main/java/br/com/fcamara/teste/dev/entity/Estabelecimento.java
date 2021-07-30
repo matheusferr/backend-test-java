@@ -2,14 +2,12 @@ package br.com.fcamara.teste.dev.entity;
 
 import br.com.fcamara.teste.dev.entity.converter.CNPJCoverter;
 import br.com.fcamara.teste.dev.entity.valueObject.CNPJ;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,25 +27,21 @@ public class Estabelecimento {
     @Column(unique = true)
     private CNPJ cnpj;
 
-    @ManyToOne
+    @OneToOne
     private Endereco endereco;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Telefone> telefones = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Veiculo> veiculos = new ArrayList<>();
-
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Vagas vagas;
 
-    public Estabelecimento(String nomeEstabelecimento, CNPJ cnpj, Endereco endereco, Telefone telefone) {
+    public Estabelecimento(String nomeEstabelecimento, CNPJ cnpj, Endereco endereco, Telefone telefone, Vagas vagas) {
         this.nomeEstabelecimento = nomeEstabelecimento;
         this.cnpj = cnpj;
         this.endereco = endereco;
-        this.telefones = new ArrayList<>(Arrays.asList(telefone));
-        this.veiculos = new ArrayList<>();
+        this.telefones = new ArrayList<>(List.of(telefone));
+        this.vagas = vagas;
     }
 
     @Override
@@ -70,12 +64,8 @@ public class Estabelecimento {
     }
 
     @PrePersist
-    private void prePersist() {
-        this.nomeEstabelecimento = this.nomeEstabelecimento.toUpperCase();
-    }
-
     @PreUpdate
-    private void preUpdate() {
+    private void prePersist() {
         this.nomeEstabelecimento = this.nomeEstabelecimento.toUpperCase();
     }
 }

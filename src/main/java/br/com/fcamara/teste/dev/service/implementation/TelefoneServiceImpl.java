@@ -1,18 +1,16 @@
 package br.com.fcamara.teste.dev.service.implementation;
 
-import br.com.fcamara.teste.dev.entity.Estabelecimento;
 import br.com.fcamara.teste.dev.entity.Telefone;
 import br.com.fcamara.teste.dev.repository.TelefoneRepository;
 import br.com.fcamara.teste.dev.service.definition.TelefoneService;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 import java.util.Optional;
 
 @Service
 public class TelefoneServiceImpl implements TelefoneService {
-    private TelefoneRepository telefoneRepository;
+    private final TelefoneRepository telefoneRepository;
 
     public TelefoneServiceImpl(TelefoneRepository telefoneRepository) {
         this.telefoneRepository = telefoneRepository;

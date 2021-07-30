@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Service
 public class CidadeServiceImpl implements CidadeService {
-    private CidadeRepository cidadeRepository;
+    private final CidadeRepository cidadeRepository;
 
     public CidadeServiceImpl(CidadeRepository cidadeRepository) {
         this.cidadeRepository = cidadeRepository;

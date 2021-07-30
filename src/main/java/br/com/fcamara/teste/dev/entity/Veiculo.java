@@ -52,6 +52,7 @@ public class Veiculo {
     }
 
     @PrePersist
+    @PreUpdate
     private void prePersist() {
         this.placa = this.placa.toUpperCase();
     }

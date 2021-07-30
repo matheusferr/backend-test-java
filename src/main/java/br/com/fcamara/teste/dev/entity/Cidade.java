@@ -42,6 +42,7 @@ public class Cidade {
     }
 
     @PrePersist
+    @PreUpdate
     private void prePersist(){
         this.nomeCidade = this.nomeCidade.toUpperCase();
     }

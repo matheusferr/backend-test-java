@@ -5,6 +5,7 @@ import br.com.fcamara.teste.dev.entity.valueObject.CNPJ;
 import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoForm;
 import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoTelefoneForm;
 import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoUpdateForm;
+import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoUpdateVagasForm;
 import br.com.fcamara.teste.dev.repository.EstabelecimentoRepository;
 import br.com.fcamara.teste.dev.service.definition.EstabelecimentoService;
 import org.springframework.stereotype.Service;
@@ -56,7 +57,11 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
                 estabelecimentoForm.getEstado()
         );
 
-        Estabelecimento estabelecimento = estabelecimentoForm.toEstabelecimento(endereco, cnpj, telefone);
+        Vagas vagas = new Vagas(
+                estabelecimentoForm.getVagasCarro(), estabelecimentoForm.getVagasMoto()
+        );
+
+        Estabelecimento estabelecimento = estabelecimentoForm.toEstabelecimento(endereco, cnpj, telefone, vagas);
 
         return this.estabelecimentoRepository.save(estabelecimento);
     }
@@ -69,6 +74,24 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 
         return this.estabelecimentoRepository.save(estabelecimento);
 
+    }
+
+    @Override
+    public Estabelecimento updateVagas(Integer id, EstabelecimentoUpdateVagasForm estabelecimentoUpdateForm) {
+        if(estabelecimentoUpdateForm.getVagasCarro() == null && estabelecimentoUpdateForm.getVagasMoto() == null)
+            throw new IllegalArgumentException();
+
+        Estabelecimento estabelecimento = this.getEstabelecimento(id);
+
+        Vagas vagas = estabelecimento.getVagas();
+
+        if(estabelecimentoUpdateForm.getVagasCarro() != null)
+            vagas.setVagasCarro(estabelecimentoUpdateForm.getVagasCarro());
+
+        if(estabelecimentoUpdateForm.getVagasMoto() != null)
+            vagas.setVagasMoto(estabelecimentoUpdateForm.getVagasMoto());
+
+        return this.estabelecimentoRepository.save(estabelecimento);
     }
 
     @Override

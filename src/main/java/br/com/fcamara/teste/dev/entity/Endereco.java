@@ -67,6 +67,7 @@ public class Endereco {
     }
 
     @PrePersist
+    @PreUpdate
     private void prePersist() {
         this.logradouro = this.logradouro.toUpperCase();
     }

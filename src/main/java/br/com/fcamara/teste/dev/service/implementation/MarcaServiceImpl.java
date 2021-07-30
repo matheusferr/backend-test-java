@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Service
 public class MarcaServiceImpl implements MarcaService {
-    private MarcaRepository marcaRepository;
+    private final MarcaRepository marcaRepository;
 
     public MarcaServiceImpl(MarcaRepository marcaRepository) {
         this.marcaRepository = marcaRepository;

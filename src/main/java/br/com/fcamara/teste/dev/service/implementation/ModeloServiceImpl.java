@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Service
 public class ModeloServiceImpl implements ModeloService {
-    private ModeloRepository modeloRepository;
+    private final ModeloRepository modeloRepository;
 
     public ModeloServiceImpl(ModeloRepository modeloRepository) {
         this.modeloRepository = modeloRepository;

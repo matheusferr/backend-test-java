@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Service
 public class EstadoServiceImpl implements EstadoService {
-    private EstadoRepository estadoRepository;
+    private final EstadoRepository estadoRepository;
 
     public EstadoServiceImpl(EstadoRepository estadoRepository) {
         this.estadoRepository = estadoRepository;
