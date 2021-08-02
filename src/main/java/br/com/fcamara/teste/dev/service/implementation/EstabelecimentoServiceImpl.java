@@ -2,6 +2,8 @@ package br.com.fcamara.teste.dev.service.implementation;
 
 import br.com.fcamara.teste.dev.entity.*;
 import br.com.fcamara.teste.dev.entity.valueObject.CNPJ;
+import br.com.fcamara.teste.dev.exception.DadosInvalidosException;
+import br.com.fcamara.teste.dev.exception.OperacaoInvalidaException;
 import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoForm;
 import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoTelefoneForm;
 import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoUpdateForm;
@@ -73,22 +75,21 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
         estabelecimento.setNomeEstabelecimento(estabelecimentoUpdateForm.getNome());
 
         return this.estabelecimentoRepository.save(estabelecimento);
-
     }
 
     @Override
     public Estabelecimento updateVagas(Integer id, EstabelecimentoUpdateVagasForm estabelecimentoUpdateForm) {
-        if(estabelecimentoUpdateForm.getVagasCarro() == null && estabelecimentoUpdateForm.getVagasMoto() == null)
-            throw new IllegalArgumentException();
+        if (estabelecimentoUpdateForm.getVagasCarro() == null && estabelecimentoUpdateForm.getVagasMoto() == null)
+            throw new DadosInvalidosException("os valores das vagas de carros e motos não podem ser nulos");
 
         Estabelecimento estabelecimento = this.getEstabelecimento(id);
 
         Vagas vagas = estabelecimento.getVagas();
 
-        if(estabelecimentoUpdateForm.getVagasCarro() != null)
+        if (estabelecimentoUpdateForm.getVagasCarro() != null)
             vagas.setVagasCarro(estabelecimentoUpdateForm.getVagasCarro());
 
-        if(estabelecimentoUpdateForm.getVagasMoto() != null)
+        if (estabelecimentoUpdateForm.getVagasMoto() != null)
             vagas.setVagasMoto(estabelecimentoUpdateForm.getVagasMoto());
 
         return this.estabelecimentoRepository.save(estabelecimento);
@@ -107,7 +108,9 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 
         Telefone telefone = this.telefoneServiceImpl.findByNumeroOrCreate(estabelecimentoTelefoneForm.getTelefone());
 
-        if(estabelecimento.getTelefones().contains(telefone)) throw new UnsupportedOperationException();
+        if (estabelecimento.getTelefones().contains(telefone)) throw new OperacaoInvalidaException(
+                "telefone já vinculado ao estabelecimento"
+        );
 
         estabelecimento.getTelefones().add(telefone);
 
@@ -120,7 +123,9 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 
         Telefone telefone = this.telefoneServiceImpl.findByNumero(estabelecimentoTelefoneForm.getTelefone());
 
-        if(!estabelecimento.getTelefones().contains(telefone)) throw new UnsupportedOperationException();
+        if (!estabelecimento.getTelefones().contains(telefone)) throw new OperacaoInvalidaException(
+                "telefone não vinculado ao estabelecimento"
+        );
 
         estabelecimento.getTelefones().remove(telefone);
 

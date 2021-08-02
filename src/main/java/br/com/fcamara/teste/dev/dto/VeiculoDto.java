@@ -52,7 +52,7 @@ public class VeiculoDto {
         this.marca = veiculo.getModelo().getMarca().getNomeMarca();
         this.modelo = veiculo.getModelo().getNomeModelo();
         this.cor = veiculo.getCor().getNomeCor();
-        this.placa = veiculo.getPlaca();
+        this.placa = veiculo.getPlaca().getPlacaValue();
         this.tipo = veiculo.getTipo().toString();
     }
 }

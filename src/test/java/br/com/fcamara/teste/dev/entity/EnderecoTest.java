@@ -1,5 +1,6 @@
 package br.com.fcamara.teste.dev.entity;
 
+import br.com.fcamara.teste.dev.exception.EnderecoInvalidoException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,7 +12,7 @@ class EnderecoTest {
         Estado testEstado = new Estado("SÃO PAULO");
         Cidade testCidade = new Cidade("SANTOS", testEstado);
 
-        assertThrows(IllegalArgumentException.class, () -> new Endereco(
+        assertThrows(EnderecoInvalidoException.class, () -> new Endereco(
                 "AVENIDA CONSELHEIRO NÉBIAS", "-1", testCidade)
         );
 

@@ -1,6 +1,7 @@
 package br.com.fcamara.teste.dev.controller;
 
 import br.com.fcamara.teste.dev.dto.VeiculoDto;
+import br.com.fcamara.teste.dev.entity.Veiculo;
 import br.com.fcamara.teste.dev.form.veiculo.VeiculoForm;
 import br.com.fcamara.teste.dev.form.veiculo.VeiculoUpdateForm;
 import br.com.fcamara.teste.dev.service.implementation.VeiculoServiceImpl;
@@ -24,27 +25,27 @@ public class VeiculoController {
 
     @GetMapping
     public List<VeiculoDto> index(){
-        return this.veiculoServiceImpl.index();
+        return VeiculoDto.convertList(this.veiculoServiceImpl.index());
     }
 
     @GetMapping("/{id}")
     public VeiculoDto findOne(@PathVariable Integer id){
-        return this.veiculoServiceImpl.findById(id);
+        return new VeiculoDto(this.veiculoServiceImpl.findById(id));
     }
 
     @PostMapping
     @Transactional
     public ResponseEntity<VeiculoDto> create(@RequestBody @Valid VeiculoForm veiculoForm, UriComponentsBuilder uriBuilder){
-        VeiculoDto veiculo = this.veiculoServiceImpl.create(veiculoForm);
+        Veiculo veiculo = this.veiculoServiceImpl.create(veiculoForm);
 
         URI uri = uriBuilder.path("/veiculos/{id}").buildAndExpand(veiculo.getId()).toUri();
 
-        return ResponseEntity.created(uri).body(veiculo);
+        return ResponseEntity.created(uri).body(new VeiculoDto(veiculo));
     }
 
     @PutMapping("/{id}")
     public VeiculoDto update(@PathVariable Integer id, @RequestBody @Valid VeiculoUpdateForm veiculoUpdateForm){
-        return this.veiculoServiceImpl.update(id, veiculoUpdateForm);
+        return new VeiculoDto(this.veiculoServiceImpl.update(id, veiculoUpdateForm));
     }
 
     @DeleteMapping("/{id}")

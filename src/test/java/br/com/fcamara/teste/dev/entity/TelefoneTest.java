@@ -1,5 +1,6 @@
 package br.com.fcamara.teste.dev.entity;
 
+import br.com.fcamara.teste.dev.exception.TelefoneInvalidoException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -23,8 +24,8 @@ class TelefoneTest {
     void shouldThrowWithInvalidPhoneValue() {
         List<String> telefoneInvalidos = new ArrayList<>(Arrays.asList("111111111", "111111111111"));
 
-        assertThrows(IllegalArgumentException.class, () -> new Telefone(telefoneInvalidos.get(0)));
+        assertThrows(TelefoneInvalidoException.class, () -> new Telefone(telefoneInvalidos.get(0)));
 
-        assertThrows(IllegalArgumentException.class, () -> new Telefone(telefoneInvalidos.get(1)));
+        assertThrows(TelefoneInvalidoException.class, () -> new Telefone(telefoneInvalidos.get(1)));
     }
 }

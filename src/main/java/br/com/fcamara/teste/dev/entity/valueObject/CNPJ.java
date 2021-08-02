@@ -1,5 +1,7 @@
 package br.com.fcamara.teste.dev.entity.valueObject;
 
+import br.com.fcamara.teste.dev.exception.CNPJInvalidoException;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
@@ -11,8 +13,17 @@ import java.util.Objects;
 public class CNPJ {
     private String cnpj;
 
-    private int[] convertStringToIntArray(String cnpj, Integer start, Integer end){
-        if(end != null) return Arrays.stream(cnpj.substring(start, end).split("")).mapToInt(Integer::parseInt).toArray();
+
+    public CNPJ(String cnpj) {
+        this.validate(cnpj);
+
+        this.cnpj = cnpj;
+    }
+
+    private int[] convertStringToIntArray(String cnpj, Integer start, Integer end) {
+        if (end != null) return Arrays.stream(cnpj.substring(start, end).split(""))
+                .mapToInt(Integer::parseInt).toArray();
+
         return Arrays.stream(cnpj.substring(start).split("")).mapToInt(Integer::parseInt).toArray();
     }
 
@@ -21,7 +32,7 @@ public class CNPJ {
 
         List<Integer> multipliers = new ArrayList<>(Arrays.asList(5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2));
 
-        if(digits.length == 13)
+        if (digits.length == 13)
             multipliers.add(0, 6);
 
 
@@ -35,17 +46,17 @@ public class CNPJ {
     }
 
     private void validate(String cnpj) {
-        if (!cnpj.matches("^\\d{14}$")) throw new IllegalArgumentException("CNPJ invalido");
+        if (!cnpj.matches("^\\d{14}$")) throw new CNPJInvalidoException("formato inválido");
 
-        int[] digits = this.convertStringToIntArray(cnpj,0, cnpj.length()-2);
+        int[] digits = this.convertStringToIntArray(cnpj, 0, cnpj.length() - 2);
 
-        int[] verifierDigits = this.convertStringToIntArray(cnpj,cnpj.length()-2, null);
+        int[] verifierDigits = this.convertStringToIntArray(cnpj, cnpj.length() - 2, null);
 
-        if(calculate(digits) != verifierDigits[0]) throw new IllegalArgumentException("CNPJ invalido");
+        if (calculate(digits) != verifierDigits[0]) throw new CNPJInvalidoException("número inválido");
 
-        digits = this.convertStringToIntArray(cnpj,0, cnpj.length()-1);
+        digits = this.convertStringToIntArray(cnpj, 0, cnpj.length() - 1);
 
-        if(calculate(digits) != verifierDigits[1]) throw new IllegalArgumentException("CNPJ invalido");
+        if (calculate(digits) != verifierDigits[1]) throw new CNPJInvalidoException("número inválido");
     }
 
     public void setCnpj(String cnpj) {
@@ -57,16 +68,12 @@ public class CNPJ {
         return cnpj;
     }
 
-    public CNPJ(String cnpj) {
-        this.validate(cnpj);
-        this.cnpj = cnpj;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CNPJ that = (CNPJ) o;
+
         return Objects.equals(cnpj, that.cnpj);
     }
 

@@ -16,13 +16,17 @@ public class TelefoneServiceImpl implements TelefoneService {
         this.telefoneRepository = telefoneRepository;
     }
 
-    @Override
-    public Telefone findByNumero(String numeroTelefone) {
+    private Telefone getByTelefone(String numeroTelefone) {
         Optional<Telefone> telefone = this.telefoneRepository.findByNumeroTelefone(numeroTelefone);
 
         if(telefone.isEmpty()) throw new EntityNotFoundException();
 
         return telefone.get();
+    }
+
+    @Override
+    public Telefone findByNumero(String numeroTelefone) {
+        return this.getByTelefone(numeroTelefone);
     }
 
     @Override
@@ -36,10 +40,8 @@ public class TelefoneServiceImpl implements TelefoneService {
 
     @Override
     public void delete(String numeroTelefone) {
-        Optional<Telefone> telefone = this.telefoneRepository.findByNumeroTelefone(numeroTelefone);
+        Telefone telefone = this.getByTelefone(numeroTelefone);
 
-        if(telefone.isEmpty()) throw new EntityNotFoundException();
-
-        this.telefoneRepository.delete(telefone.get());
+        this.telefoneRepository.delete(telefone);
     }
 }

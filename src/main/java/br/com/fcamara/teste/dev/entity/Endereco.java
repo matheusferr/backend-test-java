@@ -1,5 +1,6 @@
 package br.com.fcamara.teste.dev.entity;
 
+import br.com.fcamara.teste.dev.exception.EnderecoInvalidoException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,7 +30,7 @@ public class Endereco {
         {
             Integer num = Integer.parseInt(numero);
 
-            if (num < 0) throw new IllegalArgumentException();
+            if (num < 0) throw new EnderecoInvalidoException();
         }
     }
 
@@ -70,5 +71,6 @@ public class Endereco {
     @PreUpdate
     private void prePersist() {
         this.logradouro = this.logradouro.toUpperCase();
+        this.numero = this.numero.toUpperCase();
     }
 }
