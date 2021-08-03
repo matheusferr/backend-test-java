@@ -12,9 +12,6 @@ public class CNPJCoverter implements AttributeConverter<CNPJ, String> {
 
     @Override
     public CNPJ convertToEntityAttribute(String s) {
-        CNPJ cnpj = new CNPJ();
-        cnpj.setCnpj(s);
-
-        return cnpj;
+        return new CNPJ(s);
     }
 }

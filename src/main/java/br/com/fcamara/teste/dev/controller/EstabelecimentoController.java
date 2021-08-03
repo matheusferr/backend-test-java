@@ -36,7 +36,7 @@ public class EstabelecimentoController {
     }
 
     @GetMapping("/{id}/contato")
-    public List<String> findContatcs(@PathVariable Integer id) {
+    public List<String> findContacts(@PathVariable Integer id) {
         return TelefoneDto.convertListToString(this.estabelecimentoServiceImpl.getPhones(id));
     }
 

@@ -1,6 +1,5 @@
 package br.com.fcamara.teste.dev.service.implementation;
 
-import br.com.fcamara.teste.dev.dto.VeiculoDto;
 import br.com.fcamara.teste.dev.form.veiculo.VeiculoForm;
 import br.com.fcamara.teste.dev.form.veiculo.VeiculoUpdateForm;
 import br.com.fcamara.teste.dev.entity.Cor;
@@ -18,34 +17,41 @@ import java.util.Optional;
 
 @Service
 public class VeiculoServiceImpl implements VeiculoService {
-    private final VeiculoRepository veiculoRepository;
     private final MarcaServiceImpl marcaServiceImpl;
     private final ModeloServiceImpl modeloServiceImpl;
     private final CorServiceImpl corServiceImpl;
+    private final VeiculoRepository veiculoRepository;
 
-    public VeiculoServiceImpl(VeiculoRepository veiculoRepository, MarcaServiceImpl marcaServiceImpl, ModeloServiceImpl modeloServiceImpl, CorServiceImpl corServiceImpl) {
-        this.veiculoRepository = veiculoRepository;
+    public VeiculoServiceImpl(MarcaServiceImpl marcaServiceImpl, ModeloServiceImpl modeloServiceImpl,
+                              CorServiceImpl corServiceImpl, VeiculoRepository veiculoRepository) {
         this.marcaServiceImpl = marcaServiceImpl;
         this.modeloServiceImpl = modeloServiceImpl;
         this.corServiceImpl = corServiceImpl;
+        this.veiculoRepository = veiculoRepository;
     }
 
-    @Override
-    public List<VeiculoDto> index() {
-        return VeiculoDto.convertList(this.veiculoRepository.findAll());
-    }
-
-    @Override
-    public VeiculoDto findById(Integer id) {
+    private Veiculo getVeiculo(Integer id) {
         Optional<Veiculo> veiculo = this.veiculoRepository.findById(id);
 
-        if (veiculo.isEmpty()) throw new NullPointerException();
+        if (veiculo.isEmpty()) throw new EntityNotFoundException();
 
-        return new VeiculoDto(veiculo.get());
+        return veiculo.get();
     }
 
     @Override
-    public VeiculoDto create(VeiculoForm veiculoForm) {
+    public List<Veiculo> index() {
+        return this.veiculoRepository.findAll();
+    }
+
+    @Override
+    public Veiculo findById(Integer id) {
+        return this.getVeiculo(id);
+    }
+
+    @Override
+    public Veiculo create(VeiculoForm veiculoForm) {
+        Veiculo veiculo;
+
         VeiculoTipo tipo = VeiculoTipo.valueOf(veiculoForm.getTipo());
 
         Cor cor = this.corServiceImpl.findByNomeOrCreate(veiculoForm.getCor());
@@ -53,50 +59,33 @@ public class VeiculoServiceImpl implements VeiculoService {
         Optional<Modelo> modeloOptional = this.modeloServiceImpl.findByNomeModelo(veiculoForm.getModelo());
 
         if (modeloOptional.isPresent()) {
+            veiculo = veiculoForm.toVeiculo(modeloOptional.get(), cor, tipo);
+        } else {
+            Marca marca = this.marcaServiceImpl.findByNomeOrCreate(veiculoForm.getMarca());
 
-            Veiculo veiculo = veiculoForm.toVeiculo(modeloOptional.get(), cor,
-                    VeiculoTipo.valueOf(veiculoForm.getTipo()));
+            Modelo modelo = this.modeloServiceImpl.create(veiculoForm.getModelo(), marca);
 
-            veiculoRepository.save(veiculo);
-
-            return new VeiculoDto(veiculo);
+            veiculo = veiculoForm.toVeiculo(modelo, cor, tipo);
         }
 
-        Marca marca = this.marcaServiceImpl.findByNomeOrCreate(veiculoForm.getMarca());
-
-        Modelo modelo = this.modeloServiceImpl.create(veiculoForm.getModelo(), marca);
-
-        Veiculo veiculo = veiculoForm.toVeiculo(modelo, cor, tipo);
-
-        veiculoRepository.save(veiculo);
-
-        return new VeiculoDto(veiculo);
-
+        return this.veiculoRepository.save(veiculo);
     }
 
     @Override
-    public VeiculoDto update(Integer id, VeiculoUpdateForm veiculoUpdateForm) {
-        Optional<Veiculo> veiculo = this.veiculoRepository.findById(id);
-
-        if (veiculo.isEmpty()) throw new EntityNotFoundException();
+    public Veiculo update(Integer id, VeiculoUpdateForm veiculoUpdateForm) {
+        Veiculo veiculo = this.getVeiculo(id);
 
         Cor cor = corServiceImpl.findByNomeOrCreate(veiculoUpdateForm.getCor());
 
-        Veiculo atualizado = veiculo.get();
+        veiculo.setCor(cor);
 
-        atualizado.setCor(cor);
-
-        veiculoRepository.save(atualizado);
-
-        return new VeiculoDto(atualizado);
+        return veiculoRepository.save(veiculo);
     }
 
     @Override
     public void destroy(Integer id) {
-        Optional<Veiculo> veiculo = this.veiculoRepository.findById(id);
+        Veiculo veiculo = this.getVeiculo(id);
 
-        if (veiculo.isEmpty()) throw new EntityNotFoundException();
-
-        this.veiculoRepository.delete(veiculo.get());
+        this.veiculoRepository.delete(veiculo);
     }
 }

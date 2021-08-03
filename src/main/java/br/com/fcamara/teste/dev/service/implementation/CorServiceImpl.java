@@ -19,7 +19,7 @@ public class CorServiceImpl implements CorService {
     public Cor findByNomeOrCreate(String nomeCor) {
         Optional<Cor> cor = this.corRepository.findByNomeCor(nomeCor.toUpperCase());
 
-        if(cor.isEmpty()) return this.corRepository.save(new Cor(nomeCor.toUpperCase()));
+        if (cor.isEmpty()) return this.corRepository.save(new Cor(nomeCor.toUpperCase()));
 
         return cor.get();
     }

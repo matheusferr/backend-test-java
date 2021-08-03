@@ -1,15 +1,15 @@
 package br.com.fcamara.teste.dev.service.definition;
 
-import br.com.fcamara.teste.dev.dto.VeiculoDto;
+import br.com.fcamara.teste.dev.entity.Veiculo;
 import br.com.fcamara.teste.dev.form.veiculo.VeiculoForm;
 import br.com.fcamara.teste.dev.form.veiculo.VeiculoUpdateForm;
 
 import java.util.List;
 
 public interface VeiculoService {
-    List<VeiculoDto> index();
-    VeiculoDto findById(Integer id);
-    VeiculoDto create(VeiculoForm veiculoForm);
-    VeiculoDto update(Integer id, VeiculoUpdateForm veiculoUpdateForm);
+    List<Veiculo> index();
+    Veiculo findById(Integer id);
+    Veiculo create(VeiculoForm veiculoForm);
+    Veiculo update(Integer id, VeiculoUpdateForm veiculoUpdateForm);
     void destroy(Integer id);
 }

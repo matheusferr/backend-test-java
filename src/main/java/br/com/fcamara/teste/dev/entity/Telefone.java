@@ -1,5 +1,6 @@
 package br.com.fcamara.teste.dev.entity;
 
+import br.com.fcamara.teste.dev.exception.TelefoneInvalidoException;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -8,15 +9,21 @@ import javax.persistence.*;
 @Entity
 @Table(name = "Telefones")
 public class Telefone {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(unique = true)
     private String numeroTelefone;
 
-    private void validate(String telefone){
+    public Telefone(String telefone) {
+        this.validate(telefone);
+        this.numeroTelefone = telefone;
+    }
+
+    private void validate(String telefone) {
         if (!telefone.matches("^\\d{11}|\\d{10}$"))
-            throw new IllegalArgumentException("Telefone invalido");
+            throw new TelefoneInvalidoException();
     }
 
     public String getTelefoneValue() {
@@ -24,11 +31,6 @@ public class Telefone {
     }
 
     public void setTelefone(String telefone) {
-        this.validate(telefone);
-        this.numeroTelefone = telefone;
-    }
-
-    public Telefone(String telefone) {
         this.validate(telefone);
         this.numeroTelefone = telefone;
     }

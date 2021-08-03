@@ -1,5 +1,6 @@
 package br.com.fcamara.teste.dev.entity.valueObject;
 
+import br.com.fcamara.teste.dev.exception.CNPJInvalidoException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -7,11 +8,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class CNPJTest {
     @Test
     void shouldValidateCNPJValue(){
-        CNPJ cnpj = new CNPJ();
-
         String cnpjString = "18781203000128";
 
-        cnpj.setCnpj(cnpjString);
+        CNPJ cnpj = new CNPJ(cnpjString);
 
         assertEquals(cnpjString, cnpj.getCnpjValue());
     }
@@ -20,20 +19,20 @@ class CNPJTest {
     void shouldThrowWithAnInvalidCNPJValue(){
         String cnpjString = "18781203000127";
 
-        assertThrows(IllegalArgumentException.class, () -> new CNPJ(cnpjString));
+        assertThrows(CNPJInvalidoException.class, () -> new CNPJ(cnpjString));
     }
 
     @Test
     void shouldThrowWithSameDigitCNPJValue(){
         String cnpjString = "11111111111111";
 
-        assertThrows(IllegalArgumentException.class, () -> new CNPJ(cnpjString));
+        assertThrows(CNPJInvalidoException.class, () -> new CNPJ(cnpjString));
     }
 
     @Test
     void shouldThrowWithNonNumericCNPJValue(){
         String cnpjString = "aaaaaaaaaaaaaa";
 
-        assertThrows(IllegalArgumentException.class, () -> new CNPJ(cnpjString));
+        assertThrows(CNPJInvalidoException.class, () -> new CNPJ(cnpjString));
     }
 }
