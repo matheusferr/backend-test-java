@@ -43,8 +43,9 @@ public class Veiculo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Veiculo that = (Veiculo) o;
-        return Objects.equals(modelo, that.modelo) && Objects.equals(cor, that.cor)
-                && Objects.equals(placa, that.placa) && tipo == that.tipo;
+
+        return Objects.equals(modelo, that.modelo) && Objects.equals(cor, that.cor) &&
+                Objects.equals(placa, that.placa) && tipo == that.tipo;
     }
 
     @Override

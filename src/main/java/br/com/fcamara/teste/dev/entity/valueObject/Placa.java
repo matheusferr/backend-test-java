@@ -16,7 +16,6 @@ public class Placa {
         this.placa = placa.toUpperCase();
     }
 
-
     private void validate(String placa) {
         if (!Pattern.compile("^[A-Z]{3}[0-9][A-Z][0-9]{2}$", Pattern.CASE_INSENSITIVE).matcher(placa).matches())
             throw new PlacaInvalidaException();

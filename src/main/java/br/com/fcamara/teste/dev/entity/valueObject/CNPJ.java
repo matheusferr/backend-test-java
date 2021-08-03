@@ -13,7 +13,6 @@ import java.util.Objects;
 public class CNPJ {
     private String cnpj;
 
-
     public CNPJ(String cnpj) {
         this.validate(cnpj);
 
@@ -61,6 +60,7 @@ public class CNPJ {
 
     public void setCnpj(String cnpj) {
         this.validate(cnpj);
+
         this.cnpj = cnpj;
     }
 
