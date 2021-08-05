@@ -35,7 +35,8 @@ public class VeiculoController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<VeiculoDto> create(@RequestBody @Valid VeiculoForm veiculoForm, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<VeiculoDto> create(@RequestBody @Valid VeiculoForm veiculoForm,
+                                             UriComponentsBuilder uriBuilder){
         Veiculo veiculo = this.veiculoServiceImpl.create(veiculoForm);
 
         URI uri = uriBuilder.path("/veiculos/{id}").buildAndExpand(veiculo.getId()).toUri();
@@ -44,6 +45,7 @@ public class VeiculoController {
     }
 
     @PutMapping("/{id}")
+    @Transactional
     public VeiculoDto update(@PathVariable Integer id, @RequestBody @Valid VeiculoUpdateForm veiculoUpdateForm){
         return new VeiculoDto(this.veiculoServiceImpl.update(id, veiculoUpdateForm));
     }

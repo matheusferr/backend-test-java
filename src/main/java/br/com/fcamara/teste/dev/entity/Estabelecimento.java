@@ -33,15 +33,22 @@ public class Estabelecimento {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Telefone> telefones = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Vagas vagas;
+    private Integer vagasCarro;
 
-    public Estabelecimento(String nomeEstabelecimento, CNPJ cnpj, Endereco endereco, Telefone telefone, Vagas vagas) {
+    private Integer vagasMoto;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Vaga> vagas;
+
+    public Estabelecimento(String nomeEstabelecimento, CNPJ cnpj, Endereco endereco, Telefone telefone,
+                           Integer vagasCarro, Integer vagasMoto) {
         this.nomeEstabelecimento = nomeEstabelecimento;
         this.cnpj = cnpj;
         this.endereco = endereco;
         this.telefones = new ArrayList<>(List.of(telefone));
-        this.vagas = vagas;
+        this.vagasCarro = vagasCarro;
+        this.vagasMoto = vagasMoto;
+        this.vagas = new ArrayList<>();
     }
 
     @Override
@@ -50,8 +57,10 @@ public class Estabelecimento {
         if (o == null || getClass() != o.getClass()) return false;
         Estabelecimento that = (Estabelecimento) o;
 
-        return Objects.equals(nomeEstabelecimento, that.nomeEstabelecimento) && Objects.equals(cnpj, that.cnpj)
-                && Objects.equals(endereco, that.endereco);
+        return Objects.equals(id, that.id) && Objects.equals(nomeEstabelecimento, that.nomeEstabelecimento)
+                && Objects.equals(cnpj, that.cnpj) && Objects.equals(endereco, that.endereco)
+                && Objects.equals(vagas, that.vagas) && Objects.equals(vagasCarro, that.vagasCarro)
+                && Objects.equals(vagasMoto, that.vagasMoto);
     }
 
     @Override

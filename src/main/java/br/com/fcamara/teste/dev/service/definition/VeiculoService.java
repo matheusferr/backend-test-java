@@ -9,6 +9,7 @@ import java.util.List;
 public interface VeiculoService {
     List<Veiculo> index();
     Veiculo findById(Integer id);
+    Veiculo findByPlaca(String placa);
     Veiculo create(VeiculoForm veiculoForm);
     Veiculo update(Integer id, VeiculoUpdateForm veiculoUpdateForm);
     void destroy(Integer id);

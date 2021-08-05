@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -41,6 +42,7 @@ public class EstabelecimentoController {
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity<EstabelecimentoDto> create(@RequestBody @Valid EstabelecimentoForm estabelecimentoForm,
                                                      UriComponentsBuilder uriBuilder) {
 
@@ -54,6 +56,7 @@ public class EstabelecimentoController {
     }
 
     @PostMapping("/{id}/telefone")
+    @Transactional
     public ResponseEntity<?> addPhone(@PathVariable Integer id,
                                       @RequestBody @Valid EstabelecimentoTelefoneForm estabelecimentoForm,
                                       UriComponentsBuilder uriBuilder) {
@@ -67,16 +70,21 @@ public class EstabelecimentoController {
     }
 
     @PutMapping("/{id}")
-    public EstabelecimentoDto update(@PathVariable Integer id, @RequestBody @Valid EstabelecimentoUpdateForm estabelecimentoForm) {
+    @Transactional
+    public EstabelecimentoDto update(@PathVariable Integer id,
+                                     @RequestBody @Valid EstabelecimentoUpdateForm estabelecimentoForm) {
         return new EstabelecimentoDto(this.estabelecimentoServiceImpl.update(id, estabelecimentoForm));
     }
 
     @PutMapping("/{id}/vagas")
-    public VagasDto updateVagas(@PathVariable Integer id, @RequestBody @Valid EstabelecimentoUpdateVagasForm estabelecimentoForm) {
-        return new VagasDto(this.estabelecimentoServiceImpl.updateVagas(id, estabelecimentoForm).getVagas());
+    @Transactional
+    public VagasDto updateVagas(@PathVariable Integer id,
+                                @RequestBody @Valid EstabelecimentoUpdateVagasForm estabelecimentoForm) {
+        return new VagasDto(this.estabelecimentoServiceImpl.updateVagas(id, estabelecimentoForm));
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity<?> destroy(@PathVariable Integer id) {
         this.estabelecimentoServiceImpl.destroy(id);
 
@@ -84,6 +92,7 @@ public class EstabelecimentoController {
     }
 
     @DeleteMapping("/{id}/telefone")
+    @Transactional
     public ResponseEntity<?> removePhone(@PathVariable Integer id,
                                          @RequestBody @Valid EstabelecimentoTelefoneForm estabelecimentoForm) {
         this.estabelecimentoServiceImpl.removePhone(id, estabelecimentoForm);

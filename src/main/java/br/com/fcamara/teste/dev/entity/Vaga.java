@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -12,18 +13,22 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name = "Vagas")
-public class Vagas {
+public class Vaga {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer vagasCarro;
+    @OneToOne(fetch = FetchType.LAZY)
+    private Veiculo veiculo;
 
-    private Integer vagasMoto;
+    private LocalDate entrada;
 
-    public Vagas(Integer vagasCarro, Integer vagasMoto) {
-        this.vagasCarro = vagasCarro;
-        this.vagasMoto = vagasMoto;
+    private LocalDate saida;
+
+    public Vaga(Veiculo veiculo) {
+        this.veiculo = veiculo;
+        this.entrada = LocalDate.now();
+        this.saida = null;
     }
 
     @Override
@@ -32,10 +37,9 @@ public class Vagas {
 
         if (o == null || getClass() != o.getClass()) return false;
 
-        Vagas vagas = (Vagas) o;
+        Vaga vaga = (Vaga) o;
 
-        return Objects.equals(id, vagas.id) && Objects.equals(vagasCarro, vagas.vagasCarro) &&
-                Objects.equals(vagasMoto, vagas.vagasMoto);
+        return Objects.equals(id, vaga.id) && Objects.equals(veiculo, vaga.veiculo);
     }
 
     @Override

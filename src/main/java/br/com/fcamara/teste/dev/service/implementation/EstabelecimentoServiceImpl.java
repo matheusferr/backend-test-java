@@ -47,6 +47,15 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
         return this.getEstabelecimento(id);
     }
 
+    @Override
+    public Estabelecimento findByCnpj(String cnpj) {
+        Optional<Estabelecimento> estabelecimento = this.estabelecimentoRepository.findByCnpj(cnpj);
+
+        if (estabelecimento.isEmpty()) throw new EntityNotFoundException();
+
+        return estabelecimento.get();
+    }
+
 
     @Override
     public Estabelecimento create(EstabelecimentoForm estabelecimentoForm) {
@@ -59,11 +68,7 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
                 estabelecimentoForm.getEstado()
         );
 
-        Vagas vagas = new Vagas(
-                estabelecimentoForm.getVagasCarro(), estabelecimentoForm.getVagasMoto()
-        );
-
-        Estabelecimento estabelecimento = estabelecimentoForm.toEstabelecimento(endereco, cnpj, telefone, vagas);
+        Estabelecimento estabelecimento = estabelecimentoForm.toEstabelecimento(endereco, cnpj, telefone);
 
         return this.estabelecimentoRepository.save(estabelecimento);
     }
@@ -84,13 +89,11 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 
         Estabelecimento estabelecimento = this.getEstabelecimento(id);
 
-        Vagas vagas = estabelecimento.getVagas();
-
         if (estabelecimentoUpdateForm.getVagasCarro() != null)
-            vagas.setVagasCarro(estabelecimentoUpdateForm.getVagasCarro());
+            estabelecimento.setVagasCarro(estabelecimentoUpdateForm.getVagasCarro());
 
         if (estabelecimentoUpdateForm.getVagasMoto() != null)
-            vagas.setVagasMoto(estabelecimentoUpdateForm.getVagasMoto());
+            estabelecimento.setVagasMoto(estabelecimentoUpdateForm.getVagasMoto());
 
         return this.estabelecimentoRepository.save(estabelecimento);
     }

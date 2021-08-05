@@ -49,6 +49,15 @@ public class VeiculoServiceImpl implements VeiculoService {
     }
 
     @Override
+    public Veiculo findByPlaca(String placa) {
+        Optional<Veiculo> veiculo = this.veiculoRepository.findByPlaca(placa);
+
+        if (veiculo.isEmpty()) throw new EntityNotFoundException();
+
+        return veiculo.get();
+    }
+
+    @Override
     public Veiculo create(VeiculoForm veiculoForm) {
         Veiculo veiculo;
 

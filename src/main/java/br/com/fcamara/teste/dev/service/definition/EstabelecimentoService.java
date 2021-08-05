@@ -12,6 +12,7 @@ import java.util.List;
 public interface EstabelecimentoService {
     List<Estabelecimento> index();
     Estabelecimento findById(Integer id);
+    Estabelecimento findByCnpj(String cnpj);
     Estabelecimento create(EstabelecimentoForm estabelecimentoForm);
     Estabelecimento update(Integer id, EstabelecimentoUpdateForm estabelecimentoUpdateForm);
     Estabelecimento updateVagas(Integer id, EstabelecimentoUpdateVagasForm estabelecimentoUpdateForm);
