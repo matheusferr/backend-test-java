@@ -17,64 +17,64 @@ import java.util.Objects;
 @Entity
 @Table(name = "Estabelecimentos")
 public class Estabelecimento {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-    private String nomeEstabelecimento;
+	private String nomeEstabelecimento;
 
-    @Convert(converter = CNPJCoverter.class)
-    @Column(unique = true)
-    private CNPJ cnpj;
+	@Convert(converter = CNPJCoverter.class)
+	@Column(unique = true)
+	private CNPJ cnpj;
 
-    @OneToOne
-    private Endereco endereco;
+	@OneToOne
+	private Endereco endereco;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Telefone> telefones = new ArrayList<>();
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Telefone> telefones = new ArrayList<>();
 
-    private Integer vagasCarro;
+	private Integer vagasCarro;
 
-    private Integer vagasMoto;
+	private Integer vagasMoto;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Vaga> vagas;
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Vaga> vagas;
 
-    public Estabelecimento(String nomeEstabelecimento, CNPJ cnpj, Endereco endereco, Telefone telefone,
-                           Integer vagasCarro, Integer vagasMoto) {
-        this.nomeEstabelecimento = nomeEstabelecimento;
-        this.cnpj = cnpj;
-        this.endereco = endereco;
-        this.telefones = new ArrayList<>(List.of(telefone));
-        this.vagasCarro = vagasCarro;
-        this.vagasMoto = vagasMoto;
-        this.vagas = new ArrayList<>();
-    }
+	public Estabelecimento(String nomeEstabelecimento, CNPJ cnpj, Endereco endereco, Telefone telefone,
+	                       Integer vagasCarro, Integer vagasMoto) {
+		this.nomeEstabelecimento = nomeEstabelecimento;
+		this.cnpj = cnpj;
+		this.endereco = endereco;
+		this.telefones = new ArrayList<>(List.of(telefone));
+		this.vagasCarro = vagasCarro;
+		this.vagasMoto = vagasMoto;
+		this.vagas = new ArrayList<>();
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Estabelecimento that = (Estabelecimento) o;
+	@Override
+	public boolean equals(Object o) {
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+		Estabelecimento that = (Estabelecimento) o;
 
-        return Objects.equals(id, that.id) && Objects.equals(nomeEstabelecimento, that.nomeEstabelecimento)
-                && Objects.equals(cnpj, that.cnpj) && Objects.equals(endereco, that.endereco)
-                && Objects.equals(vagas, that.vagas) && Objects.equals(vagasCarro, that.vagasCarro)
-                && Objects.equals(vagasMoto, that.vagasMoto);
-    }
+		return Objects.equals(id, that.id) && Objects.equals(nomeEstabelecimento, that.nomeEstabelecimento)
+				&& Objects.equals(cnpj, that.cnpj) && Objects.equals(endereco, that.endereco)
+				&& Objects.equals(vagas, that.vagas) && Objects.equals(vagasCarro, that.vagasCarro)
+				&& Objects.equals(vagasMoto, that.vagasMoto);
+	}
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 
-        return result;
-    }
+		return result;
+	}
 
-    @PrePersist
-    @PreUpdate
-    private void prePersist() {
-        this.nomeEstabelecimento = this.nomeEstabelecimento.toUpperCase();
-    }
+	@PrePersist
+	@PreUpdate
+	private void prePersist() {
+		this.nomeEstabelecimento = this.nomeEstabelecimento.toUpperCase();
+	}
 }

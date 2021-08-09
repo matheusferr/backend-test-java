@@ -16,25 +16,25 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MarcaServiceImplTest {
 
-    @Mock
-    private MarcaRepository marcaRepository;
+	@Mock
+	private MarcaRepository marcaRepository;
 
-    @InjectMocks
-    private MarcaServiceImpl marcaServiceImpl;
+	@InjectMocks
+	private MarcaServiceImpl marcaServiceImpl;
 
-    @BeforeEach
-    void beforeEach() {
-        MockitoAnnotations.openMocks(this);
-    }
+	@BeforeEach
+	void beforeEach() {
+		MockitoAnnotations.openMocks(this);
+	}
 
-    @Test
-    void shouldCreateABrand() {
-        Marca testMarca = new Marca("FIAT");
+	@Test
+	void shouldCreateABrand() {
+		Marca testMarca = new Marca("FIAT");
 
-        Mockito.when(marcaRepository.findByNomeMarca("FIAT")).thenReturn(Optional.of(testMarca));
+		Mockito.when(marcaRepository.findByNomeMarca("FIAT")).thenReturn(Optional.of(testMarca));
 
-        Marca marca = marcaServiceImpl.findByNomeOrCreate("FIAT");
+		Marca marca = marcaServiceImpl.findByNomeOrCreate("FIAT");
 
-        assertEquals(marca, testMarca);
-    }
+		assertEquals(marca, testMarca);
+	}
 }

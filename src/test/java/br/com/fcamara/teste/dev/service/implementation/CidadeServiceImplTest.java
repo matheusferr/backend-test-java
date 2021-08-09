@@ -15,39 +15,39 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CidadeServiceImplTest {
-    private Estado testEstado =  new Estado("SÃO PAULO");
+	private Estado testEstado = new Estado("SÃO PAULO");
 
-    private Cidade testCidade = new Cidade("SANTOS", testEstado);
+	private Cidade testCidade = new Cidade("SANTOS", testEstado);
 
-    @Mock
-    private CidadeRepository cidadeRepository;
+	@Mock
+	private CidadeRepository cidadeRepository;
 
-    @InjectMocks
-    private CidadeServiceImpl cidadeServiceImpl;
+	@InjectMocks
+	private CidadeServiceImpl cidadeServiceImpl;
 
-    @BeforeEach
-    void beforeEach(){
-        MockitoAnnotations.openMocks(this);
-    }
+	@BeforeEach
+	void beforeEach() {
+		MockitoAnnotations.openMocks(this);
+	}
 
-    @Test
-    void shouldGetACity(){
-        Mockito.when(this.cidadeRepository.findByNomeCidade("SANTOS")).thenReturn(Optional.of(testCidade));
+	@Test
+	void shouldGetACity() {
+		Mockito.when(this.cidadeRepository.findByNomeCidade("SANTOS")).thenReturn(Optional.of(testCidade));
 
-        Optional<Cidade> cidade = this.cidadeServiceImpl.findByNomeCidade("SANTOS");
+		Optional<Cidade> cidade = this.cidadeServiceImpl.findByNomeCidade("SANTOS");
 
-        assertEquals(cidade.get(), testCidade);
-    }
+		assertEquals(cidade.get(), testCidade);
+	}
 
-    @Test
-    void shouldCreateACity() {
-        Mockito.when(this.cidadeRepository.findByNomeCidade("SANTOS")).thenReturn(Optional.empty());
+	@Test
+	void shouldCreateACity() {
+		Mockito.when(this.cidadeRepository.findByNomeCidade("SANTOS")).thenReturn(Optional.empty());
 
-        Mockito.when(this.cidadeRepository.save(testCidade)).thenReturn(testCidade);
+		Mockito.when(this.cidadeRepository.save(testCidade)).thenReturn(testCidade);
 
-        Cidade cidade = this.cidadeServiceImpl.create("SANTOS", testEstado);
+		Cidade cidade = this.cidadeServiceImpl.create("SANTOS", testEstado);
 
-        assertEquals(cidade, testCidade);
-        assertEquals(testEstado, testCidade.getEstado());
-    }
+		assertEquals(cidade, testCidade);
+		assertEquals(testEstado, testCidade.getEstado());
+	}
 }

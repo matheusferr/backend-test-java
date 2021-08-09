@@ -10,11 +10,11 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 public class EstabelecimentoUpdateForm {
-    private String nome;
+	private String nome;
 
-    @Min(1)
-    private Integer vagasCarro;
+	@Min(1)
+	private Integer vagasCarro;
 
-    @Min(1)
-    private Integer vagasMoto;
+	@Min(1)
+	private Integer vagasMoto;
 }

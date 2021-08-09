@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface VeiculoRepository extends CrudRepository<Veiculo, Integer> {
-    List<Veiculo> findAll();
-    Optional<Veiculo> findByPlaca(Placa placa);
+	List<Veiculo> findAll();
+
+	Optional<Veiculo> findByPlaca(Placa placa);
 }

@@ -7,5 +7,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 
 public interface VagaRepository extends CrudRepository<Vaga, Integer> {
-    Optional<Vaga> findByVeiculoAndSaidaNull(Veiculo veiculo);
+	Optional<Vaga> findByVeiculoAndSaidaNull(Veiculo veiculo);
 }

@@ -10,14 +10,23 @@ import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoUpdateVagasF
 import java.util.List;
 
 public interface EstabelecimentoService {
-    List<Estabelecimento> index();
-    Estabelecimento findById(Integer id);
-    Estabelecimento findByCnpj(String cnpj);
-    Estabelecimento create(EstabelecimentoForm estabelecimentoForm);
-    Estabelecimento update(Integer id, EstabelecimentoUpdateForm estabelecimentoUpdateForm);
-    void updateVagas(Estabelecimento estabelecimento);
-    List<Telefone> getPhones(Integer id);
-    Estabelecimento addPhone(Integer id, EstabelecimentoTelefoneForm estabelecimentoTelefoneForm);
-    void removePhone(Integer id, EstabelecimentoTelefoneForm estabelecimentoTelefoneForm);
-    void destroy(Integer id);
+	List<Estabelecimento> index();
+
+	Estabelecimento findById(Integer id);
+
+	Estabelecimento findByCnpj(String cnpj);
+
+	Estabelecimento create(EstabelecimentoForm estabelecimentoForm);
+
+	Estabelecimento update(Integer id, EstabelecimentoUpdateForm estabelecimentoUpdateForm);
+
+	void updateVagas(Estabelecimento estabelecimento);
+
+	List<Telefone> getPhones(Integer id);
+
+	Estabelecimento addPhone(Integer id, EstabelecimentoTelefoneForm estabelecimentoTelefoneForm);
+
+	void removePhone(Integer id, EstabelecimentoTelefoneForm estabelecimentoTelefoneForm);
+
+	void destroy(Integer id);
 }

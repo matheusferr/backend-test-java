@@ -20,106 +20,106 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 class VagaServiceImplTest {
-    @Mock
-    private EstabelecimentoServiceImpl estabelecimentoServiceImpl;
+	@Mock
+	private EstabelecimentoServiceImpl estabelecimentoServiceImpl;
 
-    @Mock
-    private VeiculoServiceImpl veiculoServiceImpl;
+	@Mock
+	private VeiculoServiceImpl veiculoServiceImpl;
 
-    @Mock
-    private VagaRepository vagaRepository;
+	@Mock
+	private VagaRepository vagaRepository;
 
-    @InjectMocks
-    private VagaServiceImpl vagaServiceImpl;
+	@InjectMocks
+	private VagaServiceImpl vagaServiceImpl;
 
-    private Estabelecimento testEstabelecimento;
+	private Estabelecimento testEstabelecimento;
 
-    private Vaga testVaga;
+	private Vaga testVaga;
 
-    private VagaForm vagaForm;
+	private VagaForm vagaForm;
 
-    private Veiculo testVeiculo;
+	private Veiculo testVeiculo;
 
-    @BeforeEach
-    void beforeEach() {
-        MockitoAnnotations.openMocks(this);
+	@BeforeEach
+	void beforeEach() {
+		MockitoAnnotations.openMocks(this);
 
-        Estado testEstado = new Estado("SÃO PAULO");
-        Cidade testCidade = new Cidade("SANTOS", testEstado);
-        Endereco testEndereco = new Endereco("AVENIDA CONSELHEIRO NÉBIAS", "1", testCidade);
+		Estado testEstado = new Estado("SÃO PAULO");
+		Cidade testCidade = new Cidade("SANTOS", testEstado);
+		Endereco testEndereco = new Endereco("AVENIDA CONSELHEIRO NÉBIAS", "1", testCidade);
 
-        this.testEstabelecimento = new Estabelecimento("TEST01", new CNPJ("45857255000103"),
-                testEndereco, new Telefone("1234567890"), 1, 1);
+		this.testEstabelecimento = new Estabelecimento("TEST01", new CNPJ("45857255000103"),
+				testEndereco, new Telefone("1234567890"), 1, 1);
 
-        Marca testMarca = new Marca("Fiat");
-        Modelo testModelo = new Modelo("Palio", testMarca);
-        Cor testCor = new Cor("Vermelho");
+		Marca testMarca = new Marca("Fiat");
+		Modelo testModelo = new Modelo("Palio", testMarca);
+		Cor testCor = new Cor("Vermelho");
 
-        this.testVeiculo = new Veiculo(testModelo, testCor, new Placa("BRA1A23"), VeiculoTipo.CARRO);
+		this.testVeiculo = new Veiculo(testModelo, testCor, new Placa("BRA1A23"), VeiculoTipo.CARRO);
 
-        vagaForm = new VagaForm();
+		vagaForm = new VagaForm();
 
-        vagaForm.setCnpj(testEstabelecimento.getCnpj().getCnpjValue());
-        vagaForm.setPlaca(testVeiculo.getPlaca().getPlacaValue());
+		vagaForm.setCnpj(testEstabelecimento.getCnpj().getCnpjValue());
+		vagaForm.setPlaca(testVeiculo.getPlaca().getPlacaValue());
 
-        testVaga = new Vaga(this.testVeiculo);
-    }
+		testVaga = new Vaga(this.testVeiculo);
+	}
 
-    @Test
-    void shouldAddAVehicle() {
-        Mockito.when(this.veiculoServiceImpl.findByPlaca(this.vagaForm.getPlaca())).thenReturn(this.testVeiculo);
-        Mockito.when(this.estabelecimentoServiceImpl.findByCnpj(this.vagaForm.getCnpj())).thenReturn(
-                this.testEstabelecimento
-        );
+	@Test
+	void shouldAddAVehicle() {
+		Mockito.when(this.veiculoServiceImpl.findByPlaca(this.vagaForm.getPlaca())).thenReturn(this.testVeiculo);
+		Mockito.when(this.estabelecimentoServiceImpl.findByCnpj(this.vagaForm.getCnpj())).thenReturn(
+				this.testEstabelecimento
+		);
 
-        Mockito.when(this.vagaRepository.save(testVaga)).thenReturn(testVaga);
+		Mockito.when(this.vagaRepository.save(testVaga)).thenReturn(testVaga);
 
-        Vaga vaga = this.vagaServiceImpl.addVehicle(this.vagaForm);
+		Vaga vaga = this.vagaServiceImpl.addVehicle(this.vagaForm);
 
-        assertEquals(testVaga, vaga);
-    }
+		assertEquals(testVaga, vaga);
+	}
 
-    @Test
-    void shouldNotAddAVehicle() {
-        this.testEstabelecimento.getVagas().add(testVaga);
+	@Test
+	void shouldNotAddAVehicle() {
+		this.testEstabelecimento.getVagas().add(testVaga);
 
-        Mockito.when(this.veiculoServiceImpl.findByPlaca(this.vagaForm.getPlaca())).thenReturn(this.testVeiculo);
-        Mockito.when(this.estabelecimentoServiceImpl.findByCnpj(this.vagaForm.getCnpj())).thenReturn(
-                this.testEstabelecimento
-        );
+		Mockito.when(this.veiculoServiceImpl.findByPlaca(this.vagaForm.getPlaca())).thenReturn(this.testVeiculo);
+		Mockito.when(this.estabelecimentoServiceImpl.findByCnpj(this.vagaForm.getCnpj())).thenReturn(
+				this.testEstabelecimento
+		);
 
 
-        assertThrows(OperacaoInvalidaException.class,
-                () -> this.vagaServiceImpl.addVehicle(this.vagaForm));
-    }
+		assertThrows(OperacaoInvalidaException.class,
+				() -> this.vagaServiceImpl.addVehicle(this.vagaForm));
+	}
 
-    @Test
-    void shouldRemoveAVehicle() {
-        this.testEstabelecimento.getVagas().add(testVaga);
+	@Test
+	void shouldRemoveAVehicle() {
+		this.testEstabelecimento.getVagas().add(testVaga);
 
-        Mockito.when(this.veiculoServiceImpl.findByPlaca(this.vagaForm.getPlaca())).thenReturn(this.testVeiculo);
-        Mockito.when(this.estabelecimentoServiceImpl.findByCnpj(this.vagaForm.getCnpj())).thenReturn(
-                this.testEstabelecimento
-        );
-        Mockito.when(this.vagaRepository.findByVeiculoAndSaidaNull(this.testVeiculo)).thenReturn(Optional.of(testVaga));
+		Mockito.when(this.veiculoServiceImpl.findByPlaca(this.vagaForm.getPlaca())).thenReturn(this.testVeiculo);
+		Mockito.when(this.estabelecimentoServiceImpl.findByCnpj(this.vagaForm.getCnpj())).thenReturn(
+				this.testEstabelecimento
+		);
+		Mockito.when(this.vagaRepository.findByVeiculoAndSaidaNull(this.testVeiculo)).thenReturn(Optional.of(testVaga));
 
-        testVaga.setSaida(LocalDateTime.now());
+		testVaga.setSaida(LocalDateTime.now());
 
-        Mockito.when(this.vagaRepository.save(testVaga)).thenReturn(testVaga);
+		Mockito.when(this.vagaRepository.save(testVaga)).thenReturn(testVaga);
 
-        Vaga vaga = this.vagaServiceImpl.removeVehicle(this.vagaForm);
+		Vaga vaga = this.vagaServiceImpl.removeVehicle(this.vagaForm);
 
-        assertEquals(testVaga, vaga);
-    }
+		assertEquals(testVaga, vaga);
+	}
 
-    @Test
-    void shouldNotRemoveAVehicle() {
-        Mockito.when(this.veiculoServiceImpl.findByPlaca(this.vagaForm.getPlaca())).thenReturn(this.testVeiculo);
-        Mockito.when(this.estabelecimentoServiceImpl.findByCnpj(this.vagaForm.getCnpj())).thenReturn(
-                this.testEstabelecimento
-        );
+	@Test
+	void shouldNotRemoveAVehicle() {
+		Mockito.when(this.veiculoServiceImpl.findByPlaca(this.vagaForm.getPlaca())).thenReturn(this.testVeiculo);
+		Mockito.when(this.estabelecimentoServiceImpl.findByCnpj(this.vagaForm.getCnpj())).thenReturn(
+				this.testEstabelecimento
+		);
 
-        assertThrows(OperacaoInvalidaException.class,
-                () -> this.vagaServiceImpl.removeVehicle(this.vagaForm));
-    }
+		assertThrows(OperacaoInvalidaException.class,
+				() -> this.vagaServiceImpl.removeVehicle(this.vagaForm));
+	}
 }

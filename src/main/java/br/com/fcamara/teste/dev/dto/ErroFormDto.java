@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ErroFormDto {
-    private String campo;
+	private String campo;
 
-    private String erro;
+	private String erro;
 }

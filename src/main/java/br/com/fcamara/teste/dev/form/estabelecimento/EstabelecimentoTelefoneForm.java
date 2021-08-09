@@ -11,12 +11,12 @@ import javax.validation.constraints.Pattern;
 @Getter
 @Setter
 public class EstabelecimentoTelefoneForm {
-    @NotNull
-    @NotEmpty
-    @Pattern(regexp = "^\\d{11}|\\d{10}$")
-    private String telefone;
+	@NotNull
+	@NotEmpty
+	@Pattern(regexp = "^\\d{11}|\\d{10}$")
+	private String telefone;
 
-    public Telefone toTelefone() {
-        return new Telefone(this.telefone);
-    }
+	public Telefone toTelefone() {
+		return new Telefone(this.telefone);
+	}
 }

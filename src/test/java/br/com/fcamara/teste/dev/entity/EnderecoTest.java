@@ -7,14 +7,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EnderecoTest {
 
-    @Test
-    void shouldValidateAddressNumber() {
-        Estado testEstado = new Estado("SÃO PAULO");
-        Cidade testCidade = new Cidade("SANTOS", testEstado);
+	@Test
+	void shouldValidateAddressNumber() {
+		Estado testEstado = new Estado("SÃO PAULO");
+		Cidade testCidade = new Cidade("SANTOS", testEstado);
 
-        assertThrows(EnderecoInvalidoException.class, () -> new Endereco(
-                "AVENIDA CONSELHEIRO NÉBIAS", "-1", testCidade)
-        );
+		assertThrows(EnderecoInvalidoException.class, () -> new Endereco(
+				"AVENIDA CONSELHEIRO NÉBIAS", "-1", testCidade)
+		);
 
-    }
+	}
 }

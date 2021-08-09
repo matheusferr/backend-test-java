@@ -16,72 +16,74 @@ import java.util.Optional;
 
 @Service
 public class VagaServiceImpl implements VagaService {
-    private final EstabelecimentoServiceImpl estabelecimentoServiceImpl;
-    private final VeiculoServiceImpl veiculoServiceImpl;
-    private final VagaRepository vagaRepository;
+	private final EstabelecimentoServiceImpl estabelecimentoServiceImpl;
+	private final VeiculoServiceImpl veiculoServiceImpl;
+	private final VagaRepository vagaRepository;
 
-    public VagaServiceImpl(EstabelecimentoServiceImpl estabelecimentoServiceImpl,
-                           VeiculoServiceImpl veiculoServiceImpl, VagaRepository vagaRepository) {
-        this.estabelecimentoServiceImpl = estabelecimentoServiceImpl;
-        this.veiculoServiceImpl = veiculoServiceImpl;
-        this.vagaRepository = vagaRepository;
-    }
+	public VagaServiceImpl(EstabelecimentoServiceImpl estabelecimentoServiceImpl,
+	                       VeiculoServiceImpl veiculoServiceImpl, VagaRepository vagaRepository) {
+		this.estabelecimentoServiceImpl = estabelecimentoServiceImpl;
+		this.veiculoServiceImpl = veiculoServiceImpl;
+		this.vagaRepository = vagaRepository;
+	}
 
-    private List<Vaga> getVagas(String cnpj) {
-        Estabelecimento estabelecimento = estabelecimentoServiceImpl.findByCnpj(cnpj);
-        return estabelecimento.getVagas();
-    }
+	private List<Vaga> getVagas(String cnpj) {
+		Estabelecimento estabelecimento = estabelecimentoServiceImpl.findByCnpj(cnpj);
+		return estabelecimento.getVagas();
+	}
 
-    private boolean isPresent(List<Vaga> vagas, Veiculo veiculo) {
-        return vagas.stream().anyMatch(vaga -> vaga.getVeiculo().equals(veiculo));
-    }
+	private boolean isPresent(List<Vaga> vagas, Veiculo veiculo) {
+		return vagas.stream().anyMatch(vaga -> vaga.getVeiculo().equals(veiculo));
+	}
 
-    private Vaga getVaga(Veiculo veiculo){
-        Optional<Vaga> vaga = this.vagaRepository.findByVeiculoAndSaidaNull(veiculo);
+	private Vaga getVaga(Veiculo veiculo) {
+		Optional<Vaga> vaga = this.vagaRepository.findByVeiculoAndSaidaNull(veiculo);
 
-        if(vaga.isEmpty()) throw new EntityNotFoundException();
+		if(vaga.isEmpty()) throw new EntityNotFoundException();
 
-        return vaga.get();
-    };
+		return vaga.get();
+	}
 
-    @Override
-    public Vaga addVehicle(VagaForm vagaForm) {
-        Veiculo veiculo = this.veiculoServiceImpl.findByPlaca(vagaForm.getPlaca());
+	;
 
-        Optional<Vaga> existente = this.vagaRepository.findByVeiculoAndSaidaNull(veiculo);
+	@Override
+	public Vaga addVehicle(VagaForm vagaForm) {
+		Veiculo veiculo = this.veiculoServiceImpl.findByPlaca(vagaForm.getPlaca());
 
-        if (existente.isPresent()) throw new OperacaoInvalidaException(
-                "veiculo já vinculado a outro estacionamento"
-        );
+		Optional<Vaga> existente = this.vagaRepository.findByVeiculoAndSaidaNull(veiculo);
 
-        List<Vaga> vagas = this.getVagas(vagaForm.getCnpj());
+		if(existente.isPresent()) throw new OperacaoInvalidaException(
+				"veiculo já vinculado a outro estacionamento"
+		);
 
-        if (this.isPresent(vagas, veiculo)) throw new OperacaoInvalidaException(
-                "veiculo já vinculado ao estacionamento"
-        );
+		List<Vaga> vagas = this.getVagas(vagaForm.getCnpj());
 
-        Vaga vaga = new Vaga(veiculo);
+		if(this.isPresent(vagas, veiculo)) throw new OperacaoInvalidaException(
+				"veiculo já vinculado ao estacionamento"
+		);
 
-        vagas.add(vaga);
+		Vaga vaga = new Vaga(veiculo);
 
-        return vagaRepository.save(vaga);
-    }
+		vagas.add(vaga);
 
-    @Override
-    public Vaga removeVehicle(VagaForm vagaForm) {
-        Veiculo veiculo = veiculoServiceImpl.findByPlaca(vagaForm.getPlaca());
-        List<Vaga> vagas = this.getVagas(vagaForm.getCnpj());
+		return vagaRepository.save(vaga);
+	}
 
-        if (!this.isPresent(vagas, veiculo)) throw new OperacaoInvalidaException(
-                "veiculo não vinculado ao estacionamento"
-        );
+	@Override
+	public Vaga removeVehicle(VagaForm vagaForm) {
+		Veiculo veiculo = veiculoServiceImpl.findByPlaca(vagaForm.getPlaca());
+		List<Vaga> vagas = this.getVagas(vagaForm.getCnpj());
 
-        Vaga vaga = this.getVaga(veiculo);
+		if(!this.isPresent(vagas, veiculo)) throw new OperacaoInvalidaException(
+				"veiculo não vinculado ao estacionamento"
+		);
 
-        vagas.remove(vaga);
+		Vaga vaga = this.getVaga(veiculo);
 
-        vaga.setSaida(LocalDateTime.now());
+		vagas.remove(vaga);
 
-        return vagaRepository.save(vaga);
-    }
+		vaga.setSaida(LocalDateTime.now());
+
+		return vagaRepository.save(vaga);
+	}
 }

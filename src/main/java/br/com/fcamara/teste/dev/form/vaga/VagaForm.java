@@ -10,11 +10,13 @@ import javax.validation.constraints.Pattern;
 @Getter
 @Setter
 public class VagaForm {
-    @NotNull
-    @NotEmpty
-    @Pattern(regexp = "^[A-Z]{3}[0-9][A-Z][0-9]{2}$", flags = Pattern.Flag.CASE_INSENSITIVE)
-    private String placa;
+	@NotNull
+	@NotEmpty
+	@Pattern(regexp = "^[A-Z]{3}[0-9][A-Z][0-9]{2}$", flags = Pattern.Flag.CASE_INSENSITIVE)
+	private String placa;
 
-    @NotNull @NotEmpty @Pattern(regexp = "^\\d{14}$")
-    private String cnpj;
+	@NotNull
+	@NotEmpty
+	@Pattern(regexp = "^\\d{14}$")
+	private String cnpj;
 }

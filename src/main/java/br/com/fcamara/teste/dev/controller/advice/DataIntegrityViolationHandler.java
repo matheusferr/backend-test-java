@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class DataIntegrityViolationHandler {
-    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ErroDto> handle() {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                new ErroDto("Erro ao criar recurso: campos providenciados não são únicos")
-        );
-    }
+	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<ErroDto> handle() {
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+				new ErroDto("Erro ao criar recurso: campos providenciados não são únicos")
+		);
+	}
 }

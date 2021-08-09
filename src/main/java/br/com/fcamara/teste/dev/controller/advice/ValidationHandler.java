@@ -16,24 +16,24 @@ import java.util.List;
 
 @RestControllerAdvice
 public class ValidationHandler {
-    private final MessageSource messageSource;
+	private final MessageSource messageSource;
 
-    public ValidationHandler(MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
+	public ValidationHandler(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
 
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<List<ErroFormDto>> handle(MethodArgumentNotValidException e) {
-        List<ErroFormDto> errosFormulario = new ArrayList<>();
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<List<ErroFormDto>> handle(MethodArgumentNotValidException e) {
+		List<ErroFormDto> errosFormulario = new ArrayList<>();
 
-        List<FieldError> errosCampos = e.getBindingResult().getFieldErrors();
+		List<FieldError> errosCampos = e.getBindingResult().getFieldErrors();
 
-        errosCampos.forEach(fieldError -> {
-            String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
-            errosFormulario.add(new ErroFormDto(fieldError.getField(), message));
-        });
+		errosCampos.forEach(fieldError -> {
+			String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+			errosFormulario.add(new ErroFormDto(fieldError.getField(), message));
+		});
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errosFormulario);
-    }
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errosFormulario);
+	}
 }

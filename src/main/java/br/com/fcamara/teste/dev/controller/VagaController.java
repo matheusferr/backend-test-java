@@ -14,21 +14,21 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/vagas")
 public class VagaController {
-    private final VagaServiceImpl vagaServiceImpl;
+	private final VagaServiceImpl vagaServiceImpl;
 
-    public VagaController(VagaServiceImpl vagaServiceImpl) {
-        this.vagaServiceImpl = vagaServiceImpl;
-    }
+	public VagaController(VagaServiceImpl vagaServiceImpl) {
+		this.vagaServiceImpl = vagaServiceImpl;
+	}
 
-    @PutMapping("/entrada")
-    @Transactional
-    public VagaDto entrada(@RequestBody @Valid VagaForm vagaForm){
-        return new VagaDto(this.vagaServiceImpl.addVehicle(vagaForm));
-    }
+	@PutMapping("/entrada")
+	@Transactional
+	public VagaDto entrada(@RequestBody @Valid VagaForm vagaForm) {
+		return new VagaDto(this.vagaServiceImpl.addVehicle(vagaForm));
+	}
 
-    @PutMapping("/saida")
-    @Transactional
-    public VagaDto saida(@RequestBody @Valid VagaForm vagaForm){
-        return new VagaDto(this.vagaServiceImpl.removeVehicle(vagaForm));
-    }
+	@PutMapping("/saida")
+	@Transactional
+	public VagaDto saida(@RequestBody @Valid VagaForm vagaForm) {
+		return new VagaDto(this.vagaServiceImpl.removeVehicle(vagaForm));
+	}
 }

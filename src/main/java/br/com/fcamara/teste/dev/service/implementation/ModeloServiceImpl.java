@@ -10,19 +10,19 @@ import java.util.Optional;
 
 @Service
 public class ModeloServiceImpl implements ModeloService {
-    private final ModeloRepository modeloRepository;
+	private final ModeloRepository modeloRepository;
 
-    public ModeloServiceImpl(ModeloRepository modeloRepository) {
-        this.modeloRepository = modeloRepository;
-    }
+	public ModeloServiceImpl(ModeloRepository modeloRepository) {
+		this.modeloRepository = modeloRepository;
+	}
 
-    @Override
-    public Optional<Modelo> findByNomeModelo(String nomeModelo) {
-        return this.modeloRepository.findByNomeModelo(nomeModelo);
-    }
+	@Override
+	public Optional<Modelo> findByNomeModelo(String nomeModelo) {
+		return this.modeloRepository.findByNomeModelo(nomeModelo);
+	}
 
-    @Override
-    public Modelo create(String nomeModelo, Marca marca) {
-        return this.modeloRepository.save(new Modelo(nomeModelo, marca));
-    }
+	@Override
+	public Modelo create(String nomeModelo, Marca marca) {
+		return this.modeloRepository.save(new Modelo(nomeModelo, marca));
+	}
 }

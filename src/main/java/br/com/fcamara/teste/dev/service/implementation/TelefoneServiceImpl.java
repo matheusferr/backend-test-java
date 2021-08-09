@@ -10,38 +10,38 @@ import java.util.Optional;
 
 @Service
 public class TelefoneServiceImpl implements TelefoneService {
-    private final TelefoneRepository telefoneRepository;
+	private final TelefoneRepository telefoneRepository;
 
-    public TelefoneServiceImpl(TelefoneRepository telefoneRepository) {
-        this.telefoneRepository = telefoneRepository;
-    }
+	public TelefoneServiceImpl(TelefoneRepository telefoneRepository) {
+		this.telefoneRepository = telefoneRepository;
+	}
 
-    private Telefone getByTelefone(String numeroTelefone) {
-        Optional<Telefone> telefone = this.telefoneRepository.findByNumeroTelefone(numeroTelefone);
+	private Telefone getByTelefone(String numeroTelefone) {
+		Optional<Telefone> telefone = this.telefoneRepository.findByNumeroTelefone(numeroTelefone);
 
-        if(telefone.isEmpty()) throw new EntityNotFoundException();
+		if(telefone.isEmpty()) throw new EntityNotFoundException();
 
-        return telefone.get();
-    }
+		return telefone.get();
+	}
 
-    @Override
-    public Telefone findByNumero(String numeroTelefone) {
-        return this.getByTelefone(numeroTelefone);
-    }
+	@Override
+	public Telefone findByNumero(String numeroTelefone) {
+		return this.getByTelefone(numeroTelefone);
+	}
 
-    @Override
-    public Telefone findByNumeroOrCreate(String numeroTelefone) {
-        Optional<Telefone> telefone = this.telefoneRepository.findByNumeroTelefone(numeroTelefone);
+	@Override
+	public Telefone findByNumeroOrCreate(String numeroTelefone) {
+		Optional<Telefone> telefone = this.telefoneRepository.findByNumeroTelefone(numeroTelefone);
 
-        if(telefone.isEmpty()) return this.telefoneRepository.save(new Telefone(numeroTelefone));
+		if(telefone.isEmpty()) return this.telefoneRepository.save(new Telefone(numeroTelefone));
 
-        return telefone.get();
-    }
+		return telefone.get();
+	}
 
-    @Override
-    public void delete(String numeroTelefone) {
-        Telefone telefone = this.getByTelefone(numeroTelefone);
+	@Override
+	public void delete(String numeroTelefone) {
+		Telefone telefone = this.getByTelefone(numeroTelefone);
 
-        this.telefoneRepository.delete(telefone);
-    }
+		this.telefoneRepository.delete(telefone);
+	}
 }

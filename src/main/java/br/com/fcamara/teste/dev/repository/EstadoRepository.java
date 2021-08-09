@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 
 public interface EstadoRepository extends CrudRepository<Estado, Integer> {
-    Optional<Estado> findByNomeEstado(String nomeEstado);
+	Optional<Estado> findByNomeEstado(String nomeEstado);
 }

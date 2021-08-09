@@ -12,9 +12,9 @@ import javax.persistence.EntityNotFoundException;
 @RestControllerAdvice
 public class EntityNotFoundHandler {
 
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErroDto> handle() {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErroDto("Recuso não encontrado"));
-    }
+	@ResponseStatus(code = HttpStatus.NOT_FOUND)
+	@ExceptionHandler(EntityNotFoundException.class)
+	public ResponseEntity<ErroDto> handle() {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErroDto("Recuso não encontrado"));
+	}
 }

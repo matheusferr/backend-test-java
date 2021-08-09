@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EstabelecimentoRepository extends CrudRepository<Estabelecimento, Integer> {
-    List<Estabelecimento> findAll();
-    Optional<Estabelecimento> findByCnpj(CNPJ cnpj);
+	List<Estabelecimento> findAll();
+
+	Optional<Estabelecimento> findByCnpj(CNPJ cnpj);
 }

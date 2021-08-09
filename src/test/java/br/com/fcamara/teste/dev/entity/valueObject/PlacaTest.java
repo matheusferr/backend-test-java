@@ -6,17 +6,17 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlacaTest {
-    @Test
-    void shouldValidatePlateValue(){
-        String plateString = "ABC1D23";
+	@Test
+	void shouldValidatePlateValue() {
+		String plateString = "ABC1D23";
 
-        Placa placa = new Placa(plateString);
+		Placa placa = new Placa(plateString);
 
-        assertEquals(plateString, placa.getPlacaValue());
-    }
+		assertEquals(plateString, placa.getPlacaValue());
+	}
 
-    @Test
-    void shouldThrowWithAInvalidPlateValue(){
-        assertThrows(PlacaInvalidaException.class, () -> new Placa("ABC1D2A"));
-    }
+	@Test
+	void shouldThrowWithAInvalidPlateValue() {
+		assertThrows(PlacaInvalidaException.class, () -> new Placa("ABC1D2A"));
+	}
 }

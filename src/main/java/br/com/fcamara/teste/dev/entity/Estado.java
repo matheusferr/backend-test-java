@@ -12,36 +12,36 @@ import javax.persistence.*;
 @Entity
 @Table(name = "Estados")
 public class Estado {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-    private String nomeEstado;
+	private String nomeEstado;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Estado estado = (Estado) o;
+	@Override
+	public boolean equals(Object o) {
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+		Estado estado = (Estado) o;
 
-        return nomeEstado.equals(estado.getNomeEstado());
-    }
+		return nomeEstado.equals(estado.getNomeEstado());
+	}
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 
-        return result;
-    }
+		return result;
+	}
 
-    @PrePersist
-    private void prePersist(){
-        this.nomeEstado = this.nomeEstado.toUpperCase();
-    }
+	@PrePersist
+	private void prePersist() {
+		this.nomeEstado = this.nomeEstado.toUpperCase();
+	}
 
-    public Estado(String nomeEstado) {
-        this.nomeEstado = nomeEstado;
-    }
+	public Estado(String nomeEstado) {
+		this.nomeEstado = nomeEstado;
+	}
 }

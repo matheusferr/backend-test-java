@@ -11,74 +11,74 @@ import java.util.Objects;
 
 @NoArgsConstructor
 public class CNPJ {
-    private String cnpj;
+	private String cnpj;
 
-    public CNPJ(String cnpj) {
-        this.validate(cnpj);
+	public CNPJ(String cnpj) {
+		this.validate(cnpj);
 
-        this.cnpj = cnpj;
-    }
+		this.cnpj = cnpj;
+	}
 
-    private int[] convertStringToIntArray(String cnpj, Integer start, Integer end) {
-        if (end != null) return Arrays.stream(cnpj.substring(start, end).split(""))
-                .mapToInt(Integer::parseInt).toArray();
+	private int[] convertStringToIntArray(String cnpj, Integer start, Integer end) {
+		if(end != null) return Arrays.stream(cnpj.substring(start, end).split(""))
+				.mapToInt(Integer::parseInt).toArray();
 
-        return Arrays.stream(cnpj.substring(start).split("")).mapToInt(Integer::parseInt).toArray();
-    }
+		return Arrays.stream(cnpj.substring(start).split("")).mapToInt(Integer::parseInt).toArray();
+	}
 
-    private int calculate(int[] digits) {
-        int counter = 0;
+	private int calculate(int[] digits) {
+		int counter = 0;
 
-        List<Integer> multipliers = new ArrayList<>(Arrays.asList(5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2));
+		List<Integer> multipliers = new ArrayList<>(Arrays.asList(5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2));
 
-        if (digits.length == 13)
-            multipliers.add(0, 6);
+		if(digits.length == 13)
+			multipliers.add(0, 6);
 
 
-        for (int i = 0; i < multipliers.size(); i++) {
-            counter += digits[i] * multipliers.get(i);
-        }
+		for(int i = 0; i < multipliers.size(); i++) {
+			counter += digits[i] * multipliers.get(i);
+		}
 
-        int mod = counter % 11;
+		int mod = counter % 11;
 
-        return mod < 2 ? 0 : 11 - mod;
-    }
+		return mod < 2 ? 0 : 11 - mod;
+	}
 
-    private void validate(String cnpj) {
-        if (!cnpj.matches("^\\d{14}$")) throw new CNPJInvalidoException("formato inválido");
+	private void validate(String cnpj) {
+		if(!cnpj.matches("^\\d{14}$")) throw new CNPJInvalidoException("formato inválido");
 
-        int[] digits = this.convertStringToIntArray(cnpj, 0, cnpj.length() - 2);
+		int[] digits = this.convertStringToIntArray(cnpj, 0, cnpj.length() - 2);
 
-        int[] verifierDigits = this.convertStringToIntArray(cnpj, cnpj.length() - 2, null);
+		int[] verifierDigits = this.convertStringToIntArray(cnpj, cnpj.length() - 2, null);
 
-        if (calculate(digits) != verifierDigits[0]) throw new CNPJInvalidoException("número inválido");
+		if(calculate(digits) != verifierDigits[0]) throw new CNPJInvalidoException("número inválido");
 
-        digits = this.convertStringToIntArray(cnpj, 0, cnpj.length() - 1);
+		digits = this.convertStringToIntArray(cnpj, 0, cnpj.length() - 1);
 
-        if (calculate(digits) != verifierDigits[1]) throw new CNPJInvalidoException("número inválido");
-    }
+		if(calculate(digits) != verifierDigits[1]) throw new CNPJInvalidoException("número inválido");
+	}
 
-    public void setCnpj(String cnpj) {
-        this.validate(cnpj);
+	public void setCnpj(String cnpj) {
+		this.validate(cnpj);
 
-        this.cnpj = cnpj;
-    }
+		this.cnpj = cnpj;
+	}
 
-    public String getCnpjValue() {
-        return cnpj;
-    }
+	public String getCnpjValue() {
+		return cnpj;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CNPJ that = (CNPJ) o;
+	@Override
+	public boolean equals(Object o) {
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+		CNPJ that = (CNPJ) o;
 
-        return Objects.equals(cnpj, that.cnpj);
-    }
+		return Objects.equals(cnpj, that.cnpj);
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(cnpj);
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hash(cnpj);
+	}
 }

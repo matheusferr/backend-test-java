@@ -10,19 +10,19 @@ import java.util.Optional;
 
 @Service
 public class CidadeServiceImpl implements CidadeService {
-    private final CidadeRepository cidadeRepository;
+	private final CidadeRepository cidadeRepository;
 
-    public CidadeServiceImpl(CidadeRepository cidadeRepository) {
-        this.cidadeRepository = cidadeRepository;
-    }
+	public CidadeServiceImpl(CidadeRepository cidadeRepository) {
+		this.cidadeRepository = cidadeRepository;
+	}
 
-    @Override
-    public Optional<Cidade> findByNomeCidade(String nomeCidade) {
-        return this.cidadeRepository.findByNomeCidade(nomeCidade);
-    }
+	@Override
+	public Optional<Cidade> findByNomeCidade(String nomeCidade) {
+		return this.cidadeRepository.findByNomeCidade(nomeCidade);
+	}
 
-    @Override
-    public Cidade create(String nomeCidade, Estado estado) {
-        return this.cidadeRepository.save(new Cidade(nomeCidade, estado));
-    }
+	@Override
+	public Cidade create(String nomeCidade, Estado estado) {
+		return this.cidadeRepository.save(new Cidade(nomeCidade, estado));
+	}
 }

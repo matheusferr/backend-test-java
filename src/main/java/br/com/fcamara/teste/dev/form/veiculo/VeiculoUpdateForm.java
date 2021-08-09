@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 public class VeiculoUpdateForm {
-    @NotNull @NotEmpty
-    private String cor;
+	@NotNull
+	@NotEmpty
+	private String cor;
 }

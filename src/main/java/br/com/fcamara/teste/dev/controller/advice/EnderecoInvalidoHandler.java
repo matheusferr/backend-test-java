@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class EnderecoInvalidoHandler {
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(EnderecoInvalidoException.class)
-    public ResponseEntity<ErroDto> handle(EnderecoInvalidoException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErroDto(e.getMessage()));
-    }
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(EnderecoInvalidoException.class)
+	public ResponseEntity<ErroDto> handle(EnderecoInvalidoException e) {
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErroDto(e.getMessage()));
+	}
 }

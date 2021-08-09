@@ -15,25 +15,25 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EstadoServiceImplTest {
 
-    @Mock
-    private EstadoRepository estadoRepository;
+	@Mock
+	private EstadoRepository estadoRepository;
 
-    @InjectMocks
-    private EstadoServiceImpl estadoServiceImpl;
+	@InjectMocks
+	private EstadoServiceImpl estadoServiceImpl;
 
-    @BeforeEach
-    void beforeEach(){
-        MockitoAnnotations.openMocks(this);
-    }
+	@BeforeEach
+	void beforeEach() {
+		MockitoAnnotations.openMocks(this);
+	}
 
-    @Test
-    void shouldCreateAState() {
-        Estado testEstado = new Estado("SÃO PAULO");
+	@Test
+	void shouldCreateAState() {
+		Estado testEstado = new Estado("SÃO PAULO");
 
-        Mockito.when(estadoRepository.findByNomeEstado("SÃO PAULO")).thenReturn(Optional.of(testEstado));
+		Mockito.when(estadoRepository.findByNomeEstado("SÃO PAULO")).thenReturn(Optional.of(testEstado));
 
-        Estado estado = this.estadoServiceImpl.findByNomeOrCreate("SÃO PAULO");
+		Estado estado = this.estadoServiceImpl.findByNomeOrCreate("SÃO PAULO");
 
-        assertEquals(estado, testEstado);
-    }
+		assertEquals(estado, testEstado);
+	}
 }

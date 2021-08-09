@@ -12,39 +12,40 @@ import javax.persistence.*;
 @Entity
 @Table(name = "Modelos")
 public class Modelo {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-    private String nomeModelo;
+	private String nomeModelo;
 
-    @ManyToOne
-    private Marca marca;
+	@ManyToOne
+	private Marca marca;
 
-    @PrePersist
-    private void prePersist(){
-        this.nomeModelo = this.nomeModelo.toUpperCase();
-    }
+	@PrePersist
+	private void prePersist() {
+		this.nomeModelo = this.nomeModelo.toUpperCase();
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Modelo modelo = (Modelo) o;
+	@Override
+	public boolean equals(Object o) {
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+		Modelo modelo = (Modelo) o;
 
-        return nomeModelo.equals(modelo.nomeModelo) && marca.equals(modelo.marca);
-    }
+		return nomeModelo.equals(modelo.nomeModelo) && marca.equals(modelo.marca);
+	}
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 
-        return result;
-    }
+		return result;
+	}
 
-    public Modelo (String nomeModelo, Marca marca){
-        this.nomeModelo = nomeModelo;
-        this.marca = marca;
-    }
+	public Modelo(String nomeModelo, Marca marca) {
+		this.nomeModelo = nomeModelo;
+		this.marca = marca;
+	}
 }

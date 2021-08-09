@@ -17,43 +17,43 @@ import java.util.List;
 @RestController
 @RequestMapping("/veiculos")
 public class VeiculoController {
-    private final VeiculoServiceImpl veiculoServiceImpl;
+	private final VeiculoServiceImpl veiculoServiceImpl;
 
-    public VeiculoController(VeiculoServiceImpl veiculoServiceImpl) {
-        this.veiculoServiceImpl = veiculoServiceImpl;
-    }
+	public VeiculoController(VeiculoServiceImpl veiculoServiceImpl) {
+		this.veiculoServiceImpl = veiculoServiceImpl;
+	}
 
-    @GetMapping
-    public List<VeiculoDto> index(){
-        return VeiculoDto.convertList(this.veiculoServiceImpl.index());
-    }
+	@GetMapping
+	public List<VeiculoDto> index() {
+		return VeiculoDto.convertList(this.veiculoServiceImpl.index());
+	}
 
-    @GetMapping("/{id}")
-    public VeiculoDto findOne(@PathVariable Integer id){
-        return new VeiculoDto(this.veiculoServiceImpl.findById(id));
-    }
+	@GetMapping("/{id}")
+	public VeiculoDto findOne(@PathVariable Integer id) {
+		return new VeiculoDto(this.veiculoServiceImpl.findById(id));
+	}
 
-    @PostMapping
-    @Transactional
-    public ResponseEntity<VeiculoDto> create(@RequestBody @Valid VeiculoForm veiculoForm,
-                                             UriComponentsBuilder uriBuilder){
-        Veiculo veiculo = this.veiculoServiceImpl.create(veiculoForm);
+	@PostMapping
+	@Transactional
+	public ResponseEntity<VeiculoDto> create(@RequestBody @Valid VeiculoForm veiculoForm,
+	                                         UriComponentsBuilder uriBuilder) {
+		Veiculo veiculo = this.veiculoServiceImpl.create(veiculoForm);
 
-        URI uri = uriBuilder.path("/veiculos/{id}").buildAndExpand(veiculo.getId()).toUri();
+		URI uri = uriBuilder.path("/veiculos/{id}").buildAndExpand(veiculo.getId()).toUri();
 
-        return ResponseEntity.created(uri).body(new VeiculoDto(veiculo));
-    }
+		return ResponseEntity.created(uri).body(new VeiculoDto(veiculo));
+	}
 
-    @PutMapping("/{id}")
-    @Transactional
-    public VeiculoDto update(@PathVariable Integer id, @RequestBody @Valid VeiculoUpdateForm veiculoUpdateForm){
-        return new VeiculoDto(this.veiculoServiceImpl.update(id, veiculoUpdateForm));
-    }
+	@PutMapping("/{id}")
+	@Transactional
+	public VeiculoDto update(@PathVariable Integer id, @RequestBody @Valid VeiculoUpdateForm veiculoUpdateForm) {
+		return new VeiculoDto(this.veiculoServiceImpl.update(id, veiculoUpdateForm));
+	}
 
-    @DeleteMapping("/{id}")
-    @Transactional
-    public ResponseEntity<?> destroy(@PathVariable Integer id){
-        this.veiculoServiceImpl.destroy(id);
-        return ResponseEntity.noContent().build();
-    }
+	@DeleteMapping("/{id}")
+	@Transactional
+	public ResponseEntity<?> destroy(@PathVariable Integer id) {
+		this.veiculoServiceImpl.destroy(id);
+		return ResponseEntity.noContent().build();
+	}
 }

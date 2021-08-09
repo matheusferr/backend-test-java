@@ -7,15 +7,15 @@ import java.time.LocalDateTime;
 
 @Getter
 public class VagaDto {
-    private final String placa;
+	private final String placa;
 
-    private final LocalDateTime entrada;
+	private final LocalDateTime entrada;
 
-    private final LocalDateTime saida;
+	private final LocalDateTime saida;
 
-    public VagaDto(Vaga vaga) {
-        this.placa = vaga.getVeiculo().getPlaca().getPlacaValue();
-        this.entrada = vaga.getEntrada();
-        this.saida = vaga.getSaida();
-    }
+	public VagaDto(Vaga vaga) {
+		this.placa = vaga.getVeiculo().getPlaca().getPlacaValue();
+		this.entrada = vaga.getEntrada();
+		this.saida = vaga.getSaida();
+	}
 }
