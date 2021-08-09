@@ -44,8 +44,6 @@ public class VagaServiceImpl implements VagaService {
 		return vaga.get();
 	}
 
-	;
-
 	@Override
 	public Vaga addVehicle(VagaForm vagaForm) {
 		Veiculo veiculo = this.veiculoServiceImpl.findByPlaca(vagaForm.getPlaca());

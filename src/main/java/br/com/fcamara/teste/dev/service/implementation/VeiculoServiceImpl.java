@@ -1,13 +1,13 @@
 package br.com.fcamara.teste.dev.service.implementation;
 
-import br.com.fcamara.teste.dev.entity.valueObject.Placa;
-import br.com.fcamara.teste.dev.form.veiculo.VeiculoForm;
-import br.com.fcamara.teste.dev.form.veiculo.VeiculoUpdateForm;
 import br.com.fcamara.teste.dev.entity.Cor;
 import br.com.fcamara.teste.dev.entity.Marca;
 import br.com.fcamara.teste.dev.entity.Modelo;
 import br.com.fcamara.teste.dev.entity.Veiculo;
 import br.com.fcamara.teste.dev.entity.enums.VeiculoTipo;
+import br.com.fcamara.teste.dev.entity.valueObject.Placa;
+import br.com.fcamara.teste.dev.form.veiculo.VeiculoForm;
+import br.com.fcamara.teste.dev.form.veiculo.VeiculoUpdateForm;
 import br.com.fcamara.teste.dev.repository.VeiculoRepository;
 import br.com.fcamara.teste.dev.service.definition.VeiculoService;
 import org.springframework.stereotype.Service;

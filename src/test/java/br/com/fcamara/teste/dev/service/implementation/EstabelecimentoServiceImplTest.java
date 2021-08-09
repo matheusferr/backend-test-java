@@ -5,7 +5,6 @@ import br.com.fcamara.teste.dev.entity.valueObject.CNPJ;
 import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoForm;
 import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoTelefoneForm;
 import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoUpdateForm;
-import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoUpdateVagasForm;
 import br.com.fcamara.teste.dev.repository.EstabelecimentoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,11 +13,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class EstabelecimentoServiceImplTest {
 

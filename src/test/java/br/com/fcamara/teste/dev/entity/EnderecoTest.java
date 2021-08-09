@@ -3,7 +3,7 @@ package br.com.fcamara.teste.dev.entity;
 import br.com.fcamara.teste.dev.exception.EnderecoInvalidoException;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class EnderecoTest {
 

@@ -1,6 +1,9 @@
 package br.com.fcamara.teste.dev.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
 
 import javax.persistence.*;
 

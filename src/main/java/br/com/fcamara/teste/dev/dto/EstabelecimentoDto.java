@@ -1,6 +1,6 @@
 package br.com.fcamara.teste.dev.dto;
 
-import br.com.fcamara.teste.dev.entity.*;
+import br.com.fcamara.teste.dev.entity.Estabelecimento;
 import lombok.Getter;
 
 import java.util.List;

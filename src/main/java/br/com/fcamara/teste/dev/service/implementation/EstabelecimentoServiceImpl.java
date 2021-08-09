@@ -1,6 +1,8 @@
 package br.com.fcamara.teste.dev.service.implementation;
 
-import br.com.fcamara.teste.dev.entity.*;
+import br.com.fcamara.teste.dev.entity.Endereco;
+import br.com.fcamara.teste.dev.entity.Estabelecimento;
+import br.com.fcamara.teste.dev.entity.Telefone;
 import br.com.fcamara.teste.dev.entity.valueObject.CNPJ;
 import br.com.fcamara.teste.dev.exception.DadosInvalidosException;
 import br.com.fcamara.teste.dev.exception.OperacaoInvalidaException;

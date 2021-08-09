@@ -12,12 +12,12 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CidadeServiceImplTest {
-	private Estado testEstado = new Estado("SÃO PAULO");
+	private final Estado testEstado = new Estado("SÃO PAULO");
 
-	private Cidade testCidade = new Cidade("SANTOS", testEstado);
+	private final Cidade testCidade = new Cidade("SANTOS", testEstado);
 
 	@Mock
 	private CidadeRepository cidadeRepository;

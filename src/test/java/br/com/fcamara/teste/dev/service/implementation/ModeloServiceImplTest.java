@@ -12,11 +12,11 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ModeloServiceImplTest {
-	private Marca testMarca = new Marca("FIAT");
-	private Modelo testModelo = new Modelo("PALIO", testMarca);
+	private final Marca testMarca = new Marca("FIAT");
+	private final Modelo testModelo = new Modelo("PALIO", testMarca);
 
 	@Mock
 	private ModeloRepository modeloRepository;

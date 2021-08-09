@@ -5,7 +5,6 @@ import br.com.fcamara.teste.dev.entity.Telefone;
 import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoForm;
 import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoTelefoneForm;
 import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoUpdateForm;
-import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoUpdateVagasForm;
 
 import java.util.List;
 

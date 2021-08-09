@@ -3,7 +3,9 @@ package br.com.fcamara.teste.dev.entity;
 import br.com.fcamara.teste.dev.entity.converter.PlacaConverter;
 import br.com.fcamara.teste.dev.entity.enums.VeiculoTipo;
 import br.com.fcamara.teste.dev.entity.valueObject.Placa;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Objects;

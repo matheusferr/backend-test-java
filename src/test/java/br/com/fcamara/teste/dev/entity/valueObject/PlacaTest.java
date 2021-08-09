@@ -3,7 +3,8 @@ package br.com.fcamara.teste.dev.entity.valueObject;
 import br.com.fcamara.teste.dev.exception.PlacaInvalidaException;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PlacaTest {
 	@Test

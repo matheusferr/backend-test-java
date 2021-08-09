@@ -1,7 +1,6 @@
 package br.com.fcamara.teste.dev.entity.valueObject;
 
 import br.com.fcamara.teste.dev.exception.CNPJInvalidoException;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;

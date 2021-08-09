@@ -2,7 +2,6 @@ package br.com.fcamara.teste.dev.service.implementation;
 
 import br.com.fcamara.teste.dev.entity.Marca;
 import br.com.fcamara.teste.dev.repository.MarcaRepository;
-import br.com.fcamara.teste.dev.service.definition.MarcaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -12,7 +11,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MarcaServiceImplTest {
 
