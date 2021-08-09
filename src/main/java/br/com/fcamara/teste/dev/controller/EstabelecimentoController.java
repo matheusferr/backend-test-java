@@ -2,11 +2,9 @@ package br.com.fcamara.teste.dev.controller;
 
 import br.com.fcamara.teste.dev.dto.EstabelecimentoDto;
 import br.com.fcamara.teste.dev.dto.TelefoneDto;
-import br.com.fcamara.teste.dev.dto.VagasDto;
 import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoForm;
 import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoTelefoneForm;
 import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoUpdateForm;
-import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoUpdateVagasForm;
 import br.com.fcamara.teste.dev.service.implementation.EstabelecimentoServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -74,13 +72,6 @@ public class EstabelecimentoController {
     public EstabelecimentoDto update(@PathVariable Integer id,
                                      @RequestBody @Valid EstabelecimentoUpdateForm estabelecimentoForm) {
         return new EstabelecimentoDto(this.estabelecimentoServiceImpl.update(id, estabelecimentoForm));
-    }
-
-    @PutMapping("/{id}/vagas")
-    @Transactional
-    public VagasDto updateVagas(@PathVariable Integer id,
-                                @RequestBody @Valid EstabelecimentoUpdateVagasForm estabelecimentoForm) {
-        return new VagasDto(this.estabelecimentoServiceImpl.updateVagas(id, estabelecimentoForm));
     }
 
     @DeleteMapping("/{id}")

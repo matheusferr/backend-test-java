@@ -1,5 +1,6 @@
 package br.com.fcamara.teste.dev.service.implementation;
 
+import br.com.fcamara.teste.dev.entity.valueObject.Placa;
 import br.com.fcamara.teste.dev.form.veiculo.VeiculoForm;
 import br.com.fcamara.teste.dev.form.veiculo.VeiculoUpdateForm;
 import br.com.fcamara.teste.dev.entity.Cor;
@@ -50,7 +51,7 @@ public class VeiculoServiceImpl implements VeiculoService {
 
     @Override
     public Veiculo findByPlaca(String placa) {
-        Optional<Veiculo> veiculo = this.veiculoRepository.findByPlaca(placa);
+        Optional<Veiculo> veiculo = this.veiculoRepository.findByPlaca(new Placa(placa));
 
         if (veiculo.isEmpty()) throw new EntityNotFoundException();
 

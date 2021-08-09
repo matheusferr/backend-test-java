@@ -15,7 +15,7 @@ public interface EstabelecimentoService {
     Estabelecimento findByCnpj(String cnpj);
     Estabelecimento create(EstabelecimentoForm estabelecimentoForm);
     Estabelecimento update(Integer id, EstabelecimentoUpdateForm estabelecimentoUpdateForm);
-    Estabelecimento updateVagas(Integer id, EstabelecimentoUpdateVagasForm estabelecimentoUpdateForm);
+    void updateVagas(Estabelecimento estabelecimento);
     List<Telefone> getPhones(Integer id);
     Estabelecimento addPhone(Integer id, EstabelecimentoTelefoneForm estabelecimentoTelefoneForm);
     void removePhone(Integer id, EstabelecimentoTelefoneForm estabelecimentoTelefoneForm);

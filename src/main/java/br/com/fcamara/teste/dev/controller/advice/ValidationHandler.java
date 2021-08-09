@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestControllerAdvice
 public class ValidationHandler {
-    private MessageSource messageSource;
+    private final MessageSource messageSource;
 
     public ValidationHandler(MessageSource messageSource) {
         this.messageSource = messageSource;

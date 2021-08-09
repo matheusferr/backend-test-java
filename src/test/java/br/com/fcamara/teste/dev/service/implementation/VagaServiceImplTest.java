@@ -5,6 +5,7 @@ import br.com.fcamara.teste.dev.entity.enums.VeiculoTipo;
 import br.com.fcamara.teste.dev.entity.valueObject.CNPJ;
 import br.com.fcamara.teste.dev.entity.valueObject.Placa;
 import br.com.fcamara.teste.dev.exception.OperacaoInvalidaException;
+import br.com.fcamara.teste.dev.form.vaga.VagaForm;
 import br.com.fcamara.teste.dev.repository.VagaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,12 +14,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class EntradaSaidaServiceServiceImplTest {
+class VagaServiceImplTest {
     @Mock
     private EstabelecimentoServiceImpl estabelecimentoServiceImpl;
 
@@ -29,13 +30,15 @@ class EntradaSaidaServiceServiceImplTest {
     private VagaRepository vagaRepository;
 
     @InjectMocks
-    private EntradaSaidaServiceServiceImpl entradaSaidaServiceImpl;
+    private VagaServiceImpl vagaServiceImpl;
 
     private Estabelecimento testEstabelecimento;
 
     private Vaga testVaga;
 
-    private final List<Veiculo> testVeiculos = new ArrayList<>();
+    private VagaForm vagaForm;
+
+    private Veiculo testVeiculo;
 
     @BeforeEach
     void beforeEach() {
@@ -45,7 +48,6 @@ class EntradaSaidaServiceServiceImplTest {
         Cidade testCidade = new Cidade("SANTOS", testEstado);
         Endereco testEndereco = new Endereco("AVENIDA CONSELHEIRO NÉBIAS", "1", testCidade);
 
-
         this.testEstabelecimento = new Estabelecimento("TEST01", new CNPJ("45857255000103"),
                 testEndereco, new Telefone("1234567890"), 1, 1);
 
@@ -53,22 +55,26 @@ class EntradaSaidaServiceServiceImplTest {
         Modelo testModelo = new Modelo("Palio", testMarca);
         Cor testCor = new Cor("Vermelho");
 
-        this.testVeiculos.add(new Veiculo(testModelo, testCor, new Placa("BRA1A23"), VeiculoTipo.CARRO));
-        this.testVeiculos.add(new Veiculo(testModelo, testCor, new Placa("BRA4A56"),VeiculoTipo.CARRO));
+        this.testVeiculo = new Veiculo(testModelo, testCor, new Placa("BRA1A23"), VeiculoTipo.CARRO);
 
-        testVaga = new Vaga(this.testVeiculos.get(0));
+        vagaForm = new VagaForm();
+
+        vagaForm.setCnpj(testEstabelecimento.getCnpj().getCnpjValue());
+        vagaForm.setPlaca(testVeiculo.getPlaca().getPlacaValue());
+
+        testVaga = new Vaga(this.testVeiculo);
     }
 
     @Test
     void shouldAddAVehicle() {
-        Mockito.when(this.veiculoServiceImpl.findByPlaca("BRA1A23")).thenReturn(this.testVeiculos.get(0));
-        Mockito.when(this.estabelecimentoServiceImpl.findByCnpj("45857255000103")).thenReturn(
+        Mockito.when(this.veiculoServiceImpl.findByPlaca(this.vagaForm.getPlaca())).thenReturn(this.testVeiculo);
+        Mockito.when(this.estabelecimentoServiceImpl.findByCnpj(this.vagaForm.getCnpj())).thenReturn(
                 this.testEstabelecimento
         );
 
         Mockito.when(this.vagaRepository.save(testVaga)).thenReturn(testVaga);
 
-        Vaga vaga = this.entradaSaidaServiceImpl.addVehicle("BRA1A23", "45857255000103");
+        Vaga vaga = this.vagaServiceImpl.addVehicle(this.vagaForm);
 
         assertEquals(testVaga, vaga);
     }
@@ -77,36 +83,43 @@ class EntradaSaidaServiceServiceImplTest {
     void shouldNotAddAVehicle() {
         this.testEstabelecimento.getVagas().add(testVaga);
 
-        Mockito.when(this.veiculoServiceImpl.findByPlaca("BRA1A23")).thenReturn(this.testVeiculos.get(0));
-        Mockito.when(this.estabelecimentoServiceImpl.findByCnpj("45857255000103")).thenReturn(
+        Mockito.when(this.veiculoServiceImpl.findByPlaca(this.vagaForm.getPlaca())).thenReturn(this.testVeiculo);
+        Mockito.when(this.estabelecimentoServiceImpl.findByCnpj(this.vagaForm.getCnpj())).thenReturn(
                 this.testEstabelecimento
         );
 
+
         assertThrows(OperacaoInvalidaException.class,
-                () -> this.entradaSaidaServiceImpl.addVehicle("BRA1A23", "45857255000103"));
+                () -> this.vagaServiceImpl.addVehicle(this.vagaForm));
     }
 
     @Test
     void shouldRemoveAVehicle() {
         this.testEstabelecimento.getVagas().add(testVaga);
 
-        Mockito.when(this.veiculoServiceImpl.findByPlaca("BRA1A23")).thenReturn(this.testVeiculos.get(0));
-        Mockito.when(this.estabelecimentoServiceImpl.findByCnpj("45857255000103")).thenReturn(
+        Mockito.when(this.veiculoServiceImpl.findByPlaca(this.vagaForm.getPlaca())).thenReturn(this.testVeiculo);
+        Mockito.when(this.estabelecimentoServiceImpl.findByCnpj(this.vagaForm.getCnpj())).thenReturn(
                 this.testEstabelecimento
         );
+        Mockito.when(this.vagaRepository.findByVeiculoAndSaidaNull(this.testVeiculo)).thenReturn(Optional.of(testVaga));
 
-        this.entradaSaidaServiceImpl.removeVehicle("BRA1A23", "45857255000103");
+        testVaga.setSaida(LocalDateTime.now());
+
+        Mockito.when(this.vagaRepository.save(testVaga)).thenReturn(testVaga);
+
+        Vaga vaga = this.vagaServiceImpl.removeVehicle(this.vagaForm);
+
+        assertEquals(testVaga, vaga);
     }
 
     @Test
     void shouldNotRemoveAVehicle() {
-        Mockito.when(this.veiculoServiceImpl.findByPlaca("BRA1A23")).thenReturn(this.testVeiculos.get(0));
-        Mockito.when(this.estabelecimentoServiceImpl.findByCnpj("45857255000103")).thenReturn(
+        Mockito.when(this.veiculoServiceImpl.findByPlaca(this.vagaForm.getPlaca())).thenReturn(this.testVeiculo);
+        Mockito.when(this.estabelecimentoServiceImpl.findByCnpj(this.vagaForm.getCnpj())).thenReturn(
                 this.testEstabelecimento
         );
 
-
         assertThrows(OperacaoInvalidaException.class,
-                () -> this.entradaSaidaServiceImpl.removeVehicle("BRA1A23", "45857255000103"));
+                () -> this.vagaServiceImpl.removeVehicle(this.vagaForm));
     }
 }

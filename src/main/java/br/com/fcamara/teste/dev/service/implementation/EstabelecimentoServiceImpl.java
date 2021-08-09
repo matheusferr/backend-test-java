@@ -7,7 +7,6 @@ import br.com.fcamara.teste.dev.exception.OperacaoInvalidaException;
 import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoForm;
 import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoTelefoneForm;
 import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoUpdateForm;
-import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoUpdateVagasForm;
 import br.com.fcamara.teste.dev.repository.EstabelecimentoRepository;
 import br.com.fcamara.teste.dev.service.definition.EstabelecimentoService;
 import org.springframework.stereotype.Service;
@@ -49,13 +48,12 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 
     @Override
     public Estabelecimento findByCnpj(String cnpj) {
-        Optional<Estabelecimento> estabelecimento = this.estabelecimentoRepository.findByCnpj(cnpj);
+        Optional<Estabelecimento> estabelecimento = this.estabelecimentoRepository.findByCnpj(new CNPJ(cnpj));
 
         if (estabelecimento.isEmpty()) throw new EntityNotFoundException();
 
         return estabelecimento.get();
     }
-
 
     @Override
     public Estabelecimento create(EstabelecimentoForm estabelecimentoForm) {
@@ -77,17 +75,11 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
     public Estabelecimento update(Integer id, EstabelecimentoUpdateForm estabelecimentoUpdateForm) {
         Estabelecimento estabelecimento = this.getEstabelecimento(id);
 
-        estabelecimento.setNomeEstabelecimento(estabelecimentoUpdateForm.getNome());
+        if(!estabelecimentoUpdateForm.getNome().equals(""))
+            estabelecimento.setNomeEstabelecimento(estabelecimentoUpdateForm.getNome());
 
-        return this.estabelecimentoRepository.save(estabelecimento);
-    }
-
-    @Override
-    public Estabelecimento updateVagas(Integer id, EstabelecimentoUpdateVagasForm estabelecimentoUpdateForm) {
         if (estabelecimentoUpdateForm.getVagasCarro() == null && estabelecimentoUpdateForm.getVagasMoto() == null)
             throw new DadosInvalidosException("os valores das vagas de carros e motos não podem ser nulos");
-
-        Estabelecimento estabelecimento = this.getEstabelecimento(id);
 
         if (estabelecimentoUpdateForm.getVagasCarro() != null)
             estabelecimento.setVagasCarro(estabelecimentoUpdateForm.getVagasCarro());
@@ -96,6 +88,11 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
             estabelecimento.setVagasMoto(estabelecimentoUpdateForm.getVagasMoto());
 
         return this.estabelecimentoRepository.save(estabelecimento);
+    }
+
+    @Override
+    public void updateVagas(Estabelecimento estabelecimento) {
+        this.estabelecimentoRepository.save(estabelecimento);
     }
 
     @Override

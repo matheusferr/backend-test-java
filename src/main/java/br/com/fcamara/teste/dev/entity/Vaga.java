@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -21,25 +21,23 @@ public class Vaga {
     @OneToOne(fetch = FetchType.LAZY)
     private Veiculo veiculo;
 
-    private LocalDate entrada;
+    private LocalDateTime entrada;
 
-    private LocalDate saida;
+    private LocalDateTime saida;
 
     public Vaga(Veiculo veiculo) {
         this.veiculo = veiculo;
-        this.entrada = LocalDate.now();
+        this.entrada = LocalDateTime.now();
         this.saida = null;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-
         if (o == null || getClass() != o.getClass()) return false;
-
         Vaga vaga = (Vaga) o;
 
-        return Objects.equals(id, vaga.id) && Objects.equals(veiculo, vaga.veiculo);
+        return Objects.equals(veiculo, vaga.veiculo);
     }
 
     @Override

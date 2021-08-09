@@ -22,19 +22,15 @@ import java.util.Optional;
 
 class EstabelecimentoServiceImplTest {
 
+    private final List<Estabelecimento> testEstabelecimentos = new ArrayList<>();
     @Mock
     private EstabelecimentoRepository estabelecimentoRepository;
-
     @Mock
     private EnderecoServiceImpl enderecoServiceImpl;
-
     @Mock
     private TelefoneServiceImpl telefoneServiceImpl;
-
     @InjectMocks
     private EstabelecimentoServiceImpl estabelecimentoServiceImpl;
-
-    private final List<Estabelecimento> testEstabelecimentos = new ArrayList<>();
 
     @BeforeEach
     void beforeEach() {
@@ -129,6 +125,10 @@ class EstabelecimentoServiceImplTest {
 
         estabelecimentoUpdateForm.setNome("TEST03");
 
+        estabelecimentoUpdateForm.setVagasCarro(12);
+
+        estabelecimentoUpdateForm.setVagasMoto(8);
+
         Mockito.when(this.estabelecimentoRepository.findById(2))
                 .thenReturn(Optional.of(testEstabelecimento));
 
@@ -143,35 +143,6 @@ class EstabelecimentoServiceImplTest {
                 estabelecimentoAtualizado.getNomeEstabelecimento(),
                 this.testEstabelecimentos.get(1).getNomeEstabelecimento()
         );
-        assertEquals(estabelecimentoAtualizado.getCnpj(), this.testEstabelecimentos.get(1).getCnpj());
-    }
-
-    @Test
-    void shouldUpdateAnEstablishmentsSlots() {
-        Estabelecimento baseEstabelecimento = this.testEstabelecimentos.get(1);
-
-
-        Estabelecimento testEstabelecimento = new Estabelecimento(baseEstabelecimento.getNomeEstabelecimento(),
-                baseEstabelecimento.getCnpj(), baseEstabelecimento.getEndereco(),
-                baseEstabelecimento.getTelefones().get(0), baseEstabelecimento.getVagasCarro(),
-                baseEstabelecimento.getVagasMoto());
-
-        EstabelecimentoUpdateVagasForm estabelecimentoUpdateForm = new EstabelecimentoUpdateVagasForm();
-
-        estabelecimentoUpdateForm.setVagasCarro(2);
-        estabelecimentoUpdateForm.setVagasMoto(2);
-
-        Mockito.when(this.estabelecimentoRepository.findById(2))
-                .thenReturn(Optional.of(testEstabelecimento));
-
-        testEstabelecimento.setVagasCarro(estabelecimentoUpdateForm.getVagasCarro());
-        testEstabelecimento.setVagasMoto(estabelecimentoUpdateForm.getVagasMoto());
-
-        Mockito.when(this.estabelecimentoRepository.save(testEstabelecimento)).thenReturn(testEstabelecimento);
-
-        Estabelecimento estabelecimentoAtualizado = this.estabelecimentoServiceImpl
-                .updateVagas(2, estabelecimentoUpdateForm);
-
         assertNotEquals(
                 estabelecimentoAtualizado.getVagasCarro(),
                 this.testEstabelecimentos.get(1).getVagasCarro()
@@ -183,9 +154,8 @@ class EstabelecimentoServiceImplTest {
         assertEquals(estabelecimentoAtualizado.getCnpj(), this.testEstabelecimentos.get(1).getCnpj());
     }
 
-
     @Test
-    void shouldAddAPhone(){
+    void shouldAddAPhone() {
         Estabelecimento testEstabelecimento = this.testEstabelecimentos.get(0);
 
         EstabelecimentoTelefoneForm estabelecimentoForm = new EstabelecimentoTelefoneForm();
