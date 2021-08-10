@@ -1,9 +1,6 @@
 package br.com.fcamara.teste.dev.service.implementation;
 
-import br.com.fcamara.teste.dev.entity.Cor;
-import br.com.fcamara.teste.dev.entity.Marca;
-import br.com.fcamara.teste.dev.entity.Modelo;
-import br.com.fcamara.teste.dev.entity.Veiculo;
+import br.com.fcamara.teste.dev.entity.*;
 import br.com.fcamara.teste.dev.entity.enums.VeiculoTipo;
 import br.com.fcamara.teste.dev.entity.valueObject.Placa;
 import br.com.fcamara.teste.dev.form.veiculo.VeiculoForm;
@@ -21,13 +18,16 @@ public class VeiculoServiceImpl implements VeiculoService {
 	private final MarcaServiceImpl marcaServiceImpl;
 	private final ModeloServiceImpl modeloServiceImpl;
 	private final CorServiceImpl corServiceImpl;
+	private final TipoServiceImpl tipoServiceImpl;
 	private final VeiculoRepository veiculoRepository;
 
 	public VeiculoServiceImpl(MarcaServiceImpl marcaServiceImpl, ModeloServiceImpl modeloServiceImpl,
-	                          CorServiceImpl corServiceImpl, VeiculoRepository veiculoRepository) {
+	                          CorServiceImpl corServiceImpl, TipoServiceImpl tipoServiceImpl,
+	                          VeiculoRepository veiculoRepository) {
 		this.marcaServiceImpl = marcaServiceImpl;
 		this.modeloServiceImpl = modeloServiceImpl;
 		this.corServiceImpl = corServiceImpl;
+		this.tipoServiceImpl = tipoServiceImpl;
 		this.veiculoRepository = veiculoRepository;
 	}
 
@@ -62,7 +62,7 @@ public class VeiculoServiceImpl implements VeiculoService {
 	public Veiculo create(VeiculoForm veiculoForm) {
 		Veiculo veiculo;
 
-		VeiculoTipo tipo = VeiculoTipo.valueOf(veiculoForm.getTipo());
+		Tipo tipo = this.tipoServiceImpl.findOneOrCreate(VeiculoTipo.valueOf(veiculoForm.getTipo()));
 
 		Cor cor = this.corServiceImpl.findByNomeOrCreate(veiculoForm.getCor());
 

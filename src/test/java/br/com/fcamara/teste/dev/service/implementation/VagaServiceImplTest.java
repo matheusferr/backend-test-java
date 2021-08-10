@@ -55,8 +55,9 @@ class VagaServiceImplTest {
 		Marca testMarca = new Marca("Fiat");
 		Modelo testModelo = new Modelo("Palio", testMarca);
 		Cor testCor = new Cor("Vermelho");
+		Tipo testTipo = new Tipo(VeiculoTipo.CARRO);
 
-		this.testVeiculo = new Veiculo(testModelo, testCor, new Placa("BRA1A23"), VeiculoTipo.CARRO);
+		this.testVeiculo = new Veiculo(testModelo, testCor, new Placa("BRA1A23"), testTipo);
 
 		vagaForm = new VagaForm();
 
@@ -88,7 +89,10 @@ class VagaServiceImplTest {
 		Mockito.when(this.estabelecimentoServiceImpl.findByCnpj(this.vagaForm.getCnpj())).thenReturn(
 				this.testEstabelecimento
 		);
-
+		Mockito.when(this.vagaRepository.countAllByTipoAndSaidaNull(testVeiculo.getTipo())).thenReturn(0);
+		Mockito.when(this.vagaRepository.findByVeiculoAndSaidaNull(this.testVeiculo)).thenReturn(
+				Optional.of(this.testVaga)
+		);
 
 		assertThrows(OperacaoInvalidaException.class,
 				() -> this.vagaServiceImpl.addVehicle(this.vagaForm));
@@ -118,6 +122,10 @@ class VagaServiceImplTest {
 		Mockito.when(this.veiculoServiceImpl.findByPlaca(this.vagaForm.getPlaca())).thenReturn(this.testVeiculo);
 		Mockito.when(this.estabelecimentoServiceImpl.findByCnpj(this.vagaForm.getCnpj())).thenReturn(
 				this.testEstabelecimento
+		);
+
+		Mockito.when(this.vagaRepository.findByVeiculoAndSaidaNull(this.testVeiculo)).thenReturn(
+				Optional.empty()
 		);
 
 		assertThrows(OperacaoInvalidaException.class,

@@ -21,12 +21,16 @@ public class Vaga {
 	@OneToOne(fetch = FetchType.LAZY)
 	private Veiculo veiculo;
 
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Tipo tipo;
+
 	private LocalDateTime entrada;
 
 	private LocalDateTime saida;
 
 	public Vaga(Veiculo veiculo) {
 		this.veiculo = veiculo;
+		this.tipo = veiculo.getTipo();
 		this.entrada = LocalDateTime.now();
 		this.saida = null;
 	}

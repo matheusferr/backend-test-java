@@ -1,7 +1,6 @@
 package br.com.fcamara.teste.dev.entity;
 
 import br.com.fcamara.teste.dev.entity.converter.PlacaConverter;
-import br.com.fcamara.teste.dev.entity.enums.VeiculoTipo;
 import br.com.fcamara.teste.dev.entity.valueObject.Placa;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,10 +29,10 @@ public class Veiculo {
 	@Column(unique = true)
 	private Placa placa;
 
-	@Enumerated(EnumType.STRING)
-	private VeiculoTipo tipo;
+	@OneToOne(cascade = CascadeType.PERSIST)
+	private Tipo tipo;
 
-	public Veiculo(Modelo modelo, Cor cor, Placa placa, VeiculoTipo tipo) {
+	public Veiculo(Modelo modelo, Cor cor, Placa placa, Tipo tipo) {
 		this.modelo = modelo;
 		this.cor = cor;
 		this.placa = placa;
@@ -47,7 +46,7 @@ public class Veiculo {
 		Veiculo that = (Veiculo) o;
 
 		return Objects.equals(modelo, that.modelo) && Objects.equals(cor, that.cor) &&
-				Objects.equals(placa, that.placa) && tipo == that.tipo;
+				Objects.equals(placa, that.placa) && Objects.equals(tipo, that.tipo);
 	}
 
 	@Override

@@ -1,9 +1,6 @@
 package br.com.fcamara.teste.dev.service.implementation;
 
-import br.com.fcamara.teste.dev.entity.Cor;
-import br.com.fcamara.teste.dev.entity.Marca;
-import br.com.fcamara.teste.dev.entity.Modelo;
-import br.com.fcamara.teste.dev.entity.Veiculo;
+import br.com.fcamara.teste.dev.entity.*;
 import br.com.fcamara.teste.dev.entity.enums.VeiculoTipo;
 import br.com.fcamara.teste.dev.entity.valueObject.Placa;
 import br.com.fcamara.teste.dev.form.veiculo.VeiculoForm;
@@ -34,6 +31,9 @@ class VeiculoServiceImplTest {
 	private ModeloServiceImpl modeloServiceImpl;
 
 	@Mock
+	private TipoServiceImpl tipoServiceImpl;
+
+	@Mock
 	private VeiculoRepository veiculoRepository;
 
 	@InjectMocks
@@ -42,10 +42,11 @@ class VeiculoServiceImplTest {
 	private final Marca testMarca = new Marca("Fiat");
 	private final Modelo testModelo = new Modelo("Palio", testMarca);
 	private final Cor testCor = new Cor("Vermelho");
+	private final Tipo testTipo = new Tipo(VeiculoTipo.CARRO);
 
 	private final List<Veiculo> testVeiculos = new ArrayList<>(List.of(
-			new Veiculo(testModelo, testCor, new Placa("BRA1A23"), VeiculoTipo.CARRO),
-			new Veiculo(testModelo, testCor, new Placa("BRA4A56"), VeiculoTipo.CARRO)
+			new Veiculo(testModelo, testCor, new Placa("BRA1A23"), testTipo),
+			new Veiculo(testModelo, testCor, new Placa("BRA4A56"), testTipo)
 	));
 
 	@BeforeEach
@@ -75,11 +76,12 @@ class VeiculoServiceImplTest {
 				"CARRO");
 
 		Mockito.when(this.corServiceImpl.findByNomeOrCreate(veiculoForm.getCor())).thenReturn(testCor);
+		Mockito.when(this.tipoServiceImpl.findOneOrCreate(VeiculoTipo.CARRO)).thenReturn(testTipo);
 		Mockito.when(this.modeloServiceImpl.findByNomeModelo(veiculoForm.getModelo())).thenReturn(Optional.empty());
 		Mockito.when(this.marcaServiceImpl.findByNomeOrCreate(veiculoForm.getMarca())).thenReturn(testMarca);
 		Mockito.when(this.modeloServiceImpl.create(veiculoForm.getModelo(), testMarca)).thenReturn(testModelo);
 
-		Veiculo veiculo = veiculoForm.toVeiculo(testModelo, testCor, VeiculoTipo.CARRO);
+		Veiculo veiculo = veiculoForm.toVeiculo(testModelo, testCor, testTipo);
 
 		Mockito.when(this.veiculoRepository.save(veiculo)).thenReturn(veiculo);
 

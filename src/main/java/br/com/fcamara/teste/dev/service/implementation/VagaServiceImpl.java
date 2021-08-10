@@ -1,8 +1,10 @@
 package br.com.fcamara.teste.dev.service.implementation;
 
 import br.com.fcamara.teste.dev.entity.Estabelecimento;
+import br.com.fcamara.teste.dev.entity.Tipo;
 import br.com.fcamara.teste.dev.entity.Vaga;
 import br.com.fcamara.teste.dev.entity.Veiculo;
+import br.com.fcamara.teste.dev.entity.enums.VeiculoTipo;
 import br.com.fcamara.teste.dev.exception.OperacaoInvalidaException;
 import br.com.fcamara.teste.dev.form.vaga.VagaForm;
 import br.com.fcamara.teste.dev.repository.VagaRepository;
@@ -27,13 +29,18 @@ public class VagaServiceImpl implements VagaService {
 		this.vagaRepository = vagaRepository;
 	}
 
-	private List<Vaga> getVagas(String cnpj) {
-		Estabelecimento estabelecimento = estabelecimentoServiceImpl.findByCnpj(cnpj);
-		return estabelecimento.getVagas();
+	private boolean exists(Veiculo veiculo) {
+		Optional<Vaga> existente = this.vagaRepository.findByVeiculoAndSaidaNull(veiculo);
+
+		return existente.isPresent();
 	}
 
-	private boolean isPresent(List<Vaga> vagas, Veiculo veiculo) {
-		return vagas.stream().anyMatch(vaga -> vaga.getVeiculo().equals(veiculo));
+	private void hasEmptySlots(Tipo tipo, Integer limiteVagas) {
+		Integer vagas = this.vagaRepository.countAllByTipoAndSaidaNull(tipo);
+
+		if(limiteVagas - vagas == 0) throw new OperacaoInvalidaException(
+				"não há vagas disponíveis"
+		);
 	}
 
 	private Vaga getVaga(Veiculo veiculo) {
@@ -47,18 +54,20 @@ public class VagaServiceImpl implements VagaService {
 	@Override
 	public Vaga addVehicle(VagaForm vagaForm) {
 		Veiculo veiculo = this.veiculoServiceImpl.findByPlaca(vagaForm.getPlaca());
+		Estabelecimento estabelecimento = this.estabelecimentoServiceImpl.findByCnpj(vagaForm.getCnpj());
 
-		Optional<Vaga> existente = this.vagaRepository.findByVeiculoAndSaidaNull(veiculo);
-
-		if(existente.isPresent()) throw new OperacaoInvalidaException(
+		if(this.exists(veiculo)) throw new OperacaoInvalidaException(
 				"veiculo já vinculado a outro estacionamento"
 		);
 
-		List<Vaga> vagas = this.getVagas(vagaForm.getCnpj());
+		if(veiculo.getTipo().getTipoValue().equalsIgnoreCase(VeiculoTipo.CARRO.toString()))
+			this.hasEmptySlots(veiculo.getTipo(), estabelecimento.getVagasCarro());
 
-		if(this.isPresent(vagas, veiculo)) throw new OperacaoInvalidaException(
-				"veiculo já vinculado ao estacionamento"
-		);
+		else
+			this.hasEmptySlots(veiculo.getTipo(), estabelecimento.getVagasMoto());
+
+
+		List<Vaga> vagas = estabelecimento.getVagas();
 
 		Vaga vaga = new Vaga(veiculo);
 
@@ -70,11 +79,13 @@ public class VagaServiceImpl implements VagaService {
 	@Override
 	public Vaga removeVehicle(VagaForm vagaForm) {
 		Veiculo veiculo = veiculoServiceImpl.findByPlaca(vagaForm.getPlaca());
-		List<Vaga> vagas = this.getVagas(vagaForm.getCnpj());
+		Estabelecimento estabelecimento = this.estabelecimentoServiceImpl.findByCnpj(vagaForm.getCnpj());
 
-		if(!this.isPresent(vagas, veiculo)) throw new OperacaoInvalidaException(
+		if(!this.exists(veiculo)) throw new OperacaoInvalidaException(
 				"veiculo não vinculado ao estacionamento"
 		);
+
+		List<Vaga> vagas = estabelecimento.getVagas();
 
 		Vaga vaga = this.getVaga(veiculo);
 

@@ -2,9 +2,10 @@ package br.com.fcamara.teste.dev.form.veiculo;
 
 import br.com.fcamara.teste.dev.entity.Cor;
 import br.com.fcamara.teste.dev.entity.Modelo;
+import br.com.fcamara.teste.dev.entity.Tipo;
 import br.com.fcamara.teste.dev.entity.Veiculo;
-import br.com.fcamara.teste.dev.entity.enums.VeiculoTipo;
 import br.com.fcamara.teste.dev.entity.valueObject.Placa;
+import br.com.fcamara.teste.dev.exception.DadosInvalidosException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,7 +37,14 @@ public class VeiculoForm {
 	@NotEmpty
 	private String tipo;
 
+	private void validate(String tipo) {
+		if(!tipo.equalsIgnoreCase("carro") && !tipo.equalsIgnoreCase("moto"))
+			throw new DadosInvalidosException("tipo de veículo deve ser carro ou moto");
+	}
+
 	public VeiculoForm(String marca, String modelo, String cor, String placa, String tipo) {
+		this.validate(tipo);
+
 		this.marca = marca;
 		this.modelo = modelo;
 		this.cor = cor;
@@ -44,7 +52,13 @@ public class VeiculoForm {
 		this.tipo = tipo.toUpperCase();
 	}
 
-	public Veiculo toVeiculo(Modelo modelo, Cor cor, VeiculoTipo tipo) {
+	public void setTipo(String tipo) {
+		this.validate(tipo);
+
+		this.tipo = tipo;
+	}
+
+	public Veiculo toVeiculo(Modelo modelo, Cor cor, Tipo tipo) {
 		return new Veiculo(modelo, cor, new Placa(this.placa), tipo);
 	}
 }
