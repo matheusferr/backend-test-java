@@ -1,9 +1,6 @@
 package br.com.fcamara.teste.dev.service.implementation;
 
-import br.com.fcamara.teste.dev.entity.Cor;
-import br.com.fcamara.teste.dev.entity.Marca;
-import br.com.fcamara.teste.dev.entity.Modelo;
-import br.com.fcamara.teste.dev.entity.Veiculo;
+import br.com.fcamara.teste.dev.entity.*;
 import br.com.fcamara.teste.dev.entity.enums.VeiculoTipo;
 import br.com.fcamara.teste.dev.entity.valueObject.Placa;
 import br.com.fcamara.teste.dev.form.veiculo.VeiculoForm;
@@ -19,98 +16,102 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class VeiculoServiceImplTest {
-    @Mock
-    private MarcaServiceImpl marcaServiceImpl;
+	@Mock
+	private MarcaServiceImpl marcaServiceImpl;
 
-    @Mock
-    private CorServiceImpl corServiceImpl;
+	@Mock
+	private CorServiceImpl corServiceImpl;
 
-    @Mock
-    private ModeloServiceImpl modeloServiceImpl;
+	@Mock
+	private ModeloServiceImpl modeloServiceImpl;
 
-    @Mock
-    private VeiculoRepository veiculoRepository;
+	@Mock
+	private TipoServiceImpl tipoServiceImpl;
 
-    @InjectMocks
-    private VeiculoServiceImpl veiculoServiceImpl;
+	@Mock
+	private VeiculoRepository veiculoRepository;
 
-    private final Marca testMarca = new Marca("Fiat");
-    private final Modelo testModelo = new Modelo("Palio", testMarca);
-    private final Cor testCor = new Cor("Vermelho");
+	@InjectMocks
+	private VeiculoServiceImpl veiculoServiceImpl;
 
-    private final List<Veiculo> testVeiculos = new ArrayList<>(List.of(
-            new Veiculo(testModelo, testCor, new Placa("BRA1A23"),VeiculoTipo.CARRO),
-            new Veiculo(testModelo, testCor, new Placa("BRA4A56"),VeiculoTipo.CARRO)
-    ));
+	private final Marca testMarca = new Marca("Fiat");
+	private final Modelo testModelo = new Modelo("Palio", testMarca);
+	private final Cor testCor = new Cor("Vermelho");
+	private final Tipo testTipo = new Tipo(VeiculoTipo.CARRO);
 
-    @BeforeEach
-    void beforeEach() {
-        MockitoAnnotations.openMocks(this);
-    }
+	private final List<Veiculo> testVeiculos = new ArrayList<>(List.of(
+			new Veiculo(testModelo, testCor, new Placa("BRA1A23"), testTipo),
+			new Veiculo(testModelo, testCor, new Placa("BRA4A56"), testTipo)
+	));
 
-    @Test
-    void shoudReturnAListOfVehicles() {
-        Mockito.when(veiculoRepository.findAll()).thenReturn(this.testVeiculos);
+	@BeforeEach
+	void beforeEach() {
+		MockitoAnnotations.openMocks(this);
+	}
 
-        assertEquals(veiculoServiceImpl.index(), this.testVeiculos);
-    }
+	@Test
+	void shoudReturnAListOfVehicles() {
+		Mockito.when(veiculoRepository.findAll()).thenReturn(this.testVeiculos);
 
-    @Test
-    void shouldReturnAVehicleByItsID(){
-        Mockito.when(veiculoRepository.findById(1)).thenReturn(Optional.of(this.testVeiculos.get(0)));
+		assertEquals(veiculoServiceImpl.index(), this.testVeiculos);
+	}
 
-        Veiculo encontrado = veiculoServiceImpl.findById(1);
+	@Test
+	void shouldReturnAVehicleByItsID() {
+		Mockito.when(veiculoRepository.findById(1)).thenReturn(Optional.of(this.testVeiculos.get(0)));
 
-        assertEquals(encontrado, this.testVeiculos.get(0));
-    }
+		Veiculo encontrado = veiculoServiceImpl.findById(1);
 
-    @Test
-    void shouldCreateAVehicle(){
-        VeiculoForm veiculoForm = new VeiculoForm("Fiat", "Palio", "Vermelho", "BRA1A23",
-                "CARRO");
+		assertEquals(encontrado, this.testVeiculos.get(0));
+	}
 
-        Mockito.when(this.corServiceImpl.findByNomeOrCreate(veiculoForm.getCor())).thenReturn(testCor);
-        Mockito.when(this.modeloServiceImpl.findByNomeModelo(veiculoForm.getModelo())).thenReturn(Optional.empty());
-        Mockito.when(this.marcaServiceImpl.findByNomeOrCreate(veiculoForm.getMarca())).thenReturn(testMarca);
-        Mockito.when(this.modeloServiceImpl.create(veiculoForm.getModelo(), testMarca)).thenReturn(testModelo);
+	@Test
+	void shouldCreateAVehicle() {
+		VeiculoForm veiculoForm = new VeiculoForm("Fiat", "Palio", "Vermelho", "BRA1A23",
+				"CARRO");
 
-        Veiculo veiculo = veiculoForm.toVeiculo(testModelo, testCor, VeiculoTipo.CARRO);
+		Mockito.when(this.corServiceImpl.findByNomeOrCreate(veiculoForm.getCor())).thenReturn(testCor);
+		Mockito.when(this.tipoServiceImpl.findOneOrCreate(VeiculoTipo.CARRO)).thenReturn(testTipo);
+		Mockito.when(this.modeloServiceImpl.findByNomeModelo(veiculoForm.getModelo())).thenReturn(Optional.empty());
+		Mockito.when(this.marcaServiceImpl.findByNomeOrCreate(veiculoForm.getMarca())).thenReturn(testMarca);
+		Mockito.when(this.modeloServiceImpl.create(veiculoForm.getModelo(), testMarca)).thenReturn(testModelo);
 
-        Mockito.when(this.veiculoRepository.save(veiculo)).thenReturn(veiculo);
+		Veiculo veiculo = veiculoForm.toVeiculo(testModelo, testCor, testTipo);
 
-        Veiculo novo = this.veiculoServiceImpl.create(veiculoForm);
+		Mockito.when(this.veiculoRepository.save(veiculo)).thenReturn(veiculo);
 
-        assertEquals(novo, veiculo);
-    }
+		Veiculo novo = this.veiculoServiceImpl.create(veiculoForm);
 
-    @Test
-    void shouldUpdateAVehicle(){
-        Veiculo veiculo = this.testVeiculos.get(0);
+		assertEquals(novo, veiculo);
+	}
 
-        VeiculoUpdateForm veiculoUpdateForm = new VeiculoUpdateForm();
+	@Test
+	void shouldUpdateAVehicle() {
+		Veiculo veiculo = this.testVeiculos.get(0);
 
-        Cor cor = new Cor("Verde");
+		VeiculoUpdateForm veiculoUpdateForm = new VeiculoUpdateForm();
 
-        veiculoUpdateForm.setCor(cor.getNomeCor());
+		Cor cor = new Cor("Verde");
 
-        Mockito.when(this.veiculoRepository.findById(1)).thenReturn(Optional.of(veiculo));
+		veiculoUpdateForm.setCor(cor.getNomeCor());
 
-        Mockito.when(this.corServiceImpl.findByNomeOrCreate(veiculoUpdateForm.getCor())).thenReturn(cor);
+		Mockito.when(this.veiculoRepository.findById(1)).thenReturn(Optional.of(veiculo));
 
-        veiculo.setCor(cor);
+		Mockito.when(this.corServiceImpl.findByNomeOrCreate(veiculoUpdateForm.getCor())).thenReturn(cor);
 
-        Mockito.when(this.veiculoRepository.save(veiculo)).thenReturn(veiculo);
+		veiculo.setCor(cor);
 
-        Veiculo atualizado = this.veiculoServiceImpl.update(1, veiculoUpdateForm);
+		Mockito.when(this.veiculoRepository.save(veiculo)).thenReturn(veiculo);
 
-        assertEquals(atualizado.getModelo(), veiculo.getModelo());
-        assertEquals(atualizado.getPlaca(), veiculo.getPlaca());
-        assertNotEquals(atualizado.getCor(), this.testCor);
-    }
+		Veiculo atualizado = this.veiculoServiceImpl.update(1, veiculoUpdateForm);
+
+		assertEquals(atualizado.getModelo(), veiculo.getModelo());
+		assertEquals(atualizado.getPlaca(), veiculo.getPlaca());
+		assertNotEquals(atualizado.getCor(), this.testCor);
+	}
 }

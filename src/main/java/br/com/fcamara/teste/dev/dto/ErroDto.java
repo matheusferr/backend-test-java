@@ -8,5 +8,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ErroDto {
-    private String erro;
+	private String erro;
 }

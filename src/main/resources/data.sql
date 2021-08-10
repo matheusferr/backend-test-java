@@ -1,0 +1,1 @@
+INSERT INTO TIPOS(id, tipo) values (1, 'CARRO'), (2, 'MOTO');

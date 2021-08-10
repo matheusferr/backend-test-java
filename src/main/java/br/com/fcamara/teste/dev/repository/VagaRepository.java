@@ -1,7 +1,14 @@
 package br.com.fcamara.teste.dev.repository;
 
-import br.com.fcamara.teste.dev.entity.Vagas;
+import br.com.fcamara.teste.dev.entity.Tipo;
+import br.com.fcamara.teste.dev.entity.Vaga;
+import br.com.fcamara.teste.dev.entity.Veiculo;
 import org.springframework.data.repository.CrudRepository;
 
-public interface VagaRepository extends CrudRepository<Vagas, Integer> {
+import java.util.Optional;
+
+public interface VagaRepository extends CrudRepository<Vaga, Integer> {
+	Optional<Vaga> findByVeiculoAndSaidaNull(Veiculo veiculo);
+
+	Integer countAllByTipoAndSaidaNull(Tipo tipo);
 }

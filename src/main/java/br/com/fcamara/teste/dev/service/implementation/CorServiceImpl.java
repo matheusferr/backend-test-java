@@ -9,18 +9,18 @@ import java.util.Optional;
 
 @Service
 public class CorServiceImpl implements CorService {
-    private final CorRepository corRepository;
+	private final CorRepository corRepository;
 
-    public CorServiceImpl(CorRepository corRepository) {
-        this.corRepository = corRepository;
-    }
+	public CorServiceImpl(CorRepository corRepository) {
+		this.corRepository = corRepository;
+	}
 
-    @Override
-    public Cor findByNomeOrCreate(String nomeCor) {
-        Optional<Cor> cor = this.corRepository.findByNomeCor(nomeCor.toUpperCase());
+	@Override
+	public Cor findByNomeOrCreate(String nomeCor) {
+		Optional<Cor> cor = this.corRepository.findByNomeCor(nomeCor.toUpperCase());
 
-        if (cor.isEmpty()) return this.corRepository.save(new Cor(nomeCor.toUpperCase()));
+		if(cor.isEmpty()) return this.corRepository.save(new Cor(nomeCor.toUpperCase()));
 
-        return cor.get();
-    }
+		return cor.get();
+	}
 }

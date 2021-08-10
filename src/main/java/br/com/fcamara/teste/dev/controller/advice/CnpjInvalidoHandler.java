@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class CnpjInvalidoHandler {
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(CNPJInvalidoException.class)
-    public ResponseEntity<ErroDto> handle(CNPJInvalidoException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErroDto(e.getMessage()));
-    }
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(CNPJInvalidoException.class)
+	public ResponseEntity<ErroDto> handle(CNPJInvalidoException e) {
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErroDto(e.getMessage()));
+	}
 }

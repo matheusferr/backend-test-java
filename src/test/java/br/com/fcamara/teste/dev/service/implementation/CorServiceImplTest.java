@@ -9,32 +9,31 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CorServiceImplTest {
-    @Mock
-    private CorRepository corRepository;
+	@Mock
+	private CorRepository corRepository;
 
-    @InjectMocks
-    private CorServiceImpl corServiceImpl;
+	@InjectMocks
+	private CorServiceImpl corServiceImpl;
 
-    @BeforeEach
-    void beforeEach() {
-        MockitoAnnotations.openMocks(this);
-    }
+	@BeforeEach
+	void beforeEach() {
+		MockitoAnnotations.openMocks(this);
+	}
 
 
-    @Test
-    void shouldCreateAColor() {
-        Cor testCor = new Cor("VERMELHO");
+	@Test
+	void shouldCreateAColor() {
+		Cor testCor = new Cor("VERMELHO");
 
-        Mockito.when(corRepository.findByNomeCor("VERMELHO")).thenReturn(Optional.of(testCor));
+		Mockito.when(corRepository.findByNomeCor("VERMELHO")).thenReturn(Optional.of(testCor));
 
-        Cor cor = corServiceImpl.findByNomeOrCreate("VERMELHO");
+		Cor cor = corServiceImpl.findByNomeOrCreate("VERMELHO");
 
-        assertEquals(cor, testCor);
-    }
+		assertEquals(cor, testCor);
+	}
 }

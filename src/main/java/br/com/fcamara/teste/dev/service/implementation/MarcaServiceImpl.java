@@ -9,18 +9,18 @@ import java.util.Optional;
 
 @Service
 public class MarcaServiceImpl implements MarcaService {
-    private final MarcaRepository marcaRepository;
+	private final MarcaRepository marcaRepository;
 
-    public MarcaServiceImpl(MarcaRepository marcaRepository) {
-        this.marcaRepository = marcaRepository;
-    }
+	public MarcaServiceImpl(MarcaRepository marcaRepository) {
+		this.marcaRepository = marcaRepository;
+	}
 
-    @Override
-    public Marca findByNomeOrCreate(String nomeMarca) {
-        Optional<Marca> marca = this.marcaRepository.findByNomeMarca(nomeMarca);
+	@Override
+	public Marca findByNomeOrCreate(String nomeMarca) {
+		Optional<Marca> marca = this.marcaRepository.findByNomeMarca(nomeMarca);
 
-        if(marca.isEmpty()) return this.marcaRepository.save(new Marca(nomeMarca));
+		if(marca.isEmpty()) return this.marcaRepository.save(new Marca(nomeMarca));
 
-        return marca.get();
-    }
+		return marca.get();
+	}
 }

@@ -8,15 +8,15 @@ import java.util.stream.Collectors;
 
 @Getter
 public class TelefoneDto {
-    private final String telefone;
+	private final String telefone;
 
-    public TelefoneDto(Telefone telefone) {
-        this.telefone = telefone.getTelefoneValue();
-    }
+	public TelefoneDto(Telefone telefone) {
+		this.telefone = telefone.getTelefoneValue();
+	}
 
-    public static List<String> convertListToString(List<Telefone> telefones){
-        return telefones.stream().map(
-                (telefone) -> new TelefoneDto(telefone).getTelefone()
-        ).collect(Collectors.toList());
-    }
+	public static List<String> convertListToString(List<Telefone> telefones) {
+		return telefones.stream().map(
+				(telefone) -> new TelefoneDto(telefone).getTelefone()
+		).collect(Collectors.toList());
+	}
 }

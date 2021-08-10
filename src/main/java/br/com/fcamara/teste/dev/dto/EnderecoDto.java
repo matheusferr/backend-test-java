@@ -5,18 +5,18 @@ import lombok.Getter;
 
 @Getter
 public class EnderecoDto {
-    private final String logradouro;
+	private final String logradouro;
 
-    private final String numero;
+	private final String numero;
 
-    private final String cidade;
+	private final String cidade;
 
-    private final String estado;
+	private final String estado;
 
-    public EnderecoDto(Endereco endereco) {
-        this.logradouro = endereco.getLogradouro();
-        this.numero = endereco.getNumero();
-        this.cidade = endereco.getCidade().getNomeCidade();
-        this.estado = endereco.getCidade().getEstado().getNomeEstado();
-    }
+	public EnderecoDto(Endereco endereco) {
+		this.logradouro = endereco.getLogradouro();
+		this.numero = endereco.getNumero();
+		this.cidade = endereco.getCidade().getNomeCidade();
+		this.estado = endereco.getCidade().getEstado().getNomeEstado();
+	}
 }

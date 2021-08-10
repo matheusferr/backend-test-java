@@ -13,66 +13,66 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EnderecoServiceImplTest {
 
-    @Mock
-    private EnderecoRepository enderecoRepository;
+	@Mock
+	private EnderecoRepository enderecoRepository;
 
-    @Mock
-    private CidadeServiceImpl cidadeServiceImpl;
+	@Mock
+	private CidadeServiceImpl cidadeServiceImpl;
 
-    @Mock
-    private EstadoServiceImpl estadoServiceImpl;
+	@Mock
+	private EstadoServiceImpl estadoServiceImpl;
 
-    @InjectMocks
-    private EnderecoServiceImpl enderecoServiceImpl;
+	@InjectMocks
+	private EnderecoServiceImpl enderecoServiceImpl;
 
 
-    private final Estado testEstado = new Estado("SÃO PAULO");
-    private final Cidade testCidade = new Cidade("SANTOS", testEstado);
-    private final Endereco testEndereco = new Endereco("AVENIDA CONSELHEIRO NÉBIAS", "1", testCidade);
+	private final Estado testEstado = new Estado("SÃO PAULO");
+	private final Cidade testCidade = new Cidade("SANTOS", testEstado);
+	private final Endereco testEndereco = new Endereco("AVENIDA CONSELHEIRO NÉBIAS", "1", testCidade);
 
-    @BeforeEach
-    void beforeEach() {
-        MockitoAnnotations.openMocks(this);
-    }
+	@BeforeEach
+	void beforeEach() {
+		MockitoAnnotations.openMocks(this);
+	}
 
-    @Test
-    void shouldGetAnAddress() {
-        Mockito.when(enderecoRepository.findByLogradouroAndNumero("AVENIDA CONSELHEIRO NÉBIAS", "1"))
-                .thenReturn(Optional.of(testEndereco));
+	@Test
+	void shouldGetAnAddress() {
+		Mockito.when(enderecoRepository.findByLogradouroAndNumero("AVENIDA CONSELHEIRO NÉBIAS", "1"))
+				.thenReturn(Optional.of(testEndereco));
 
-        Endereco endereco = this.enderecoServiceImpl
-                .findOrCreate(
-                        "AVENIDA CONSELHEIRO NÉBIAS", "1", "SANTOS", "SÃO PAULO"
-                );
+		Endereco endereco = this.enderecoServiceImpl
+				.findOrCreate(
+						"AVENIDA CONSELHEIRO NÉBIAS", "1", "SANTOS", "SÃO PAULO"
+				);
 
-        assertEquals(endereco, testEndereco);
-        assertEquals(endereco.getCidade(), testCidade);
-        assertEquals(endereco.getCidade().getEstado(), testEstado);
-    }
+		assertEquals(endereco, testEndereco);
+		assertEquals(endereco.getCidade(), testCidade);
+		assertEquals(endereco.getCidade().getEstado(), testEstado);
+	}
 
-    @Test
-    void shouldCreateAnAddress() {
-        Mockito.when(enderecoRepository.findByLogradouroAndNumero("AVENIDA CONSELHEIRO NÉBIAS", "1"))
-                .thenReturn(Optional.empty());
+	@Test
+	void shouldCreateAnAddress() {
+		Mockito.when(enderecoRepository.findByLogradouroAndNumero("AVENIDA CONSELHEIRO NÉBIAS", "1"))
+				.thenReturn(Optional.empty());
 
-        Mockito.when(cidadeServiceImpl.findByNomeCidade("SANTOS")).thenReturn(Optional.empty());
+		Mockito.when(cidadeServiceImpl.findByNomeCidade("SANTOS")).thenReturn(Optional.empty());
 
-        Mockito.when(estadoServiceImpl.findByNomeOrCreate("SÃO PAULO")).thenReturn(testEstado);
+		Mockito.when(estadoServiceImpl.findByNomeOrCreate("SÃO PAULO")).thenReturn(testEstado);
 
-        Mockito.when(cidadeServiceImpl.create("SANTOS", testEstado)).thenReturn(testCidade);
+		Mockito.when(cidadeServiceImpl.create("SANTOS", testEstado)).thenReturn(testCidade);
 
-        Mockito.when(enderecoRepository.save(testEndereco)).thenReturn(testEndereco);
+		Mockito.when(enderecoRepository.save(testEndereco)).thenReturn(testEndereco);
 
-        Endereco endereco = this.enderecoServiceImpl.findOrCreate(
-                "AVENIDA CONSELHEIRO NÉBIAS", "1", "SANTOS", "SÃO PAULO"
-        );
+		Endereco endereco = this.enderecoServiceImpl.findOrCreate(
+				"AVENIDA CONSELHEIRO NÉBIAS", "1", "SANTOS", "SÃO PAULO"
+		);
 
-        assertEquals(endereco, testEndereco);
-        assertEquals(endereco.getCidade(), testCidade);
-        assertEquals(endereco.getCidade().getEstado(), testEstado);
-    }
+		assertEquals(endereco, testEndereco);
+		assertEquals(endereco.getCidade(), testCidade);
+		assertEquals(endereco.getCidade().getEstado(), testEstado);
+	}
 }
