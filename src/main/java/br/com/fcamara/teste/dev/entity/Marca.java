@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Getter
@@ -16,11 +17,11 @@ public class Marca {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	private String nomeMarca;
+	private String nome;
 
 	@PrePersist
 	private void prePersist() {
-		this.nomeMarca = this.nomeMarca.toUpperCase();
+		this.nome = this.nome.toUpperCase();
 	}
 
 	@Override
@@ -28,9 +29,9 @@ public class Marca {
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
 
-		Marca marca = (Marca) o;
+		Marca that = (Marca) o;
 
-		return nomeMarca.equals(marca.nomeMarca);
+		return Objects.equals(nome, that.nome);
 	}
 
 	@Override
@@ -43,6 +44,6 @@ public class Marca {
 	}
 
 	public Marca(String nomeMarca) {
-		this.nomeMarca = nomeMarca;
+		this.nome = nome;
 	}
 }

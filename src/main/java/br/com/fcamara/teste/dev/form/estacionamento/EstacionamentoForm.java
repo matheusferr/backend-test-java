@@ -1,7 +1,7 @@
-package br.com.fcamara.teste.dev.form.estabelecimento;
+package br.com.fcamara.teste.dev.form.estacionamento;
 
 import br.com.fcamara.teste.dev.entity.Endereco;
-import br.com.fcamara.teste.dev.entity.Estabelecimento;
+import br.com.fcamara.teste.dev.entity.Estacionamento;
 import br.com.fcamara.teste.dev.entity.Telefone;
 import br.com.fcamara.teste.dev.entity.valueObject.CNPJ;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ import javax.validation.constraints.Pattern;
 @Getter
 @Setter
 @AllArgsConstructor
-public class EstabelecimentoForm {
+public class EstacionamentoForm {
 	@NotNull
 	@NotEmpty
 	private String nome;
@@ -56,7 +56,7 @@ public class EstabelecimentoForm {
 	@Min(1)
 	private Integer vagasMoto;
 
-	public Estabelecimento toEstabelecimento(Endereco endereco, CNPJ cnpj, Telefone telefone) {
-		return new Estabelecimento(this.nome, cnpj, endereco, telefone, vagasCarro, vagasMoto);
+	public Estacionamento toEstabelecimento(Endereco endereco, CNPJ cnpj, Telefone telefone) {
+		return new Estacionamento(this.nome, cnpj, endereco, telefone, vagasCarro, vagasMoto);
 	}
 }

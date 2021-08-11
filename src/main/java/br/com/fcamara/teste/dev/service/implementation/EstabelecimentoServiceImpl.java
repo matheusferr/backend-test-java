@@ -1,14 +1,14 @@
 package br.com.fcamara.teste.dev.service.implementation;
 
 import br.com.fcamara.teste.dev.entity.Endereco;
-import br.com.fcamara.teste.dev.entity.Estabelecimento;
+import br.com.fcamara.teste.dev.entity.Estacionamento;
 import br.com.fcamara.teste.dev.entity.Telefone;
 import br.com.fcamara.teste.dev.entity.valueObject.CNPJ;
 import br.com.fcamara.teste.dev.exception.DadosInvalidosException;
 import br.com.fcamara.teste.dev.exception.OperacaoInvalidaException;
-import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoForm;
-import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoTelefoneForm;
-import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoUpdateForm;
+import br.com.fcamara.teste.dev.form.contato.TelefoneForm;
+import br.com.fcamara.teste.dev.form.estacionamento.EstacionamentoForm;
+import br.com.fcamara.teste.dev.form.estacionamento.EstacionamentoUpdateForm;
 import br.com.fcamara.teste.dev.repository.EstabelecimentoRepository;
 import br.com.fcamara.teste.dev.service.definition.EstabelecimentoService;
 import org.springframework.stereotype.Service;
@@ -30,8 +30,8 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 		this.estabelecimentoRepository = estabelecimentoRepository;
 	}
 
-	private Estabelecimento getEstabelecimento(Integer id) {
-		Optional<Estabelecimento> estabelecimento = this.estabelecimentoRepository.findById(id);
+	private Estacionamento getEstabelecimento(Integer id) {
+		Optional<Estacionamento> estabelecimento = this.estabelecimentoRepository.findById(id);
 
 		if(estabelecimento.isEmpty()) throw new EntityNotFoundException();
 
@@ -39,18 +39,18 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 	}
 
 	@Override
-	public List<Estabelecimento> index() {
+	public List<Estacionamento> index() {
 		return this.estabelecimentoRepository.findAll();
 	}
 
 	@Override
-	public Estabelecimento findById(Integer id) {
+	public Estacionamento findById(Integer id) {
 		return this.getEstabelecimento(id);
 	}
 
 	@Override
-	public Estabelecimento findByCnpj(String cnpj) {
-		Optional<Estabelecimento> estabelecimento = this.estabelecimentoRepository.findByCnpj(new CNPJ(cnpj));
+	public Estacionamento findByCnpj(String cnpj) {
+		Optional<Estacionamento> estabelecimento = this.estabelecimentoRepository.findByCnpj(new CNPJ(cnpj));
 
 		if(estabelecimento.isEmpty()) throw new EntityNotFoundException();
 
@@ -58,86 +58,86 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 	}
 
 	@Override
-	public Estabelecimento create(EstabelecimentoForm estabelecimentoForm) {
-		CNPJ cnpj = new CNPJ(estabelecimentoForm.getCnpj());
+	public Estacionamento create(EstacionamentoForm estacionamentoForm) {
+		CNPJ cnpj = new CNPJ(estacionamentoForm.getCnpj());
 
-		Telefone telefone = this.telefoneServiceImpl.findByNumeroOrCreate(estabelecimentoForm.getTelefone());
+		Telefone telefone = this.telefoneServiceImpl.findByNumeroOrCreate(estacionamentoForm.getTelefone());
 
 		Endereco endereco = this.enderecoServiceImpl.findOrCreate(
-				estabelecimentoForm.getLogradouro(), estabelecimentoForm.getNumero(), estabelecimentoForm.getCidade(),
-				estabelecimentoForm.getEstado()
+				estacionamentoForm.getLogradouro(), estacionamentoForm.getNumero(), estacionamentoForm.getCidade(),
+				estacionamentoForm.getEstado()
 		);
 
-		Estabelecimento estabelecimento = estabelecimentoForm.toEstabelecimento(endereco, cnpj, telefone);
+		Estacionamento estacionamento = estacionamentoForm.toEstabelecimento(endereco, cnpj, telefone);
 
-		return this.estabelecimentoRepository.save(estabelecimento);
+		return this.estabelecimentoRepository.save(estacionamento);
 	}
 
 	@Override
-	public Estabelecimento update(Integer id, EstabelecimentoUpdateForm estabelecimentoUpdateForm) {
-		Estabelecimento estabelecimento = this.getEstabelecimento(id);
+	public Estacionamento update(Integer id, EstacionamentoUpdateForm estacionamentoUpdateForm) {
+		Estacionamento estacionamento = this.getEstabelecimento(id);
 
-		if(!estabelecimentoUpdateForm.getNome().equals(""))
-			estabelecimento.setNomeEstabelecimento(estabelecimentoUpdateForm.getNome());
+		if(!estacionamentoUpdateForm.getNome().equals(""))
+			estacionamento.setNome(estacionamentoUpdateForm.getNome());
 
-		if(estabelecimentoUpdateForm.getVagasCarro() == null && estabelecimentoUpdateForm.getVagasMoto() == null)
+		if(estacionamentoUpdateForm.getVagasCarro() == null && estacionamentoUpdateForm.getVagasMoto() == null)
 			throw new DadosInvalidosException("os valores das vagas de carros e motos não podem ser nulos");
 
-		if(estabelecimentoUpdateForm.getVagasCarro() != null)
-			estabelecimento.setVagasCarro(estabelecimentoUpdateForm.getVagasCarro());
+		if(estacionamentoUpdateForm.getVagasCarro() != null)
+			estacionamento.setVagasCarro(estacionamentoUpdateForm.getVagasCarro());
 
-		if(estabelecimentoUpdateForm.getVagasMoto() != null)
-			estabelecimento.setVagasMoto(estabelecimentoUpdateForm.getVagasMoto());
+		if(estacionamentoUpdateForm.getVagasMoto() != null)
+			estacionamento.setVagasMoto(estacionamentoUpdateForm.getVagasMoto());
 
-		return this.estabelecimentoRepository.save(estabelecimento);
+		return this.estabelecimentoRepository.save(estacionamento);
 	}
 
 	@Override
-	public void updateVagas(Estabelecimento estabelecimento) {
-		this.estabelecimentoRepository.save(estabelecimento);
+	public void updateVagas(Estacionamento estacionamento) {
+		this.estabelecimentoRepository.save(estacionamento);
 	}
 
 	@Override
 	public List<Telefone> getPhones(Integer id) {
-		Estabelecimento estabelecimento = this.getEstabelecimento(id);
+		Estacionamento estacionamento = this.getEstabelecimento(id);
 
-		return estabelecimento.getTelefones();
+		return estacionamento.getTelefones();
 	}
 
 	@Override
-	public Estabelecimento addPhone(Integer id, EstabelecimentoTelefoneForm estabelecimentoTelefoneForm) {
-		Estabelecimento estabelecimento = this.getEstabelecimento(id);
+	public Estacionamento addPhone(Integer id, TelefoneForm telefoneForm) {
+		Estacionamento estacionamento = this.getEstabelecimento(id);
 
-		Telefone telefone = this.telefoneServiceImpl.findByNumeroOrCreate(estabelecimentoTelefoneForm.getTelefone());
+		Telefone telefone = this.telefoneServiceImpl.findByNumeroOrCreate(telefoneForm.getTelefone());
 
-		if(estabelecimento.getTelefones().contains(telefone)) throw new OperacaoInvalidaException(
+		if(estacionamento.getTelefones().contains(telefone)) throw new OperacaoInvalidaException(
 				"telefone já vinculado ao estabelecimento"
 		);
 
-		estabelecimento.getTelefones().add(telefone);
+		estacionamento.getTelefones().add(telefone);
 
-		return this.estabelecimentoRepository.save(estabelecimento);
+		return this.estabelecimentoRepository.save(estacionamento);
 	}
 
 	@Override
-	public void removePhone(Integer id, EstabelecimentoTelefoneForm estabelecimentoTelefoneForm) {
-		Estabelecimento estabelecimento = this.getEstabelecimento(id);
+	public void removePhone(Integer id, TelefoneForm telefoneForm) {
+		Estacionamento estacionamento = this.getEstabelecimento(id);
 
-		Telefone telefone = this.telefoneServiceImpl.findByNumero(estabelecimentoTelefoneForm.getTelefone());
+		Telefone telefone = this.telefoneServiceImpl.findByNumero(telefoneForm.getTelefone());
 
-		if(!estabelecimento.getTelefones().contains(telefone)) throw new OperacaoInvalidaException(
+		if(!estacionamento.getTelefones().contains(telefone)) throw new OperacaoInvalidaException(
 				"telefone não vinculado ao estabelecimento"
 		);
 
-		estabelecimento.getTelefones().remove(telefone);
+		estacionamento.getTelefones().remove(telefone);
 
-		this.estabelecimentoRepository.save(estabelecimento);
+		this.estabelecimentoRepository.save(estacionamento);
 	}
 
 	@Override
 	public void destroy(Integer id) {
-		Estabelecimento estabelecimento = this.getEstabelecimento(id);
+		Estacionamento estacionamento = this.getEstabelecimento(id);
 
-		this.estabelecimentoRepository.delete(estabelecimento);
+		this.estabelecimentoRepository.delete(estacionamento);
 	}
 }

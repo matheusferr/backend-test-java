@@ -16,12 +16,12 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "Estabelecimentos")
-public class Estabelecimento {
+public class Estacionamento {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	private String nomeEstabelecimento;
+	private String nome;
 
 	@Convert(converter = CNPJCoverter.class)
 	@Column(unique = true)
@@ -40,9 +40,9 @@ public class Estabelecimento {
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Vaga> vagas;
 
-	public Estabelecimento(String nomeEstabelecimento, CNPJ cnpj, Endereco endereco, Telefone telefone,
-	                       Integer vagasCarro, Integer vagasMoto) {
-		this.nomeEstabelecimento = nomeEstabelecimento;
+	public Estacionamento(String nome, CNPJ cnpj, Endereco endereco, Telefone telefone,
+	                      Integer vagasCarro, Integer vagasMoto) {
+		this.nome = nome;
 		this.cnpj = cnpj;
 		this.endereco = endereco;
 		this.telefones = new ArrayList<>(List.of(telefone));
@@ -55,9 +55,9 @@ public class Estabelecimento {
 	public boolean equals(Object o) {
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
-		Estabelecimento that = (Estabelecimento) o;
+		Estacionamento that = (Estacionamento) o;
 
-		return Objects.equals(id, that.id) && Objects.equals(nomeEstabelecimento, that.nomeEstabelecimento)
+		return Objects.equals(id, that.id) && Objects.equals(nome, that.nome)
 				&& Objects.equals(cnpj, that.cnpj) && Objects.equals(endereco, that.endereco)
 				&& Objects.equals(vagas, that.vagas) && Objects.equals(vagasCarro, that.vagasCarro)
 				&& Objects.equals(vagasMoto, that.vagasMoto);
@@ -75,6 +75,6 @@ public class Estabelecimento {
 	@PrePersist
 	@PreUpdate
 	private void prePersist() {
-		this.nomeEstabelecimento = this.nomeEstabelecimento.toUpperCase();
+		this.nome = this.nome.toUpperCase();
 	}
 }

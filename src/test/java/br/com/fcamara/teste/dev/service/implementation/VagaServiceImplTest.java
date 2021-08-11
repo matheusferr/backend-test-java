@@ -33,7 +33,7 @@ class VagaServiceImplTest {
 	@InjectMocks
 	private VagaServiceImpl vagaServiceImpl;
 
-	private Estabelecimento testEstabelecimento;
+	private Estacionamento testEstacionamento;
 
 	private Vaga testVaga;
 
@@ -49,7 +49,7 @@ class VagaServiceImplTest {
 		Cidade testCidade = new Cidade("SANTOS", testEstado);
 		Endereco testEndereco = new Endereco("AVENIDA CONSELHEIRO NÉBIAS", "1", testCidade);
 
-		this.testEstabelecimento = new Estabelecimento("TEST01", new CNPJ("45857255000103"),
+		this.testEstacionamento = new Estacionamento("TEST01", new CNPJ("45857255000103"),
 				testEndereco, new Telefone("1234567890"), 1, 1);
 
 		Marca testMarca = new Marca("Fiat");
@@ -61,7 +61,7 @@ class VagaServiceImplTest {
 
 		vagaForm = new VagaForm();
 
-		vagaForm.setCnpj(testEstabelecimento.getCnpj().getCnpjValue());
+		vagaForm.setCnpj(testEstacionamento.getCnpj().getCnpjValue());
 		vagaForm.setPlaca(testVeiculo.getPlaca().getPlacaValue());
 
 		testVaga = new Vaga(this.testVeiculo);
@@ -71,7 +71,7 @@ class VagaServiceImplTest {
 	void shouldAddAVehicle() {
 		Mockito.when(this.veiculoServiceImpl.findByPlaca(this.vagaForm.getPlaca())).thenReturn(this.testVeiculo);
 		Mockito.when(this.estabelecimentoServiceImpl.findByCnpj(this.vagaForm.getCnpj())).thenReturn(
-				this.testEstabelecimento
+				this.testEstacionamento
 		);
 
 		Mockito.when(this.vagaRepository.save(testVaga)).thenReturn(testVaga);
@@ -83,11 +83,11 @@ class VagaServiceImplTest {
 
 	@Test
 	void shouldNotAddAVehicle() {
-		this.testEstabelecimento.getVagas().add(testVaga);
+		this.testEstacionamento.getVagas().add(testVaga);
 
 		Mockito.when(this.veiculoServiceImpl.findByPlaca(this.vagaForm.getPlaca())).thenReturn(this.testVeiculo);
 		Mockito.when(this.estabelecimentoServiceImpl.findByCnpj(this.vagaForm.getCnpj())).thenReturn(
-				this.testEstabelecimento
+				this.testEstacionamento
 		);
 		Mockito.when(this.vagaRepository.countAllByTipoAndSaidaNull(testVeiculo.getTipo())).thenReturn(0);
 		Mockito.when(this.vagaRepository.findByVeiculoAndSaidaNull(this.testVeiculo)).thenReturn(
@@ -100,11 +100,11 @@ class VagaServiceImplTest {
 
 	@Test
 	void shouldRemoveAVehicle() {
-		this.testEstabelecimento.getVagas().add(testVaga);
+		this.testEstacionamento.getVagas().add(testVaga);
 
 		Mockito.when(this.veiculoServiceImpl.findByPlaca(this.vagaForm.getPlaca())).thenReturn(this.testVeiculo);
 		Mockito.when(this.estabelecimentoServiceImpl.findByCnpj(this.vagaForm.getCnpj())).thenReturn(
-				this.testEstabelecimento
+				this.testEstacionamento
 		);
 		Mockito.when(this.vagaRepository.findByVeiculoAndSaidaNull(this.testVeiculo)).thenReturn(Optional.of(testVaga));
 
@@ -121,7 +121,7 @@ class VagaServiceImplTest {
 	void shouldNotRemoveAVehicle() {
 		Mockito.when(this.veiculoServiceImpl.findByPlaca(this.vagaForm.getPlaca())).thenReturn(this.testVeiculo);
 		Mockito.when(this.estabelecimentoServiceImpl.findByCnpj(this.vagaForm.getCnpj())).thenReturn(
-				this.testEstabelecimento
+				this.testEstacionamento
 		);
 
 		Mockito.when(this.vagaRepository.findByVeiculoAndSaidaNull(this.testVeiculo)).thenReturn(

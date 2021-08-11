@@ -39,9 +39,9 @@ public class Vaga {
 	public boolean equals(Object o) {
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
-		Vaga vaga = (Vaga) o;
+		Vaga that = (Vaga) o;
 
-		return Objects.equals(veiculo, vaga.veiculo);
+		return Objects.equals(veiculo, that.veiculo);
 	}
 
 	@Override

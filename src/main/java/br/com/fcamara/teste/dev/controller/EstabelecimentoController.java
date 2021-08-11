@@ -2,9 +2,9 @@ package br.com.fcamara.teste.dev.controller;
 
 import br.com.fcamara.teste.dev.dto.EstabelecimentoDto;
 import br.com.fcamara.teste.dev.dto.TelefoneDto;
-import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoForm;
-import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoTelefoneForm;
-import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoUpdateForm;
+import br.com.fcamara.teste.dev.form.contato.TelefoneForm;
+import br.com.fcamara.teste.dev.form.estacionamento.EstacionamentoForm;
+import br.com.fcamara.teste.dev.form.estacionamento.EstacionamentoUpdateForm;
 import br.com.fcamara.teste.dev.service.implementation.EstabelecimentoServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,11 +41,11 @@ public class EstabelecimentoController {
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<EstabelecimentoDto> create(@RequestBody @Valid EstabelecimentoForm estabelecimentoForm,
+	public ResponseEntity<EstabelecimentoDto> create(@RequestBody @Valid EstacionamentoForm estacionamentoForm,
 	                                                 UriComponentsBuilder uriBuilder) {
 
 		EstabelecimentoDto estabelecimento = new EstabelecimentoDto(
-				this.estabelecimentoServiceImpl.create(estabelecimentoForm)
+				this.estabelecimentoServiceImpl.create(estacionamentoForm)
 		);
 
 		URI uri = uriBuilder.path("/estabelecimentos/{id}").buildAndExpand(estabelecimento.getId()).toUri();
@@ -56,7 +56,7 @@ public class EstabelecimentoController {
 	@PostMapping("/{id}/telefone")
 	@Transactional
 	public ResponseEntity<?> addPhone(@PathVariable Integer id,
-	                                  @RequestBody @Valid EstabelecimentoTelefoneForm estabelecimentoForm,
+	                                  @RequestBody @Valid TelefoneForm estabelecimentoForm,
 	                                  UriComponentsBuilder uriBuilder) {
 
 		this.estabelecimentoServiceImpl.addPhone(id, estabelecimentoForm);
@@ -70,7 +70,7 @@ public class EstabelecimentoController {
 	@PutMapping("/{id}")
 	@Transactional
 	public EstabelecimentoDto update(@PathVariable Integer id,
-	                                 @RequestBody @Valid EstabelecimentoUpdateForm estabelecimentoForm) {
+	                                 @RequestBody @Valid EstacionamentoUpdateForm estabelecimentoForm) {
 		return new EstabelecimentoDto(this.estabelecimentoServiceImpl.update(id, estabelecimentoForm));
 	}
 
@@ -85,7 +85,7 @@ public class EstabelecimentoController {
 	@DeleteMapping("/{id}/telefone")
 	@Transactional
 	public ResponseEntity<?> removePhone(@PathVariable Integer id,
-	                                     @RequestBody @Valid EstabelecimentoTelefoneForm estabelecimentoForm) {
+	                                     @RequestBody @Valid TelefoneForm estabelecimentoForm) {
 		this.estabelecimentoServiceImpl.removePhone(id, estabelecimentoForm);
 
 		return ResponseEntity.noContent().build();

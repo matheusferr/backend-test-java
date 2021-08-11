@@ -17,19 +17,24 @@ public class Cidade {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	private String nomeCidade;
+	private String nome;
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Estado estado;
+
+	public Cidade(String nome, Estado estado) {
+		this.nome = nome;
+		this.estado = estado;
+	}
 
 	@Override
 	public boolean equals(Object o) {
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
-		Cidade cidade = (Cidade) o;
+		Cidade that = (Cidade) o;
 
-		return Objects.equals(id, cidade.id) && Objects.equals(nomeCidade, cidade.nomeCidade)
-				&& Objects.equals(estado, cidade.estado);
+		return Objects.equals(id, that.id) && Objects.equals(nome, that.nome)
+				&& Objects.equals(estado, that.estado);
 	}
 
 	@Override
@@ -44,11 +49,6 @@ public class Cidade {
 	@PrePersist
 	@PreUpdate
 	private void prePersist() {
-		this.nomeCidade = this.nomeCidade.toUpperCase();
-	}
-
-	public Cidade(String nomeCidade, Estado estado) {
-		this.nomeCidade = nomeCidade;
-		this.estado = estado;
+		this.nome = this.nome.toUpperCase();
 	}
 }

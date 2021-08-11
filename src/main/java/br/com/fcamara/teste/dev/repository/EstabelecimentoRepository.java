@@ -1,14 +1,14 @@
 package br.com.fcamara.teste.dev.repository;
 
-import br.com.fcamara.teste.dev.entity.Estabelecimento;
+import br.com.fcamara.teste.dev.entity.Estacionamento;
 import br.com.fcamara.teste.dev.entity.valueObject.CNPJ;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface EstabelecimentoRepository extends CrudRepository<Estabelecimento, Integer> {
-	List<Estabelecimento> findAll();
+public interface EstabelecimentoRepository extends CrudRepository<Estacionamento, Integer> {
+	List<Estacionamento> findAll();
 
-	Optional<Estabelecimento> findByCnpj(CNPJ cnpj);
+	Optional<Estacionamento> findByCnpj(CNPJ cnpj);
 }

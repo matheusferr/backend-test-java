@@ -1,6 +1,6 @@
 package br.com.fcamara.teste.dev.dto;
 
-import br.com.fcamara.teste.dev.entity.Estabelecimento;
+import br.com.fcamara.teste.dev.entity.Estacionamento;
 import lombok.Getter;
 
 import java.util.List;
@@ -14,16 +14,13 @@ public class EstabelecimentoDto {
 
 	private final String cnpj;
 
-	private final EnderecoDto endereco;
-
-	public static List<EstabelecimentoDto> convertList(List<Estabelecimento> estabelecimentos) {
-		return estabelecimentos.stream().map(EstabelecimentoDto::new).collect(Collectors.toList());
+	public static List<EstabelecimentoDto> convertList(List<Estacionamento> estacionamentos) {
+		return estacionamentos.stream().map(EstabelecimentoDto::new).collect(Collectors.toList());
 	}
 
-	public EstabelecimentoDto(Estabelecimento estabelecimento) {
-		this.id = estabelecimento.getId();
-		this.nome = estabelecimento.getNomeEstabelecimento();
-		this.cnpj = estabelecimento.getCnpj().getCnpjValue();
-		this.endereco = new EnderecoDto(estabelecimento.getEndereco());
+	public EstabelecimentoDto(Estacionamento estacionamento) {
+		this.id = estacionamento.getId();
+		this.nome = estacionamento.getNome();
+		this.cnpj = estacionamento.getCnpj().getCnpjValue();
 	}
 }

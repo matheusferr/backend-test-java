@@ -35,8 +35,9 @@ public class Placa {
 	public boolean equals(Object o) {
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
-		Placa placa1 = (Placa) o;
-		return Objects.equals(placa, placa1.placa);
+		Placa that = (Placa) o;
+
+		return Objects.equals(placa, that.placa);
 	}
 
 	@Override

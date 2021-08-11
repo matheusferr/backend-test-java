@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -16,15 +17,15 @@ public class Estado {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	private String nomeEstado;
+	private String nome;
 
 	@Override
 	public boolean equals(Object o) {
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
-		Estado estado = (Estado) o;
+		Estado that = (Estado) o;
 
-		return nomeEstado.equals(estado.getNomeEstado());
+		return Objects.equals(nome, that.nome);
 	}
 
 	@Override
@@ -38,10 +39,10 @@ public class Estado {
 
 	@PrePersist
 	private void prePersist() {
-		this.nomeEstado = this.nomeEstado.toUpperCase();
+		this.nome = this.nome.toUpperCase();
 	}
 
 	public Estado(String nomeEstado) {
-		this.nomeEstado = nomeEstado;
+		this.nome = nomeEstado;
 	}
 }

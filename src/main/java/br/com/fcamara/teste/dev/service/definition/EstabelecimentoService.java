@@ -1,31 +1,31 @@
 package br.com.fcamara.teste.dev.service.definition;
 
-import br.com.fcamara.teste.dev.entity.Estabelecimento;
+import br.com.fcamara.teste.dev.entity.Estacionamento;
 import br.com.fcamara.teste.dev.entity.Telefone;
-import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoForm;
-import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoTelefoneForm;
-import br.com.fcamara.teste.dev.form.estabelecimento.EstabelecimentoUpdateForm;
+import br.com.fcamara.teste.dev.form.contato.TelefoneForm;
+import br.com.fcamara.teste.dev.form.estacionamento.EstacionamentoForm;
+import br.com.fcamara.teste.dev.form.estacionamento.EstacionamentoUpdateForm;
 
 import java.util.List;
 
 public interface EstabelecimentoService {
-	List<Estabelecimento> index();
+	List<Estacionamento> index();
 
-	Estabelecimento findById(Integer id);
+	Estacionamento findById(Integer id);
 
-	Estabelecimento findByCnpj(String cnpj);
+	Estacionamento findByCnpj(String cnpj);
 
-	Estabelecimento create(EstabelecimentoForm estabelecimentoForm);
+	Estacionamento create(EstacionamentoForm estacionamentoForm);
 
-	Estabelecimento update(Integer id, EstabelecimentoUpdateForm estabelecimentoUpdateForm);
+	Estacionamento update(Integer id, EstacionamentoUpdateForm estacionamentoUpdateForm);
 
-	void updateVagas(Estabelecimento estabelecimento);
+	void updateVagas(Estacionamento estacionamento);
 
 	List<Telefone> getPhones(Integer id);
 
-	Estabelecimento addPhone(Integer id, EstabelecimentoTelefoneForm estabelecimentoTelefoneForm);
+	Estacionamento addPhone(Integer id, TelefoneForm telefoneForm);
 
-	void removePhone(Integer id, EstabelecimentoTelefoneForm estabelecimentoTelefoneForm);
+	void removePhone(Integer id, TelefoneForm telefoneForm);
 
 	void destroy(Integer id);
 }

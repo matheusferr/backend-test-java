@@ -16,7 +16,7 @@ public class EnderecoDto {
 	public EnderecoDto(Endereco endereco) {
 		this.logradouro = endereco.getLogradouro();
 		this.numero = endereco.getNumero();
-		this.cidade = endereco.getCidade().getNomeCidade();
-		this.estado = endereco.getCidade().getEstado().getNomeEstado();
+		this.cidade = endereco.getCidade().getNome();
+		this.estado = endereco.getCidade().getEstado().getNome();
 	}
 }

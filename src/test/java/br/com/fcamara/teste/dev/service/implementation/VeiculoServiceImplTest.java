@@ -98,7 +98,7 @@ class VeiculoServiceImplTest {
 
 		Cor cor = new Cor("Verde");
 
-		veiculoUpdateForm.setCor(cor.getNomeCor());
+		veiculoUpdateForm.setCor(cor.getNome());
 
 		Mockito.when(this.veiculoRepository.findById(1)).thenReturn(Optional.of(veiculo));
 

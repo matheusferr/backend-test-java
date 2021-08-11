@@ -4,6 +4,7 @@ import br.com.fcamara.teste.dev.exception.TelefoneInvalidoException;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Entity
@@ -14,11 +15,12 @@ public class Telefone {
 	private Integer id;
 
 	@Column(unique = true)
-	private String numeroTelefone;
+	private String numero;
 
-	public Telefone(String telefone) {
-		this.validate(telefone);
-		this.numeroTelefone = telefone;
+	public Telefone(String numero) {
+		this.validate(numero);
+
+		this.numero = numero;
 	}
 
 	private void validate(String telefone) {
@@ -27,12 +29,13 @@ public class Telefone {
 	}
 
 	public String getTelefoneValue() {
-		return this.numeroTelefone;
+		return this.numero;
 	}
 
-	public void setTelefone(String telefone) {
-		this.validate(telefone);
-		this.numeroTelefone = telefone;
+	public void setTelefone(String numero) {
+		this.validate(numero);
+
+		this.numero = numero;
 	}
 
 	@Override
@@ -41,7 +44,7 @@ public class Telefone {
 		if(o == null || getClass() != o.getClass()) return false;
 		Telefone that = (Telefone) o;
 
-		return numeroTelefone.equals(that.numeroTelefone);
+		return Objects.equals(numero, that.numero);
 	}
 
 	@Override

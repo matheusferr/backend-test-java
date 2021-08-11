@@ -1,6 +1,6 @@
 package br.com.fcamara.teste.dev.service.implementation;
 
-import br.com.fcamara.teste.dev.entity.Estabelecimento;
+import br.com.fcamara.teste.dev.entity.Estacionamento;
 import br.com.fcamara.teste.dev.entity.Tipo;
 import br.com.fcamara.teste.dev.entity.Vaga;
 import br.com.fcamara.teste.dev.entity.Veiculo;
@@ -54,20 +54,20 @@ public class VagaServiceImpl implements VagaService {
 	@Override
 	public Vaga addVehicle(VagaForm vagaForm) {
 		Veiculo veiculo = this.veiculoServiceImpl.findByPlaca(vagaForm.getPlaca());
-		Estabelecimento estabelecimento = this.estabelecimentoServiceImpl.findByCnpj(vagaForm.getCnpj());
+		Estacionamento estacionamento = this.estabelecimentoServiceImpl.findByCnpj(vagaForm.getCnpj());
 
 		if(this.exists(veiculo)) throw new OperacaoInvalidaException(
 				"veiculo já vinculado a outro estacionamento"
 		);
 
 		if(veiculo.getTipo().getTipoValue().equalsIgnoreCase(VeiculoTipo.CARRO.toString()))
-			this.hasEmptySlots(veiculo.getTipo(), estabelecimento.getVagasCarro());
+			this.hasEmptySlots(veiculo.getTipo(), estacionamento.getVagasCarro());
 
 		else
-			this.hasEmptySlots(veiculo.getTipo(), estabelecimento.getVagasMoto());
+			this.hasEmptySlots(veiculo.getTipo(), estacionamento.getVagasMoto());
 
 
-		List<Vaga> vagas = estabelecimento.getVagas();
+		List<Vaga> vagas = estacionamento.getVagas();
 
 		Vaga vaga = new Vaga(veiculo);
 
@@ -79,13 +79,13 @@ public class VagaServiceImpl implements VagaService {
 	@Override
 	public Vaga removeVehicle(VagaForm vagaForm) {
 		Veiculo veiculo = veiculoServiceImpl.findByPlaca(vagaForm.getPlaca());
-		Estabelecimento estabelecimento = this.estabelecimentoServiceImpl.findByCnpj(vagaForm.getCnpj());
+		Estacionamento estacionamento = this.estabelecimentoServiceImpl.findByCnpj(vagaForm.getCnpj());
 
 		if(!this.exists(veiculo)) throw new OperacaoInvalidaException(
 				"veiculo não vinculado ao estacionamento"
 		);
 
-		List<Vaga> vagas = estabelecimento.getVagas();
+		List<Vaga> vagas = estacionamento.getVagas();
 
 		Vaga vaga = this.getVaga(veiculo);
 

@@ -1,4 +1,4 @@
-package br.com.fcamara.teste.dev.form.estabelecimento;
+package br.com.fcamara.teste.dev.form.contato;
 
 import br.com.fcamara.teste.dev.entity.Telefone;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
-public class EstabelecimentoTelefoneForm {
+public class TelefoneForm {
 	@NotNull
 	@NotEmpty
 	@Pattern(regexp = "^\\d{11}|\\d{10}$")

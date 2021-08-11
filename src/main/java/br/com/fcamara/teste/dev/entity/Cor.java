@@ -6,6 +6,7 @@ import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Setter
@@ -18,20 +19,20 @@ public class Cor {
 	private Integer id;
 
 	@NonNull
-	private String nomeCor;
+	private String nome;
 
 	@PrePersist
 	private void prePersist() {
-		this.nomeCor = this.nomeCor.toUpperCase();
+		this.nome = this.nome.toUpperCase();
 	}
 
 	@Override
 	public boolean equals(Object o) {
 		if(this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
-		Cor cor = (Cor) o;
+		Cor that = (Cor) o;
 
-		return nomeCor.equals(cor.nomeCor);
+		return Objects.equals(nome, that.nome);
 	}
 
 	@Override
@@ -43,7 +44,7 @@ public class Cor {
 		return result;
 	}
 
-	public Cor(String nomeCor) {
-		this.nomeCor = nomeCor;
+	public Cor(String nome) {
+		this.nome = nome;
 	}
 }

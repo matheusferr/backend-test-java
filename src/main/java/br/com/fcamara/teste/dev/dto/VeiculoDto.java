@@ -49,9 +49,9 @@ public class VeiculoDto {
 
 	public VeiculoDto(Veiculo veiculo) {
 		this.id = veiculo.getId();
-		this.marca = veiculo.getModelo().getMarca().getNomeMarca();
+		this.marca = veiculo.getModelo().getMarca().getNome();
 		this.modelo = veiculo.getModelo().getNomeModelo();
-		this.cor = veiculo.getCor().getNomeCor();
+		this.cor = veiculo.getCor().getNome();
 		this.placa = veiculo.getPlaca().getPlacaValue();
 		this.tipo = veiculo.getTipo().getTipoValue();
 	}
