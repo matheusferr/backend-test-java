@@ -29,7 +29,7 @@ class TelefoneServiceImplTest {
 
 	@Test
 	void shouldGetAPhone() {
-		Mockito.when(this.telefoneRepository.findByNumeroTelefone("1234567890")).thenReturn(
+		Mockito.when(this.telefoneRepository.findByNumero("1234567890")).thenReturn(
 				Optional.of(this.testTelefone)
 		);
 
@@ -40,7 +40,7 @@ class TelefoneServiceImplTest {
 
 	@Test
 	void shouldCreateAPhone() {
-		Mockito.when(this.telefoneRepository.findByNumeroTelefone("1234567890")).thenReturn(Optional.empty());
+		Mockito.when(this.telefoneRepository.findByNumero("1234567890")).thenReturn(Optional.empty());
 
 		Mockito.when(this.telefoneRepository.save(testTelefone)).thenReturn(this.testTelefone);
 

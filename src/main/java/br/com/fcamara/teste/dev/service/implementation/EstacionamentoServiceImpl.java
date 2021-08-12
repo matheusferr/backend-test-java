@@ -9,8 +9,8 @@ import br.com.fcamara.teste.dev.exception.OperacaoInvalidaException;
 import br.com.fcamara.teste.dev.form.contato.TelefoneForm;
 import br.com.fcamara.teste.dev.form.estacionamento.EstacionamentoForm;
 import br.com.fcamara.teste.dev.form.estacionamento.EstacionamentoUpdateForm;
-import br.com.fcamara.teste.dev.repository.EstabelecimentoRepository;
-import br.com.fcamara.teste.dev.service.definition.EstabelecimentoService;
+import br.com.fcamara.teste.dev.repository.EstacionamentoRepository;
+import br.com.fcamara.teste.dev.service.definition.EstacionamentoService;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -18,20 +18,20 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class EstabelecimentoServiceImpl implements EstabelecimentoService {
+public class EstacionamentoServiceImpl implements EstacionamentoService {
 	private final EnderecoServiceImpl enderecoServiceImpl;
 	private final TelefoneServiceImpl telefoneServiceImpl;
-	private final EstabelecimentoRepository estabelecimentoRepository;
+	private final EstacionamentoRepository estacionamentoRepository;
 
-	public EstabelecimentoServiceImpl(EnderecoServiceImpl enderecoServiceImpl, TelefoneServiceImpl telefoneServiceImpl,
-	                                  EstabelecimentoRepository estabelecimentoRepository) {
+	public EstacionamentoServiceImpl(EnderecoServiceImpl enderecoServiceImpl, TelefoneServiceImpl telefoneServiceImpl,
+	                                 EstacionamentoRepository estacionamentoRepository) {
 		this.enderecoServiceImpl = enderecoServiceImpl;
 		this.telefoneServiceImpl = telefoneServiceImpl;
-		this.estabelecimentoRepository = estabelecimentoRepository;
+		this.estacionamentoRepository = estacionamentoRepository;
 	}
 
 	private Estacionamento getEstabelecimento(Integer id) {
-		Optional<Estacionamento> estabelecimento = this.estabelecimentoRepository.findById(id);
+		Optional<Estacionamento> estabelecimento = this.estacionamentoRepository.findById(id);
 
 		if(estabelecimento.isEmpty()) throw new EntityNotFoundException();
 
@@ -40,7 +40,7 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 
 	@Override
 	public List<Estacionamento> index() {
-		return this.estabelecimentoRepository.findAll();
+		return this.estacionamentoRepository.findAll();
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 
 	@Override
 	public Estacionamento findByCnpj(String cnpj) {
-		Optional<Estacionamento> estabelecimento = this.estabelecimentoRepository.findByCnpj(new CNPJ(cnpj));
+		Optional<Estacionamento> estabelecimento = this.estacionamentoRepository.findByCnpj(new CNPJ(cnpj));
 
 		if(estabelecimento.isEmpty()) throw new EntityNotFoundException();
 
@@ -70,7 +70,7 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 
 		Estacionamento estacionamento = estacionamentoForm.toEstabelecimento(endereco, cnpj, telefone);
 
-		return this.estabelecimentoRepository.save(estacionamento);
+		return this.estacionamentoRepository.save(estacionamento);
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 		Estacionamento estacionamento = this.getEstabelecimento(id);
 
 		if(!estacionamentoUpdateForm.getNome().equals(""))
-			estacionamento.setNome(estacionamentoUpdateForm.getNome());
+			estacionamento.setNomeEstacionamento(estacionamentoUpdateForm.getNome());
 
 		if(estacionamentoUpdateForm.getVagasCarro() == null && estacionamentoUpdateForm.getVagasMoto() == null)
 			throw new DadosInvalidosException("os valores das vagas de carros e motos não podem ser nulos");
@@ -89,12 +89,12 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 		if(estacionamentoUpdateForm.getVagasMoto() != null)
 			estacionamento.setVagasMoto(estacionamentoUpdateForm.getVagasMoto());
 
-		return this.estabelecimentoRepository.save(estacionamento);
+		return this.estacionamentoRepository.save(estacionamento);
 	}
 
 	@Override
 	public void updateVagas(Estacionamento estacionamento) {
-		this.estabelecimentoRepository.save(estacionamento);
+		this.estacionamentoRepository.save(estacionamento);
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 
 		estacionamento.getTelefones().add(telefone);
 
-		return this.estabelecimentoRepository.save(estacionamento);
+		return this.estacionamentoRepository.save(estacionamento);
 	}
 
 	@Override
@@ -131,13 +131,13 @@ public class EstabelecimentoServiceImpl implements EstabelecimentoService {
 
 		estacionamento.getTelefones().remove(telefone);
 
-		this.estabelecimentoRepository.save(estacionamento);
+		this.estacionamentoRepository.save(estacionamento);
 	}
 
 	@Override
 	public void destroy(Integer id) {
 		Estacionamento estacionamento = this.getEstabelecimento(id);
 
-		this.estabelecimentoRepository.delete(estacionamento);
+		this.estacionamentoRepository.delete(estacionamento);
 	}
 }

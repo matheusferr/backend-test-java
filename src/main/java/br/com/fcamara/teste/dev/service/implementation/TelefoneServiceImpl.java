@@ -17,7 +17,7 @@ public class TelefoneServiceImpl implements TelefoneService {
 	}
 
 	private Telefone getByTelefone(String numeroTelefone) {
-		Optional<Telefone> telefone = this.telefoneRepository.findByNumeroTelefone(numeroTelefone);
+		Optional<Telefone> telefone = this.telefoneRepository.findByNumero(numeroTelefone);
 
 		if(telefone.isEmpty()) throw new EntityNotFoundException();
 
@@ -31,7 +31,7 @@ public class TelefoneServiceImpl implements TelefoneService {
 
 	@Override
 	public Telefone findByNumeroOrCreate(String numeroTelefone) {
-		Optional<Telefone> telefone = this.telefoneRepository.findByNumeroTelefone(numeroTelefone);
+		Optional<Telefone> telefone = this.telefoneRepository.findByNumero(numeroTelefone);
 
 		if(telefone.isEmpty()) return this.telefoneRepository.save(new Telefone(numeroTelefone));
 

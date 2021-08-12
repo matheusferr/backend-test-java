@@ -18,11 +18,11 @@ import java.util.Optional;
 
 @Service
 public class VagaServiceImpl implements VagaService {
-	private final EstabelecimentoServiceImpl estabelecimentoServiceImpl;
+	private final EstacionamentoServiceImpl estabelecimentoServiceImpl;
 	private final VeiculoServiceImpl veiculoServiceImpl;
 	private final VagaRepository vagaRepository;
 
-	public VagaServiceImpl(EstabelecimentoServiceImpl estabelecimentoServiceImpl,
+	public VagaServiceImpl(EstacionamentoServiceImpl estabelecimentoServiceImpl,
 	                       VeiculoServiceImpl veiculoServiceImpl, VagaRepository vagaRepository) {
 		this.estabelecimentoServiceImpl = estabelecimentoServiceImpl;
 		this.veiculoServiceImpl = veiculoServiceImpl;
@@ -52,6 +52,15 @@ public class VagaServiceImpl implements VagaService {
 	}
 
 	@Override
+	public Vaga findById(Integer id) {
+		Optional<Vaga> vaga = this.vagaRepository.findById(id);
+
+		if(vaga.isEmpty()) throw new EntityNotFoundException();
+
+		return vaga.get();
+	}
+
+	@Override
 	public Vaga addVehicle(VagaForm vagaForm) {
 		Veiculo veiculo = this.veiculoServiceImpl.findByPlaca(vagaForm.getPlaca());
 		Estacionamento estacionamento = this.estabelecimentoServiceImpl.findByCnpj(vagaForm.getCnpj());
@@ -69,7 +78,7 @@ public class VagaServiceImpl implements VagaService {
 
 		List<Vaga> vagas = estacionamento.getVagas();
 
-		Vaga vaga = new Vaga(veiculo);
+		Vaga vaga = new Vaga(veiculo, estacionamento);
 
 		vagas.add(vaga);
 

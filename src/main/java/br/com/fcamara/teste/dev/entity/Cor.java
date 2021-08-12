@@ -19,11 +19,11 @@ public class Cor {
 	private Integer id;
 
 	@NonNull
-	private String nome;
+	private String nomeCor;
 
 	@PrePersist
 	private void prePersist() {
-		this.nome = this.nome.toUpperCase();
+		this.nomeCor = this.nomeCor.toUpperCase();
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class Cor {
 		if(o == null || getClass() != o.getClass()) return false;
 		Cor that = (Cor) o;
 
-		return Objects.equals(nome, that.nome);
+		return Objects.equals(nomeCor, that.nomeCor);
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class Cor {
 		return result;
 	}
 
-	public Cor(String nome) {
-		this.nome = nome;
+	public Cor(String nomeCor) {
+		this.nomeCor = nomeCor;
 	}
 }

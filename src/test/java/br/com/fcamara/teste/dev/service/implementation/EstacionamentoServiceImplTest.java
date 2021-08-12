@@ -5,7 +5,7 @@ import br.com.fcamara.teste.dev.entity.valueObject.CNPJ;
 import br.com.fcamara.teste.dev.form.contato.TelefoneForm;
 import br.com.fcamara.teste.dev.form.estacionamento.EstacionamentoForm;
 import br.com.fcamara.teste.dev.form.estacionamento.EstacionamentoUpdateForm;
-import br.com.fcamara.teste.dev.repository.EstabelecimentoRepository;
+import br.com.fcamara.teste.dev.repository.EstacionamentoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,13 +25,13 @@ class EstacionamentoServiceImplTest {
 	private final List<Estacionamento> testEstacionamentos = new ArrayList<>();
 
 	@Mock
-	private EstabelecimentoRepository estabelecimentoRepository;
+	private EstacionamentoRepository estacionamentoRepository;
 	@Mock
 	private EnderecoServiceImpl enderecoServiceImpl;
 	@Mock
 	private TelefoneServiceImpl telefoneServiceImpl;
 	@InjectMocks
-	private EstabelecimentoServiceImpl estabelecimentoServiceImpl;
+	private EstacionamentoServiceImpl estabelecimentoServiceImpl;
 
 	@BeforeEach
 	void beforeEach() {
@@ -64,7 +64,7 @@ class EstacionamentoServiceImplTest {
 
 	@Test
 	void shoudReturnAListOfEstablishments() {
-		Mockito.when(this.estabelecimentoRepository.findAll()).thenReturn(this.testEstacionamentos);
+		Mockito.when(this.estacionamentoRepository.findAll()).thenReturn(this.testEstacionamentos);
 
 		List<Estacionamento> estacionamentos = this.estabelecimentoServiceImpl.index();
 
@@ -74,7 +74,7 @@ class EstacionamentoServiceImplTest {
 
 	@Test
 	void shoudReturnAnEstablishmentByItsID() {
-		Mockito.when(this.estabelecimentoRepository.findById(1)).thenReturn(Optional.of(this.testEstacionamentos.get(0)));
+		Mockito.when(this.estacionamentoRepository.findById(1)).thenReturn(Optional.of(this.testEstacionamentos.get(0)));
 
 		Estacionamento estacionamento = this.estabelecimentoServiceImpl.findById(1);
 
@@ -104,7 +104,7 @@ class EstacionamentoServiceImplTest {
 		)).thenReturn(endereco);
 
 		Mockito.when(
-				this.estabelecimentoRepository.save(
+				this.estacionamentoRepository.save(
 						estacionamentoForm.toEstabelecimento(endereco, cnpj, telefone)
 				)).thenReturn(testEstacionamento);
 
@@ -117,32 +117,28 @@ class EstacionamentoServiceImplTest {
 	void shouldUpdateAnEstablishment() {
 		Estacionamento baseEstacionamento = this.testEstacionamentos.get(1);
 
-		Estacionamento testEstacionamento = new Estacionamento(baseEstacionamento.getNome(),
+		Estacionamento testEstacionamento = new Estacionamento(baseEstacionamento.getNomeEstacionamento(),
 				baseEstacionamento.getCnpj(), baseEstacionamento.getEndereco(),
 				baseEstacionamento.getTelefones().get(0), baseEstacionamento.getVagasCarro(),
 				baseEstacionamento.getVagasMoto());
 
-		EstacionamentoUpdateForm estacionamentoUpdateForm = new EstacionamentoUpdateForm();
+		EstacionamentoUpdateForm estacionamentoUpdateForm = new EstacionamentoUpdateForm(
+				"TEST03", 12, 8
+		);
 
-		estacionamentoUpdateForm.setNome("TEST03");
-
-		estacionamentoUpdateForm.setVagasCarro(12);
-
-		estacionamentoUpdateForm.setVagasMoto(8);
-
-		Mockito.when(this.estabelecimentoRepository.findById(2))
+		Mockito.when(this.estacionamentoRepository.findById(2))
 				.thenReturn(Optional.of(testEstacionamento));
 
-		testEstacionamento.setNome(estacionamentoUpdateForm.getNome());
+		testEstacionamento.setNomeEstacionamento(estacionamentoUpdateForm.getNome());
 
-		Mockito.when(this.estabelecimentoRepository.save(testEstacionamento)).thenReturn(testEstacionamento);
+		Mockito.when(this.estacionamentoRepository.save(testEstacionamento)).thenReturn(testEstacionamento);
 
 		Estacionamento estacionamentoAtualizado = this.estabelecimentoServiceImpl
 				.update(2, estacionamentoUpdateForm);
 
 		assertNotEquals(
-				estacionamentoAtualizado.getNome(),
-				this.testEstacionamentos.get(1).getNome()
+				estacionamentoAtualizado.getNomeEstacionamento(),
+				this.testEstacionamentos.get(1).getNomeEstacionamento()
 		);
 		assertNotEquals(
 				estacionamentoAtualizado.getVagasCarro(),
@@ -163,11 +159,11 @@ class EstacionamentoServiceImplTest {
 
 		estabelecimentoForm.setTelefone("12345678901");
 
-		Mockito.when(estabelecimentoRepository.findById(1)).thenReturn(Optional.of(testEstacionamento));
+		Mockito.when(estacionamentoRepository.findById(1)).thenReturn(Optional.of(testEstacionamento));
 
 		testEstacionamento.getTelefones().add(estabelecimentoForm.toTelefone());
 
-		Mockito.when(estabelecimentoRepository.save(testEstacionamento)).thenReturn(testEstacionamento);
+		Mockito.when(estacionamentoRepository.save(testEstacionamento)).thenReturn(testEstacionamento);
 
 		Estacionamento estacionamento = this.estabelecimentoServiceImpl.addPhone(1, estabelecimentoForm);
 

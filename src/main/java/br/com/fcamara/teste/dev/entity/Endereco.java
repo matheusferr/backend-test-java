@@ -22,7 +22,7 @@ public class Endereco {
 
 	private String numero;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Cidade cidade;
 
 	private void validate(String numero) {

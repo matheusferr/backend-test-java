@@ -17,11 +17,11 @@ public class Marca {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	private String nome;
+	private String nomeMarca;
 
 	@PrePersist
 	private void prePersist() {
-		this.nome = this.nome.toUpperCase();
+		this.nomeMarca = this.nomeMarca.toUpperCase();
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class Marca {
 
 		Marca that = (Marca) o;
 
-		return Objects.equals(nome, that.nome);
+		return Objects.equals(nomeMarca, that.nomeMarca);
 	}
 
 	@Override
@@ -44,6 +44,6 @@ public class Marca {
 	}
 
 	public Marca(String nomeMarca) {
-		this.nome = nome;
+		this.nomeMarca = nomeMarca;
 	}
 }

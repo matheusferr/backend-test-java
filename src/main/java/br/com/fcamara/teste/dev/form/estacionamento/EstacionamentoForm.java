@@ -4,9 +4,7 @@ import br.com.fcamara.teste.dev.entity.Endereco;
 import br.com.fcamara.teste.dev.entity.Estacionamento;
 import br.com.fcamara.teste.dev.entity.Telefone;
 import br.com.fcamara.teste.dev.entity.valueObject.CNPJ;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;

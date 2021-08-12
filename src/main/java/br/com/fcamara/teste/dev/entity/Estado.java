@@ -17,7 +17,7 @@ public class Estado {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	private String nome;
+	private String nomeEstado;
 
 	@Override
 	public boolean equals(Object o) {
@@ -25,7 +25,7 @@ public class Estado {
 		if(o == null || getClass() != o.getClass()) return false;
 		Estado that = (Estado) o;
 
-		return Objects.equals(nome, that.nome);
+		return Objects.equals(nomeEstado, that.nomeEstado);
 	}
 
 	@Override
@@ -39,10 +39,10 @@ public class Estado {
 
 	@PrePersist
 	private void prePersist() {
-		this.nome = this.nome.toUpperCase();
+		this.nomeEstado = this.nomeEstado.toUpperCase();
 	}
 
 	public Estado(String nomeEstado) {
-		this.nome = nomeEstado;
+		this.nomeEstado = nomeEstado;
 	}
 }

@@ -1,15 +1,16 @@
 package br.com.fcamara.teste.dev.controller;
 
 import br.com.fcamara.teste.dev.dto.VagaDto;
+import br.com.fcamara.teste.dev.entity.Vaga;
 import br.com.fcamara.teste.dev.form.vaga.VagaForm;
 import br.com.fcamara.teste.dev.service.implementation.VagaServiceImpl;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.net.URI;
 
 @RestController
 @RequestMapping("/vagas")
@@ -20,15 +21,24 @@ public class VagaController {
 		this.vagaServiceImpl = vagaServiceImpl;
 	}
 
-	@PutMapping("/entrada")
+	@GetMapping("/{id}")
+	public VagaDto findOne(@PathVariable Integer id) {
+		return new VagaDto(this.vagaServiceImpl.findById(id));
+	}
+
+	@PostMapping("/entrada")
 	@Transactional
-	public VagaDto entrada(@RequestBody @Valid VagaForm vagaForm) {
-		return new VagaDto(this.vagaServiceImpl.addVehicle(vagaForm));
+	public ResponseEntity<VagaDto> enter(@RequestBody @Valid VagaForm vagaForm, UriComponentsBuilder uriBuilder) {
+		Vaga vaga = this.vagaServiceImpl.addVehicle(vagaForm);
+
+		URI uri = uriBuilder.path("/vagas/{id}").buildAndExpand(vaga.getId()).toUri();
+
+		return ResponseEntity.created(uri).body(new VagaDto(vaga));
 	}
 
 	@PutMapping("/saida")
 	@Transactional
-	public VagaDto saida(@RequestBody @Valid VagaForm vagaForm) {
+	public VagaDto leave(@RequestBody @Valid VagaForm vagaForm) {
 		return new VagaDto(this.vagaServiceImpl.removeVehicle(vagaForm));
 	}
 }

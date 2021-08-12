@@ -1,11 +1,11 @@
 package br.com.fcamara.teste.dev.controller;
 
-import br.com.fcamara.teste.dev.dto.EstabelecimentoDto;
+import br.com.fcamara.teste.dev.dto.EstacionamentoDto;
 import br.com.fcamara.teste.dev.dto.TelefoneDto;
 import br.com.fcamara.teste.dev.form.contato.TelefoneForm;
 import br.com.fcamara.teste.dev.form.estacionamento.EstacionamentoForm;
 import br.com.fcamara.teste.dev.form.estacionamento.EstacionamentoUpdateForm;
-import br.com.fcamara.teste.dev.service.implementation.EstabelecimentoServiceImpl;
+import br.com.fcamara.teste.dev.service.implementation.EstacionamentoServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -16,22 +16,22 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/estabelecimentos")
-public class EstabelecimentoController {
-	private final EstabelecimentoServiceImpl estabelecimentoServiceImpl;
+@RequestMapping("/estacionamentos")
+public class EstacionamentoController {
+	private final EstacionamentoServiceImpl estabelecimentoServiceImpl;
 
-	public EstabelecimentoController(EstabelecimentoServiceImpl estabelecimentoServiceImpl) {
+	public EstacionamentoController(EstacionamentoServiceImpl estabelecimentoServiceImpl) {
 		this.estabelecimentoServiceImpl = estabelecimentoServiceImpl;
 	}
 
 	@GetMapping
-	public List<EstabelecimentoDto> index() {
-		return EstabelecimentoDto.convertList(this.estabelecimentoServiceImpl.index());
+	public List<EstacionamentoDto> index() {
+		return EstacionamentoDto.convertList(this.estabelecimentoServiceImpl.index());
 	}
 
 	@GetMapping("/{id}")
-	public EstabelecimentoDto findOne(@PathVariable Integer id) {
-		return new EstabelecimentoDto(this.estabelecimentoServiceImpl.findById(id));
+	public EstacionamentoDto findOne(@PathVariable Integer id) {
+		return new EstacionamentoDto(this.estabelecimentoServiceImpl.findById(id));
 	}
 
 	@GetMapping("/{id}/contato")
@@ -41,10 +41,10 @@ public class EstabelecimentoController {
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<EstabelecimentoDto> create(@RequestBody @Valid EstacionamentoForm estacionamentoForm,
-	                                                 UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<EstacionamentoDto> create(@RequestBody @Valid EstacionamentoForm estacionamentoForm,
+	                                                UriComponentsBuilder uriBuilder) {
 
-		EstabelecimentoDto estabelecimento = new EstabelecimentoDto(
+		EstacionamentoDto estabelecimento = new EstacionamentoDto(
 				this.estabelecimentoServiceImpl.create(estacionamentoForm)
 		);
 
@@ -69,9 +69,9 @@ public class EstabelecimentoController {
 
 	@PutMapping("/{id}")
 	@Transactional
-	public EstabelecimentoDto update(@PathVariable Integer id,
-	                                 @RequestBody @Valid EstacionamentoUpdateForm estabelecimentoForm) {
-		return new EstabelecimentoDto(this.estabelecimentoServiceImpl.update(id, estabelecimentoForm));
+	public EstacionamentoDto update(@PathVariable Integer id,
+	                                @RequestBody @Valid EstacionamentoUpdateForm estabelecimentoForm) {
+		return new EstacionamentoDto(this.estabelecimentoServiceImpl.update(id, estabelecimentoForm));
 	}
 
 	@DeleteMapping("/{id}")

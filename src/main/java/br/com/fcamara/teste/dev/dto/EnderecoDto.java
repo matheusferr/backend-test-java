@@ -1,9 +1,13 @@
 package br.com.fcamara.teste.dev.dto;
 
 import br.com.fcamara.teste.dev.entity.Endereco;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 
+@Setter
 @Getter
+@EqualsAndHashCode
 public class EnderecoDto {
 	private final String logradouro;
 
@@ -16,7 +20,7 @@ public class EnderecoDto {
 	public EnderecoDto(Endereco endereco) {
 		this.logradouro = endereco.getLogradouro();
 		this.numero = endereco.getNumero();
-		this.cidade = endereco.getCidade().getNome();
-		this.estado = endereco.getCidade().getEstado().getNome();
+		this.cidade = endereco.getCidade().getNomeCidade();
+		this.estado = endereco.getCidade().getEstado().getNomeEstado();
 	}
 }

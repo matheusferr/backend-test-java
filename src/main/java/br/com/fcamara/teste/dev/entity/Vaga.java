@@ -18,17 +18,21 @@ public class Vaga {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne
+	private Estacionamento estacionamento;
+
+	@OneToOne
 	private Veiculo veiculo;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL)
 	private Tipo tipo;
 
 	private LocalDateTime entrada;
 
 	private LocalDateTime saida;
 
-	public Vaga(Veiculo veiculo) {
+	public Vaga(Veiculo veiculo, Estacionamento estacionamento) {
+		this.estacionamento = estacionamento;
 		this.veiculo = veiculo;
 		this.tipo = veiculo.getTipo();
 		this.entrada = LocalDateTime.now();

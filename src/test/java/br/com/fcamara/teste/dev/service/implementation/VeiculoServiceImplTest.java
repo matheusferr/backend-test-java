@@ -94,11 +94,11 @@ class VeiculoServiceImplTest {
 	void shouldUpdateAVehicle() {
 		Veiculo veiculo = this.testVeiculos.get(0);
 
-		VeiculoUpdateForm veiculoUpdateForm = new VeiculoUpdateForm();
+		VeiculoUpdateForm veiculoUpdateForm = new VeiculoUpdateForm("Verde");
 
 		Cor cor = new Cor("Verde");
 
-		veiculoUpdateForm.setCor(cor.getNome());
+		veiculoUpdateForm.setCor(cor.getNomeCor());
 
 		Mockito.when(this.veiculoRepository.findById(1)).thenReturn(Optional.of(veiculo));
 

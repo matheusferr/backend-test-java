@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class VagaServiceImplTest {
 	@Mock
-	private EstabelecimentoServiceImpl estabelecimentoServiceImpl;
+	private EstacionamentoServiceImpl estabelecimentoServiceImpl;
 
 	@Mock
 	private VeiculoServiceImpl veiculoServiceImpl;
@@ -64,7 +64,7 @@ class VagaServiceImplTest {
 		vagaForm.setCnpj(testEstacionamento.getCnpj().getCnpjValue());
 		vagaForm.setPlaca(testVeiculo.getPlaca().getPlacaValue());
 
-		testVaga = new Vaga(this.testVeiculo);
+		testVaga = new Vaga(this.testVeiculo, this.testEstacionamento);
 	}
 
 	@Test

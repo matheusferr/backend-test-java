@@ -21,7 +21,7 @@ public class Estacionamento {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	private String nome;
+	private String nomeEstacionamento;
 
 	@Convert(converter = CNPJCoverter.class)
 	@Column(unique = true)
@@ -37,12 +37,12 @@ public class Estacionamento {
 
 	private Integer vagasMoto;
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Vaga> vagas;
 
-	public Estacionamento(String nome, CNPJ cnpj, Endereco endereco, Telefone telefone,
+	public Estacionamento(String nomeEstacionamento, CNPJ cnpj, Endereco endereco, Telefone telefone,
 	                      Integer vagasCarro, Integer vagasMoto) {
-		this.nome = nome;
+		this.nomeEstacionamento = nomeEstacionamento;
 		this.cnpj = cnpj;
 		this.endereco = endereco;
 		this.telefones = new ArrayList<>(List.of(telefone));
@@ -57,7 +57,7 @@ public class Estacionamento {
 		if(o == null || getClass() != o.getClass()) return false;
 		Estacionamento that = (Estacionamento) o;
 
-		return Objects.equals(id, that.id) && Objects.equals(nome, that.nome)
+		return Objects.equals(id, that.id) && Objects.equals(nomeEstacionamento, that.nomeEstacionamento)
 				&& Objects.equals(cnpj, that.cnpj) && Objects.equals(endereco, that.endereco)
 				&& Objects.equals(vagas, that.vagas) && Objects.equals(vagasCarro, that.vagasCarro)
 				&& Objects.equals(vagasMoto, that.vagasMoto);
@@ -75,6 +75,6 @@ public class Estacionamento {
 	@PrePersist
 	@PreUpdate
 	private void prePersist() {
-		this.nome = this.nome.toUpperCase();
+		this.nomeEstacionamento = this.nomeEstacionamento.toUpperCase();
 	}
 }

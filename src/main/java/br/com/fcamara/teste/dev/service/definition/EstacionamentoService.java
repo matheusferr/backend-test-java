@@ -8,7 +8,7 @@ import br.com.fcamara.teste.dev.form.estacionamento.EstacionamentoUpdateForm;
 
 import java.util.List;
 
-public interface EstabelecimentoService {
+public interface EstacionamentoService {
 	List<Estacionamento> index();
 
 	Estacionamento findById(Integer id);
