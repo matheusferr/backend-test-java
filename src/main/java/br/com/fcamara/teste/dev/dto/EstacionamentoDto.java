@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor
@@ -27,10 +26,6 @@ public class EstacionamentoDto {
 
 	private Integer VagasMoto;
 
-	public static List<EstacionamentoDto> convertList(List<Estacionamento> estacionamentos) {
-		return estacionamentos.stream().map(EstacionamentoDto::new).collect(Collectors.toList());
-	}
-
 	public EstacionamentoDto(Estacionamento estacionamento) {
 		this.id = estacionamento.getId();
 		this.nome = estacionamento.getNomeEstacionamento();
@@ -38,5 +33,9 @@ public class EstacionamentoDto {
 		this.telefone = estacionamento.getTelefones().get(0).getTelefoneValue();
 		this.vagasCarro = estacionamento.getVagasCarro();
 		this.VagasMoto = estacionamento.getVagasMoto();
+	}
+
+	public static List<EstacionamentoDto> convertList(List<Estacionamento> estacionamentos) {
+		return estacionamentos.stream().map(EstacionamentoDto::new).collect(Collectors.toList());
 	}
 }

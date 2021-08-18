@@ -19,8 +19,6 @@ public interface EstacionamentoService {
 
 	Estacionamento update(Integer id, EstacionamentoUpdateForm estacionamentoUpdateForm);
 
-	void updateVagas(Estacionamento estacionamento);
-
 	List<Telefone> getPhones(Integer id);
 
 	Estacionamento addPhone(Integer id, TelefoneForm telefoneForm);

@@ -1,7 +1,9 @@
 package br.com.fcamara.teste.dev.controller;
 
+import br.com.fcamara.teste.dev.dto.EstacionamentoDetalhesDto;
 import br.com.fcamara.teste.dev.dto.EstacionamentoDto;
 import br.com.fcamara.teste.dev.dto.TelefoneDto;
+import br.com.fcamara.teste.dev.entity.Estacionamento;
 import br.com.fcamara.teste.dev.form.contato.TelefoneForm;
 import br.com.fcamara.teste.dev.form.estacionamento.EstacionamentoForm;
 import br.com.fcamara.teste.dev.form.estacionamento.EstacionamentoUpdateForm;
@@ -30,8 +32,16 @@ public class EstacionamentoController {
 	}
 
 	@GetMapping("/{id}")
-	public EstacionamentoDto findOne(@PathVariable Integer id) {
-		return new EstacionamentoDto(this.estabelecimentoServiceImpl.findById(id));
+	public EstacionamentoDto findOne(
+			@RequestParam(value = "detalhes", required = false, defaultValue = "false") boolean details,
+			@PathVariable Integer id) {
+
+		Estacionamento estacionamento = this.estabelecimentoServiceImpl.findById(id);
+
+		if(details)
+			return new EstacionamentoDetalhesDto(estacionamento);
+
+		return new EstacionamentoDto(estacionamento);
 	}
 
 	@GetMapping("/{id}/contato")
@@ -53,7 +63,7 @@ public class EstacionamentoController {
 		return ResponseEntity.created(uri).body(estabelecimento);
 	}
 
-	@PostMapping("/{id}/telefone")
+	@PostMapping("/{id}/contato")
 	@Transactional
 	public ResponseEntity<?> addPhone(@PathVariable Integer id,
 	                                  @RequestBody @Valid TelefoneForm estabelecimentoForm,
@@ -82,7 +92,7 @@ public class EstacionamentoController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@DeleteMapping("/{id}/telefone")
+	@DeleteMapping("/{id}/contato")
 	@Transactional
 	public ResponseEntity<?> removePhone(@PathVariable Integer id,
 	                                     @RequestBody @Valid TelefoneForm estabelecimentoForm) {

@@ -71,6 +71,16 @@ class VeiculoServiceImplTest {
 	}
 
 	@Test
+	void shouldReturnAVehicleByItsPlate() {
+		Mockito.when(veiculoRepository.findByPlaca(new Placa("BRA1A23")))
+				.thenReturn(Optional.of(this.testVeiculos.get(0)));
+
+		Veiculo encontrado = veiculoServiceImpl.findByPlaca("BRA1A23");
+
+		assertEquals(encontrado, this.testVeiculos.get(0));
+	}
+
+	@Test
 	void shouldCreateAVehicle() {
 		VeiculoForm veiculoForm = new VeiculoForm("Fiat", "Palio", "Vermelho", "BRA1A23",
 				"CARRO");

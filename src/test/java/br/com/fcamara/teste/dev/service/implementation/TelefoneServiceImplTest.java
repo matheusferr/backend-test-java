@@ -48,4 +48,13 @@ class TelefoneServiceImplTest {
 
 		assertEquals(telefone, this.testTelefone);
 	}
+
+	@Test
+	void shouldNotCreateAndGetAnExistingPhone() {
+		Mockito.when(this.telefoneRepository.findByNumero("1234567890")).thenReturn(Optional.of(this.testTelefone));
+
+		Telefone telefone = this.telefoneServiceImpl.findByNumeroOrCreate("1234567890");
+
+		assertEquals(telefone, this.testTelefone);
+	}
 }

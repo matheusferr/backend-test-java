@@ -1,12 +1,12 @@
 package br.com.fcamara.teste.dev.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 public class ErroDto {
 	private String erro;
 }

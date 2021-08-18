@@ -18,6 +18,9 @@ class PlacaTest {
 
 	@Test
 	void shouldThrowWithAInvalidPlateValue() {
+		Placa plate = new Placa();
+
 		assertThrows(PlacaInvalidaException.class, () -> new Placa("ABC1D2A"));
+		assertThrows(PlacaInvalidaException.class, () -> plate.setPlaca("ABCDEFG"));
 	}
 }

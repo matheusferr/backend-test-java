@@ -4,16 +4,18 @@ import br.com.fcamara.teste.dev.entity.Endereco;
 import br.com.fcamara.teste.dev.entity.Estacionamento;
 import br.com.fcamara.teste.dev.entity.Telefone;
 import br.com.fcamara.teste.dev.entity.valueObject.CNPJ;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+@AllArgsConstructor
 @Getter
 @Setter
-@AllArgsConstructor
 public class EstacionamentoForm {
 	@NotNull
 	@NotEmpty

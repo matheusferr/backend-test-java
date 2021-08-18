@@ -73,10 +73,21 @@ class EstacionamentoServiceImplTest {
 	}
 
 	@Test
-	void shoudReturnAnEstablishmentByItsID() {
-		Mockito.when(this.estacionamentoRepository.findById(1)).thenReturn(Optional.of(this.testEstacionamentos.get(0)));
+	void shoudReturnAnEstablishmentByItsId() {
+		Mockito.when(this.estacionamentoRepository.findById(1))
+				.thenReturn(Optional.of(this.testEstacionamentos.get(0)));
 
 		Estacionamento estacionamento = this.estabelecimentoServiceImpl.findById(1);
+
+		assertEquals(estacionamento, this.testEstacionamentos.get(0));
+	}
+
+	@Test
+	void shoudReturnAnEstablishmentByItsCNPJ() {
+		Mockito.when(this.estacionamentoRepository.findByCnpj(new CNPJ("45857255000103")))
+				.thenReturn(Optional.of(this.testEstacionamentos.get(0)));
+
+		Estacionamento estacionamento = this.estabelecimentoServiceImpl.findByCnpj("45857255000103");
 
 		assertEquals(estacionamento, this.testEstacionamentos.get(0));
 	}
@@ -155,9 +166,7 @@ class EstacionamentoServiceImplTest {
 	void shouldAddAPhone() {
 		Estacionamento testEstacionamento = this.testEstacionamentos.get(0);
 
-		TelefoneForm estabelecimentoForm = new TelefoneForm();
-
-		estabelecimentoForm.setTelefone("12345678901");
+		TelefoneForm estabelecimentoForm = new TelefoneForm("12345678901");
 
 		Mockito.when(estacionamentoRepository.findById(1)).thenReturn(Optional.of(testEstacionamento));
 

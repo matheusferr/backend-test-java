@@ -1,12 +1,13 @@
 package br.com.fcamara.teste.dev.entity.valueObject;
 
 import br.com.fcamara.teste.dev.exception.PlacaInvalidaException;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 @NoArgsConstructor
+@EqualsAndHashCode
 public class Placa {
 	private String placa;
 
@@ -29,23 +30,5 @@ public class Placa {
 
 	public String getPlacaValue() {
 		return placa;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if(this == o) return true;
-		if(o == null || getClass() != o.getClass()) return false;
-		Placa that = (Placa) o;
-
-		return Objects.equals(placa, that.placa);
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((placa == null) ? 0 : placa.hashCode());
-
-		return result;
 	}
 }

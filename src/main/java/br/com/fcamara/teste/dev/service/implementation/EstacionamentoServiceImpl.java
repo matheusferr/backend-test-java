@@ -4,7 +4,6 @@ import br.com.fcamara.teste.dev.entity.Endereco;
 import br.com.fcamara.teste.dev.entity.Estacionamento;
 import br.com.fcamara.teste.dev.entity.Telefone;
 import br.com.fcamara.teste.dev.entity.valueObject.CNPJ;
-import br.com.fcamara.teste.dev.exception.DadosInvalidosException;
 import br.com.fcamara.teste.dev.exception.OperacaoInvalidaException;
 import br.com.fcamara.teste.dev.form.contato.TelefoneForm;
 import br.com.fcamara.teste.dev.form.estacionamento.EstacionamentoForm;
@@ -80,9 +79,6 @@ public class EstacionamentoServiceImpl implements EstacionamentoService {
 		if(!estacionamentoUpdateForm.getNome().equals(""))
 			estacionamento.setNomeEstacionamento(estacionamentoUpdateForm.getNome());
 
-		if(estacionamentoUpdateForm.getVagasCarro() == null && estacionamentoUpdateForm.getVagasMoto() == null)
-			throw new DadosInvalidosException("os valores das vagas de carros e motos não podem ser nulos");
-
 		if(estacionamentoUpdateForm.getVagasCarro() != null)
 			estacionamento.setVagasCarro(estacionamentoUpdateForm.getVagasCarro());
 
@@ -90,11 +86,6 @@ public class EstacionamentoServiceImpl implements EstacionamentoService {
 			estacionamento.setVagasMoto(estacionamentoUpdateForm.getVagasMoto());
 
 		return this.estacionamentoRepository.save(estacionamento);
-	}
-
-	@Override
-	public void updateVagas(Estacionamento estacionamento) {
-		this.estacionamentoRepository.save(estacionamento);
 	}
 
 	@Override

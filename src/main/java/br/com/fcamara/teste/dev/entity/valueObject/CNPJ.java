@@ -1,14 +1,15 @@
 package br.com.fcamara.teste.dev.entity.valueObject;
 
 import br.com.fcamara.teste.dev.exception.CNPJInvalidoException;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 @NoArgsConstructor
+@EqualsAndHashCode
 public class CNPJ {
 	private String cnpj;
 
@@ -65,19 +66,5 @@ public class CNPJ {
 
 	public String getCnpjValue() {
 		return cnpj;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if(this == o) return true;
-		if(o == null || getClass() != o.getClass()) return false;
-		CNPJ that = (CNPJ) o;
-
-		return Objects.equals(cnpj, that.cnpj);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(cnpj);
 	}
 }

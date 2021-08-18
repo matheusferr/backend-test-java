@@ -15,6 +15,5 @@ class EnderecoTest {
 		assertThrows(EnderecoInvalidoException.class, () -> new Endereco(
 				"AVENIDA CONSELHEIRO NÉBIAS", "-1", testCidade)
 		);
-
 	}
 }

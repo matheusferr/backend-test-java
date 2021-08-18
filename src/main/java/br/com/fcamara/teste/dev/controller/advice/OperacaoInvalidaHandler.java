@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class OperacaoInvalidaHandler {
-	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(OperacaoInvalidaException.class)
 	public ResponseEntity<ErroDto> handle(OperacaoInvalidaException e) {
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErroDto(e.getMessage()));
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErroDto(e.getMessage()));
 	}
 }

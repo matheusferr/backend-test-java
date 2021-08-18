@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,6 @@ class VagaControllerIntegrationTest {
 	private MockMvc mockMvc;
 	@MockBean
 	private VagaServiceImpl vagaServiceImpl;
-	private Estacionamento testEstacionamento;
 	private Vaga testVaga;
 
 	@BeforeEach
@@ -44,7 +44,7 @@ class VagaControllerIntegrationTest {
 		Estado testEstado = new Estado("SÃO PAULO");
 		Cidade testCidade = new Cidade("SANTOS", testEstado);
 
-		this.testEstacionamento = new Estacionamento("TEST01", new CNPJ("45857255000103"),
+		Estacionamento testEstacionamento = new Estacionamento("TEST01", new CNPJ("45857255000103"),
 				new Endereco("AVENIDA CONSELHEIRO NÉBIAS", "1", testCidade),
 				new Telefone("1234567890"), 1, 1);
 
@@ -65,7 +65,7 @@ class VagaControllerIntegrationTest {
 
 		MvcResult response = mockMvc.perform(get("/vagas/1")).andExpect(status().isOk()).andReturn();
 
-		String json = response.getResponse().getContentAsString();
+		String json = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
 
 		VagaDto dto = objectMapper.readValue(json, VagaDto.class);
 
@@ -85,7 +85,7 @@ class VagaControllerIntegrationTest {
 				).andExpect(status().isCreated())
 				.andReturn();
 
-		String json = response.getResponse().getContentAsString();
+		String json = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
 
 		VagaDto dto = objectMapper.readValue(json, VagaDto.class);
 
@@ -107,7 +107,7 @@ class VagaControllerIntegrationTest {
 				).andExpect(status().isOk())
 				.andReturn();
 
-		String json = response.getResponse().getContentAsString();
+		String json = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
 
 		VagaDto dto = objectMapper.readValue(json, VagaDto.class);
 
